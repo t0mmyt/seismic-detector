@@ -9,18 +9,25 @@ class DetectorError(Exception):
 
 
 class Detector(object):
-    def __init__(self, stream, sampling_rate):
-        self.stream = stream
+    def __init__(self, trace, sampling_rate):
+        """
+        Create a new Detector object
+
+        Args:
+            trace: np.ndarray: raw trace
+            sampling_rate: int: Sample rate of trace in Hz
+        """
+        self.trace = trace
         self.freq = sampling_rate
         self.interval = 1000 / sampling_rate
         
     @property
     def abs(self):
         """
-        Absolute values of stream
+        Absolute values of trace
         """
         if not hasattr(self, "_abs"):
-            self._abs = np.abs(self.stream)
+            self._abs = np.abs(self.trace)
         return self._abs
     
     @staticmethod
@@ -40,17 +47,17 @@ class Detector(object):
     
     def bandpass(self, low, high):
         """
-        Perform a frequency bandpass in-place on a stream to reduce noise
+        Perform a frequency bandpass in-place on a trace to reduce noise
         
         Args:
             low:  Remove frequencies below this value
             high: Remove frequencies above this value
         """
-        self.stream = bandpass(self.stream, low, high, self.freq)
+        self.trace = bandpass(self.trace, low, high, self.freq)
 
     def detect(self, short, long, nstds=1):
         """
-        Run a hackish STA-LTA like detection on stream.  Normalises long window to 1 and looks for short window means
+        Run a hackish STA-LTA like detection on trace.  Normalises long window to 1 and looks for short window means
         above nstds standard deviations from the long window mean.
         
         Args:
@@ -66,7 +73,7 @@ class Detector(object):
         debug("Window lengths: {}, {} ({}s, {}s)".format(
             long_window_length, short_window_length, long/1000, short/1000))
         i = long_window_length
-        while i + short_window_length < len(self.stream):
+        while i + short_window_length < len(self.trace):
             long_window = Detector.normalised_to_peak(self.abs[i - long_window_length:i])
             long_window_mean = np.mean(long_window)
             long_window_std = np.std(long_window)
