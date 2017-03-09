@@ -16,6 +16,9 @@ class Detector(object):
         
     @property
     def abs(self):
+        """
+        Absolute values of stream
+        """
         if not hasattr(self, "_abs"):
             self._abs = np.abs(self.stream)
         return self._abs
@@ -45,8 +48,6 @@ class Detector(object):
         """
         self.stream = bandpass(self.stream, low, high, self.freq)
 
-    
-    
     def detect(self, short, long, nstds=1):
         """
         Run a hackish STA-LTA like detection on stream.  Normalises long window to 1 and looks for short window means
