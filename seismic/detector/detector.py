@@ -2,6 +2,7 @@
 from logging import debug
 import numpy as np
 from obspy.signal.filter import bandpass
+from seismic.sax import Sax, SaxError
 
 
 class DetectorError(Exception):
@@ -14,8 +15,8 @@ class Detector(object):
         Create a new Detector object
 
         Args:
-            trace: np.ndarray: raw trace
-            sampling_rate: int: Sample rate of trace in Hz
+            trace (np.ndarray): raw trace
+            sampling_rate (int): Sample rate of trace in Hz
         """
         self.trace = trace
         self.freq = sampling_rate
