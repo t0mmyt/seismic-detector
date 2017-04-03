@@ -1,4 +1,6 @@
-# seismic-detector
+seismic-detector
+================
 
 Building::
+
     make clean && make all
