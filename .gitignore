@@ -3,3 +3,13 @@
 seismic.egg-info
 build
 .idea
+bin
+build
+dist
+include
+lib
+lib64
+*egg-info
+share
+pip-selfcheck.json
+pyvenv.cfg
