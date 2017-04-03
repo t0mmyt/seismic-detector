@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %} - Seismic</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  {% assets "css_all" %}<link rel="stylesheet" href="{{ ASSET_URL }}" type="text/css">{% endassets %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <div class="full-height">
+    <div class="main-menu">
+      <h2 style="text-align: center">Seismic</h2>
+      {{ nav|safe }}
+    </div>
+    <div class="container raleway" id="contents">
+      <h1>{% block heading %}{% endblock %}</h1>
+      <p>{% block explain %}{% endblock %}</p>
+      {% block contents %}{% endblock %}
+    </div>
+  </div>
+</body>
+</html>

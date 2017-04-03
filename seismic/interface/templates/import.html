@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Import{% endblock %}
+{% block heading %}Import Data{% endblock %}
+{% block contents %}
+  <div class="starter-template">
+    <form id="uploader" method="POST" enctype="multipart/form-data">
+      <fieldset class="form-group">
+        <label for="input_file">File input</label>
+        <input type="file" class="form-control-file" name="files" id="files" multiple>
+        <small class="text-muted">Multiple files can be selected (SAC or Miniseed).  There may be some delay if a large number of observations are laoded at once.</small>
+      </fieldset>
+      <fieldset class="form-group">
+        <input type="submit" value="Upload">
+      </fieldset>
+    </form>
+    {{ results|safe }}
+  </div>
+{% endblock %}

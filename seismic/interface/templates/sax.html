@@ -1,0 +1,339 @@
+{% extends "base.html" %}
+{% block title %}SAX{% endblock %}
+{% block heading %}SAX{% endblock %}
+{% block explain %}Perform post-processing and do SAX analysis{% endblock %}
+{% block head %}
+<!-- TODO - Move this to footer? -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.4.3/d3.min.js"></script>
+<style>
+svg .raw {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+svg .paa {
+  fill: none;
+  stroke: red;
+  stroke-width: 2px;
+}
+.bad {
+  color: red;
+}
+.axis {
+  stroke: white;
+  stroke-width: 2px;
+  fill: black;
+  paint-order: stroke;
+}
+.sax {
+  stroke: white;
+  stroke-width: 2px;
+  fill: red;
+  paint-order: stroke;
+}
+</style>
+{% endblock %}
+{% block contents %}
+<div class="row">
+	<div class="col-lg-12" id="render"></div>
+</div>
+<form>
+  <div class="row">
+    <div class="col-lg-2 form-group">
+      <label for="network">Network</label><br>
+      <select class="form-control" id="network" name="network" size=4>
+        <option value="YW" selected>YW</option>
+      </select>
+    </div>
+    <div class="col-lg-2 form-group">
+      <label for="station">Station</label><br>
+      <select class="form-control" id="station" name="station" size=4>
+        <option value="NAB1" selected>NAB1</option>
+        <option value="NAB2">NAB2</option>
+        <option value="NAB3">NAB3</option>
+        <option value="NAB4">NAB4</option>
+        <option value="NAB5">NAB5</option>
+        <option value="NAB6">NAB6</option>
+        <option value="NAB7">NAB7</option>
+        <option value="NAB8">NAB8</option>
+      </select>
+    </div>
+    <div class="col-lg-1 form-group">
+      <label for="channel">Channel</label><br>
+      <select class="form-control" id="channel" name="channel" size=4>
+        <option value="Z" selected>Z</option>
+        <option value="N">N</option>
+        <option value="E">E</option>
+      </select>
+    </div>
+    <div class="col-lg-2 form-group">
+      <label for="startdate" id="startdateLabel">Start Date</label><br>
+      <input type="text" class="form-control" id="startdate" name="startdate" placeholder="YYYY/MM/DD" value=""><br>
+      <label for="enddate" id=>End Date</label><br>
+      <input type="text" class="form-control" id="enddate" name="enddate" placeholder="YYYY/MM/DD" value="">
+    </div>
+    <div class="col-lg-2 form-group">
+      <label for="starttime">Start Time (UTC)</label><br>
+      <input type="text" class="form-control" id="starttime" name="starttime" placeholder="HH:MM:SS" value=""><br>
+      <label for="endtime">End Time (UTC)</label><br>
+      <input type="text" class="form-control" id="endtime" name="endtime" placeholder="HH:MM:SS" value="">
+    </div>
+  </div>
+  <div class="row">
+		<div class="col-lg-2 form-group">
+			<input type="checkbox" name="normalise" id="normalise">Normalise</input><br>
+			<input type="checkbox" name="absolute" id="absolute">Absolute</input><br>
+			<input type="radio" name="distribution" id="distribution_gaussian" value="gaussian" checked>Gaussian</input><br>
+			<input type="radio" name="distribution" id="distribution_proportional" value="proportional">Proportional</input><br>
+		</div>
+		<div class="col-lg-2 form-group">
+			<input type="checkbox" name="bandpass" id="bandpass">Bandpass</input><br>
+			<label for="bandpassLow">Bandpass Low (Hz)</label><br>
+      <input type="text" id="bandpassLow" name="bandpassLow" value="5"><br>
+      <label for="bandpassHigh">Bandpass High (Hz)</label><br>
+      <input type="text" id="bandpassHigh" name="bandpassHigh" value="20">
+    </div>
+		<div class="col-lg-2 form-group">
+			<input type="checkbox" name="sax" id="sax">SAX</input><br>
+			<label for="interval">PAA Interval (ms)</label><br>
+			<input type="text" id="interval" name="interval" value="50"><br>
+			<label for="alphabet">SAX Alphabet</label><br>
+			<input type="text" id="alphabet" name="alphabet" value="abcdefg">
+		</div>
+	</div>
+</form>
+<script>
+function svg(parent, w, h) {
+  return d3.select(parent)
+           .append("svg")
+           .attr("width", w)
+           .attr("height", h);
+}
+
+function render(svg, dataset, interval) {
+  var xScale = d3.scaleLinear()
+                 .domain([
+                   d3.min(dataset.results, function(d) { return d[0]; }),
+                   d3.max(dataset.results, function(d) { return d[0]; })
+                 ])
+                 .range([padding, w - padding * 4]);
+
+  var yScale = d3.scaleLinear()
+                 .domain([
+                   d3.min(dataset.results, function(d) { return d[1]; }),
+                   d3.max(dataset.results, function(d) { return d[1]; })
+                 ])
+                 .range([h - padding, padding]);
+
+  var xAxis = d3.axisBottom()
+                .ticks(10)
+                .tickFormat(d3.timeFormat("%H:%M:%S.%L"))
+                .scale(xScale);
+
+  var yAxis = d3.axisRight()
+                .scale(yScale);
+
+  console.time("Line")
+  var line = d3.line()
+    .x(function(d) {
+      return xScale(d[0]);
+    })
+    .y(function(d) {
+      return yScale(d[1]);
+    });
+  console.timeEnd("Line")
+
+  console.time("Render Raw");
+
+  svg.append("path")
+        .data([dataset.results])
+        .attr("class", "raw")
+        .attr("id", "graph")
+        .attr("d", line);
+	if (dataset.paa) {
+		paa_rendered = []
+		dataset.paa.forEach(function(d, i) {
+			paa_rendered[i * 2] = [dataset.paa[i][0] - interval / 2, dataset.paa[i][1]]
+			paa_rendered[i * 2 + 1] = [dataset.paa[i][0] + interval / 2, dataset.paa[i][1]]
+		})
+		svg.append("path")
+       .data([paa_rendered])
+       .attr("class", "paa")
+       .attr("id", "graph")
+       .attr("d", line);
+		if (dataset.sax){
+			console.time("Rendering SAX")
+			svg.selectAll("text")
+			  .data(dataset.sax)
+			  .enter()
+			  .append("text")
+			  .text(function(d) {
+			    return d;
+			  })
+			  .attr("x", function(d, i) {
+			    return xScale((i * interval) + dataset.results[0][0]);
+			  })
+			  .attr("y", function(d, i) {
+					return 10;
+					// return yScale(dataset.paa[i][1]) - 5;
+			  })
+			  .attr("text-anchor", "middle")
+				.attr("class", "sax");
+			console.timeEnd("Rendering SAX");
+		}
+	}
+	console.timeEnd("Render Raw");
+
+  svg.append("g")
+      .call(yAxis)
+      .selectAll("text")
+        .attr("class", "axis")
+        .attr("vector-effect", "non-scaling-stroke");
+
+  svg.append("g")
+      .call(xAxis)
+      .attr('transform', 'translate(0,' + (yScale(0)) + ')')
+      .selectAll("text")
+        .style("text-anchor", "end")
+        .style("stroke", "white")
+        .style("stroke-width", "2px")
+        .style("fill", "black")
+        .style("paint-order", "stroke")
+        .attr("vector-effect", "non-scaling-stroke")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-65)");
+};
+
+function clear(svg) {
+  svg.selectAll("*").remove();
+}
+
+function fetch() {
+	var ok = true;
+	var bandpass = $("#bandpass").is(":checked");
+	var sax = $("#sax").is(":checked");
+
+	['startdate', 'enddate'].forEach(
+		function(i) {
+			if (/^\d{4}\/\d{2}\/\d{2}$/.test($("#" + i).val())) {
+				$("label[for='" + i + "']").removeAttr("class", "bad");
+			} else {
+				$("label[for='" + i + "']").attr("class", "bad");
+				ok = false;
+			}
+		}
+	);
+
+	['starttime', 'endtime'].forEach(
+		function(i) {
+			if (/^\d{2}:\d{2}:\d{2}$/.test($("#" + i).val())) {
+				$("label[for='" + i + "']").removeAttr("class", "bad");
+			} else {
+				$("label[for='" + i + "']").attr("class", "bad");
+				ok = false;
+			}
+		}
+	);
+
+	['bandpassLow', 'bandpassHigh'].forEach(
+		function(i) {
+			if (/[\d.]+$/.test($("#" + i).val()) || !(bandpass)) {
+				$("label[for='" + i + "']").removeAttr("class", "bad");
+			} else {
+				$("label[for='" + i + "']").attr("class", "bad");
+				if (bandpass) ok = false;
+			}
+			$("#" + i).prop("disabled", !(bandpass));
+		}
+	);
+
+	if (/^\d+$/.test($("#interval").val()) || !(sax)) {
+		$("label[for='interval']").removeAttr("class", "bad");
+	} else {
+		$("label[for='interval']").attr("class", "bad");
+		if (sax) ok = false;
+	}
+	if (/^[a-zA-Z0-9]+$/.test($("#alphabet").val()) || !(sax)) {
+		$("label[for='alphabet']").removeAttr("class", "bad");
+	} else {
+		$("label[for='alphabet']").attr("class", "bad");
+		if (sax) ok = false;
+	}
+	['interval', 'alphabet'].forEach(
+		function(i) {
+			$("#" + i).prop("disabled", !(sax));
+		}
+	)
+
+	if (ok) {
+		var channel = $("#channel").val();
+		var params = {
+			"network": $("#network").val(),
+			"station": $("#station").val(),
+			"start": Date.parse($("#startdate").val() + " " + $("#starttime").val()),
+			"end": Date.parse($("#enddate").val() + " " + $("#endtime").val()),
+			"normalise": $("#normalise").is(":checked"),
+			"absolute": $("#absolute").is(":checked"),
+			"distribution": $('input[name=distribution]:checked').val(),
+		};
+		if (bandpass) {
+			params.bandpassLow = $("#bandpassLow").val();
+			params.bandpassHigh = $("#bandpassHigh").val();
+		}
+		if (sax) {
+			params.interval = $("#interval").val();
+			params.alphabet = $("#alphabet").val();
+		}
+		var queryUrl = "/v1/sax/" + channel + "?" + jQuery.param(params);
+		console.log(queryUrl);
+		console.time("Fetching data");
+		data = d3.json(queryUrl, function(d) {
+            console.timeEnd("Fetching data")
+            console.log("Rendering " + d.results.length + "points.")
+            s.selectAll("*").remove();
+            render(s, d, $("#interval").val());
+        });
+		// var url = document.location.toString();
+		// var newUrl = url.substring(0, url.indexOf('?') + 1) + $.param(params);
+		// history.pushState(params, document.title, newUrl)
+		// document.location = url.substring(0, url.indexOf('?') + 1) + $.param(params);
+	}
+}
+
+var w = 1000;
+var h = 400;
+var padding = 20;
+var s = svg("#render", w, h);
+var params = {};
+
+[ 'network', 'station', 'channel', 'bandpass',
+  'sax',	'normalise', 'absolute',
+  'distribution_gaussian', 'distribution_proportional' ].forEach(
+  function(i) { $("#" + i).on("change", function() {fetch()}); }
+);
+
+[
+	'startdate', 'enddate', 'starttime', 'endtime',
+	'bandpassLow', 'bandpassHigh',
+	'interval', 'alphabet',
+].forEach(
+  function(i) { $("#" + i).on("input", function() {fetch()}); }
+)
+
+// window.onpopstate = function(e){
+// 	var url = document.location.toString();
+// 	var paramsEnc = url.substring(url.indexOf('?') + 1, url.length);
+// 	paramsEnc.split("&").forEach(function(i){
+// 		var a = i.split("=");
+// 		var k = a[0];
+// 		var v = decodeURIComponent(a[1]);
+// 		$("#" + k).val(v);
+// 		params[k] = v;
+// 	});
+// 	fetch();
+// };
+
+$( document ).ready( fetch() );
+</script>
+{% endblock %}
