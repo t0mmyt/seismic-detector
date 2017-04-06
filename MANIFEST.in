@@ -1,0 +1,2 @@
+recursive-include seismic/interface/static/css/ *
+recursive-include seismic/interface/templates/ *

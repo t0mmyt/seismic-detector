@@ -28,3 +28,36 @@ services:
         image: redis:3.0
         ports:
             - 6379:6379
+
+    interface:
+        image: t0mmyt/seismic:latest
+        ports:
+            - 8080:8000
+        command:
+            - seismic.interface:app
+        environment:
+            - OBSLOADER=http://obsloader:8000
+
+    obsloader:
+        image: t0mmyt/seismic:latest
+        ports:
+            - 8001:8000
+        command:
+            - seismic.obsloader:app
+        environment:
+            - MINIO_HOST=minio:9000
+            - MINIO_BUCKET=raw
+            - MINIO_ACCESS_KEY=dev-TKE8KC10YL
+            - MINIO_SECRET_KEY=dev-ALUP1N7WUO
+            - DB_URL=postgresql://seismic:d3v3l0pm3nt!@postgres:5432/seismic
+
+    worker:
+        image: t0mmyt/seismic:latest
+        entrypoint:
+            - /usr/local/bin/celery
+            - worker
+            - -A=seismic.worker.tasks
+            - --loglevel=info
+        environment:
+            - DB_URL=postgresql://seismic:d3v3l0pm3nt!@postgres:5432/seismic
+            - BROKER_URL=redis://redis:6379

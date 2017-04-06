@@ -1,5 +1,7 @@
 FROM ubuntu:16.04
-MAINTAINER Tom Taylor <tom+dockerfiles@tomm.yt>
+LABEL maintainer Tom Taylor <tom+dockerfiles@tomm.yt>
+
+EXPOSE 8000
 
 RUN apt-get -qq update &&\
     DEBIAN_FRONTEND=noninteractive apt-get -yqq install \
@@ -10,3 +12,6 @@ RUN apt-get -qq update &&\
 ARG SEISMIC_VER=1.0
 COPY dist/seismic-${SEISMIC_VER}.tar.gz /opt
 RUN pip3 install /opt/seismic-${SEISMIC_VER}.tar.gz
+
+USER app
+ENTRYPOINT [ "/usr/local/bin/run_gunicorn.sh" ]
