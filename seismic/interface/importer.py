@@ -5,8 +5,7 @@ from flask_api import status
 
 class Importer(object):
     def __init__(self, url=None):
-        url = getenv('OBSLOADER', "http://localhost:8164") if not url else url
-        self.url = "{}/v1/observations".format(url)
+        self.url = getenv('OBSLOADER', "http://localhost:8001") if not url else url
         self.data = []
 
     def add(self, data):
@@ -20,7 +19,7 @@ class Importer(object):
 
     def _upload(self, data):
         try:
-            r = requests.put(
+            r = requests.post(
                 url=self.url,
                 headers={'Content-Type': "application/octet"},
                 data=data

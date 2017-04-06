@@ -3,35 +3,49 @@ Main Web Interface
 """
 import os
 import requests
-from collections import OrderedDict
 from requests import ConnectionError
-from flask import Flask, render_template, abort, request, jsonify
-from flask_assets import assets, Environment, Bundle
+from flask import Flask, render_template, abort, request, jsonify, send_from_directory
+# from flask_assets import assets, Environment, Bundle
 from flask_api import status
 from jinja2 import TemplateNotFound
-from nav import SimpleNavigator
-from importer import Importer
-from proxy_sax import ProxySax
+from seismic.interface.nav import SimpleNavigator
+from seismic.interface.importer import Importer
+from seismic.interface.proxy_sax import ProxySax
 
 
 template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
 app = Flask(__name__, template_folder=template_dir)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-env = Environment(app)
-
-css = Bundle(
-    "css/base.css",
-    filters="cssmin",
-    output="assets/css.min.css",
-)
-env.register("css_all", css)
+# def ensure_dir(directory):
+#     if not os.path.exists(directory):
+#         os.makedirs(directory)
+#
+# cache_dir = os.getenv("ASSET_CACHE_DIR", "/tmp/web-cache")
+#
+# env = Environment(app)
+# env.append_path(os.path.join(os.path.dirname(os.path.abspath(__file__)), "static"), "/assets")
+# ensure_dir(cache_dir)
+# env.cache = cache_dir
+#
+# css = Bundle(
+#     "css/base.css",
+#     filters="cssmin",
+#     output="css.min.css",
+# )
+# env.register("css_all", css)
 
 nav = SimpleNavigator((
     ("Home", "/"),
     ("Import", "/import"),
     ("Explore/SAX", "/sax"),
 ))
+
+
+# CSS Assets
+@app.route("/css/<path:path>", )
+def static_css(path):
+    return send_from_directory("assets/css", path)
 
 
 @app.route("/")
@@ -108,5 +122,5 @@ if __name__ == "__main__":
     app.run(
         debug=True,
         host="0.0.0.0",
-        port=8000,
+        port=8080,
     )
