@@ -21,7 +21,7 @@ class ObservationRecord(Base):
     sampling_rate = Column(Integer)
 
     __table_args__ = (
-        Index("network_station_channel", "network", "station", "channel"),
+        Index("obs_network_station_channel", "network", "station", "channel"),
     )
 
     def __init__(self, obs_id=None, **kwargs):
@@ -46,9 +46,13 @@ class EventRecord(Base):
     network = Column(String)
     station = Column(String)
     channel = Column(String)
-    start = Column(DateTime)
-    end = Column(DateTime)
+    start = Column(DateTime, index=True)
+    end = Column(DateTime, index=True)
     sampling_rate = Column(Integer)
+
+    __table_args__ = (
+        Index("evt_network_station_channel", "network", "station", "channel"),
+    )
 
     def __init__(self, evt_id=None, **kwargs):
         """
