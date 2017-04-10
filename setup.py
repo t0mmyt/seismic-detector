@@ -27,8 +27,6 @@ setup(
         'flask',
         'flask-appconfig>=0.10',
         'flask-api',
-        'flask-assets',
-        'cssmin',
         'requests',
         'celery',
         'redis',
