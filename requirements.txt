@@ -1,3 +1,16 @@
 numpy
 obspy
 matplotlib
+sqlalchemy
+psycopg2
+minio
+msgpack-python
+iso8601
+gunicorn
+flask
+flask-appconfig>=0.10
+flask-api
+requests
+celery
+redis
+flask-api
