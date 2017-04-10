@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% block title %}SAX{% endblock %}
-{% block heading %}SAX{% endblock %}
-{% block explain %}Perform post-processing and do SAX analysis{% endblock %}
+{% block title %}Observations{% endblock %}
+{% block heading %}Observations{% endblock %}
+{% block explain %}List currently stored observations{% endblock %}
 {% block head %}{% endblock %}
 {% block contents %}
 <form>
@@ -33,40 +33,23 @@
         <option value="E">E</option>
       </select>
     </div>
-    <div class="col-lg-2 form-group">
-      <label for="startdate" id="startdateLabel">Start Date</label><br>
-      <input type="text" class="form-control" id="startdate" name="startdate" placeholder="YYYY/MM/DD" value=""><br>
-      <label for="enddate" id=>End Date</label><br>
-      <input type="text" class="form-control" id="enddate" name="enddate" placeholder="YYYY/MM/DD" value="">
-    </div>
-    <div class="col-lg-2 form-group">
-      <label for="starttime">Start Time (UTC)</label><br>
-      <input type="text" class="form-control" id="starttime" name="starttime" placeholder="HH:MM:SS" value=""><br>
-      <label for="endtime">End Time (UTC)</label><br>
-      <input type="text" class="form-control" id="endtime" name="endtime" placeholder="HH:MM:SS" value="">
-    </div>
   </div>
-  <div class="row">
-		<div class="col-lg-2 form-group">
-			<input type="checkbox" name="normalise" id="normalise">Normalise</input><br>
-			<input type="checkbox" name="absolute" id="absolute">Absolute</input><br>
-			<input type="radio" name="distribution" id="distribution_gaussian" value="gaussian" checked>Gaussian</input><br>
-			<input type="radio" name="distribution" id="distribution_proportional" value="proportional">Proportional</input><br>
-		</div>
-		<div class="col-lg-2 form-group">
-			<input type="checkbox" name="bandpass" id="bandpass">Bandpass</input><br>
-			<label for="bandpassLow">Bandpass Low (Hz)</label><br>
-      <input type="text" id="bandpassLow" name="bandpassLow" value="5"><br>
-      <label for="bandpassHigh">Bandpass High (Hz)</label><br>
-      <input type="text" id="bandpassHigh" name="bandpassHigh" value="20">
-    </div>
-		<div class="col-lg-2 form-group">
-			<input type="checkbox" name="sax" id="sax">SAX</input><br>
-			<label for="interval">PAA Interval (ms)</label><br>
-			<input type="text" id="interval" name="interval" value="50"><br>
-			<label for="alphabet">SAX Alphabet</label><br>
-			<input type="text" id="alphabet" name="alphabet" value="abcdefg">
-		</div>
-	</div>
 </form>
+<script>
+    $('#network').on("change", updateNetwork());
+    $('#station').on("change", updateStation());
+    $('#channel').on("change", updateChannel());
+
+    function updateNetwork() {
+        1;
+    }
+
+    function updateStation() {
+        1;
+    }
+
+    function updateChannel() {
+        1;
+    }
+</script>
 {% endblock %}

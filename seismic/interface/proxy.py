@@ -1,9 +1,9 @@
-from os import getenv
+from flask import jsonify
 from flask_api import status
 import requests
 
 
-class ProxySax(object):
+class Proxy(object):
     def __init__(self, url=None):
         """
         Create a proxy to the SAX service
@@ -12,10 +12,9 @@ class ProxySax(object):
             url: Optional URL to the SAX service
                  (if left out, SAX environment variable is used)
         """
-        url = getenv('SAX', "http://localhost:8165") if not url else url
-        self.url = "{}/v1/sax".format(url)
+        self.url = url
 
-    def __call__(self, channel, **kwargs):
+    def __call__(self, path, **kwargs):
         """
         Send a request to the SAX service
 
@@ -26,13 +25,14 @@ class ProxySax(object):
         Returns:
             (content, status_code)
         """
+        print(kwargs)
         try:
-            r = requests.get(
-                url="{}/{}".format(self.url, channel),
-                params=kwargs
-            )
+            url = "{}/{}".format(self.url, path)
+            r = requests.get(url=url, params=kwargs)
+            if r.status_code > 400:
+                return jsonify({"error": "Got {} from {}".format(r.status_code, url)}), r.status_code
             data = r.json()
-            return dict(data), status.HTTP_200_OK
+            return jsonify(data), status.HTTP_200_OK
         except requests.ConnectionError as e:
             return str(e), status.HTTP_503_SERVICE_UNAVAILABLE
         except (ValueError, TypeError) as e:
