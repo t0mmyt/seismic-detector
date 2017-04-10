@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}SAX{% endblock %}
+{% block heading %}SAX{% endblock %}
+{% block explain %}Perform post-processing and do SAX analysis{% endblock %}
+{% block head %}{% endblock %}
+{% block contents %}
+<form>
+  <div class="row">
+    <div class="col-lg-2 form-group">
+      <label for="network">Network</label><br>
+      <select class="form-control" id="network" name="network" size=4>
+        <option value="YW" selected>YW</option>
+      </select>
+    </div>
+    <div class="col-lg-2 form-group">
+      <label for="station">Station</label><br>
+      <select class="form-control" id="station" name="station" size=4>
+        <option value="NAB1" selected>NAB1</option>
+        <option value="NAB2">NAB2</option>
+        <option value="NAB3">NAB3</option>
+        <option value="NAB4">NAB4</option>
+        <option value="NAB5">NAB5</option>
+        <option value="NAB6">NAB6</option>
+        <option value="NAB7">NAB7</option>
+        <option value="NAB8">NAB8</option>
+      </select>
+    </div>
+    <div class="col-lg-1 form-group">
+      <label for="channel">Channel</label><br>
+      <select class="form-control" id="channel" name="channel" size=4>
+        <option value="Z" selected>Z</option>
+        <option value="N">N</option>
+        <option value="E">E</option>
+      </select>
+    </div>
+    <div class="col-lg-2 form-group">
+      <label for="startdate" id="startdateLabel">Start Date</label><br>
+      <input type="text" class="form-control" id="startdate" name="startdate" placeholder="YYYY/MM/DD" value=""><br>
+      <label for="enddate" id=>End Date</label><br>
+      <input type="text" class="form-control" id="enddate" name="enddate" placeholder="YYYY/MM/DD" value="">
+    </div>
+    <div class="col-lg-2 form-group">
+      <label for="starttime">Start Time (UTC)</label><br>
+      <input type="text" class="form-control" id="starttime" name="starttime" placeholder="HH:MM:SS" value=""><br>
+      <label for="endtime">End Time (UTC)</label><br>
+      <input type="text" class="form-control" id="endtime" name="endtime" placeholder="HH:MM:SS" value="">
+    </div>
+  </div>
+  <div class="row">
+		<div class="col-lg-2 form-group">
+			<input type="checkbox" name="normalise" id="normalise">Normalise</input><br>
+			<input type="checkbox" name="absolute" id="absolute">Absolute</input><br>
+			<input type="radio" name="distribution" id="distribution_gaussian" value="gaussian" checked>Gaussian</input><br>
+			<input type="radio" name="distribution" id="distribution_proportional" value="proportional">Proportional</input><br>
+		</div>
+		<div class="col-lg-2 form-group">
+			<input type="checkbox" name="bandpass" id="bandpass">Bandpass</input><br>
+			<label for="bandpassLow">Bandpass Low (Hz)</label><br>
+      <input type="text" id="bandpassLow" name="bandpassLow" value="5"><br>
+      <label for="bandpassHigh">Bandpass High (Hz)</label><br>
+      <input type="text" id="bandpassHigh" name="bandpassHigh" value="20">
+    </div>
+		<div class="col-lg-2 form-group">
+			<input type="checkbox" name="sax" id="sax">SAX</input><br>
+			<label for="interval">PAA Interval (ms)</label><br>
+			<input type="text" id="interval" name="interval" value="50"><br>
+			<label for="alphabet">SAX Alphabet</label><br>
+			<input type="text" id="alphabet" name="alphabet" value="abcdefg">
+		</div>
+	</div>
+</form>
+{% endblock %}

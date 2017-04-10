@@ -51,6 +51,15 @@ services:
             - MINIO_SECRET_KEY=dev-ALUP1N7WUO
             - DB_URL=postgresql://seismic:d3v3l0pm3nt!@postgres:5432/seismic
 
+    query:
+        image: t0mmyt/seismic:latest
+        ports:
+            - 8002:8000
+        command:
+            - seismic.query:app
+        environment:
+            - DB_URL=postgresql://seismic:d3v3l0pm3nt!@postgres:5432/seismic
+
     worker:
         image: t0mmyt/seismic:latest
         entrypoint:

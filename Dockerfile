@@ -3,10 +3,11 @@ LABEL maintainer Tom Taylor <tom+dockerfiles@tomm.yt>
 
 EXPOSE 8000
 
+ADD requirements.txt /
 RUN apt-get -qq update &&\
     DEBIAN_FRONTEND=noninteractive apt-get -yqq install \
       python3 python3-pip && \
-      pip3 install --upgrade --no-cache-dir pip numpy && \
+      pip3 install --upgrade --no-cache-dir pip numpy && pip install --upgrade --no-cache-dir -r requirements.txt && \
     groupadd app && useradd -r -g app app
 
 ARG SEISMIC_VER=1.0
