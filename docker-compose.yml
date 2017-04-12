@@ -30,7 +30,7 @@ services:
             - 6379:6379
 
     interface:
-        image: t0mmyt/seismic:latest
+        image: seismic/app:1.0
         ports:
             - 8080:8000
         command:
@@ -39,7 +39,7 @@ services:
             - OBSLOADER=http://obsloader:8000
 
     obsloader:
-        image: t0mmyt/seismic:latest
+        image: seismic/app:1.0
         ports:
             - 8001:8000
         command:
@@ -52,7 +52,7 @@ services:
             - DB_URL=postgresql://seismic:d3v3l0pm3nt!@postgres:5432/seismic
 
     query:
-        image: t0mmyt/seismic:latest
+        image: seismic/app:1.0
         ports:
             - 8002:8000
         command:
@@ -61,7 +61,7 @@ services:
             - DB_URL=postgresql://seismic:d3v3l0pm3nt!@postgres:5432/seismic
 
     worker:
-        image: t0mmyt/seismic:latest
+        image: seismic/app:1.0
         entrypoint:
             - /usr/local/bin/celery
             - worker
