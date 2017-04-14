@@ -32,3 +32,10 @@ class Datastore(object):
             return BytesIO(self.m.get_object(bucket_name=self.bucket, object_name=name).read())
         except ResponseError as e:
             raise DatastoreError(e)
+
+    def delete(self, name):
+        try:
+            self.m.remove_object(bucket_name=self.bucket, object_name=name)
+        except ResponseError as e:
+            raise DatastoreError(e)
+

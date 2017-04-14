@@ -1,8 +1,8 @@
 from os import getenv
-from flask import Flask, request, jsonify
+from flask import Flask, request, send_file, jsonify
 from flask_api import status
-# import obspy
-#
+
+from seismic.datastore import Datastore, DatastoreError
 from seismic.metadb import get_session, ObservationRecord
 
 app = Flask(__name__)
@@ -50,6 +50,7 @@ def search():
             "id": o.obs_id,
             "start": o.start.isoformat() + "Z",
             "end": o.end.isoformat() + "Z",
+            "sampling_rate": o.sampling_rate
         } for o in r])
     elif all(k in request.args for k in ("network", "station")):
         r = s.query(ObservationRecord.channel)\
@@ -63,24 +64,29 @@ def search():
     return jsonify(r)
 
 
-@app.route("/", methods=["GET"])
-def get():
-    # Check all required params are provided
-    req_params = ("network", "station", "channel", "start", "end", "sampling_rate")
-    missing_params = [p for p in req_params if p not in request.args]
-    if len(missing_params) > 0:
-        raise ErrorHandler("Missing Parameters: {}".format(", ".join(missing_params)))
-    # DB Session
-    s = get_session(DB_URL)
-    q = s.query(ObservationRecord).filter(
-        ObservationRecord.network == request.args["network"],
-        ObservationRecord.station == request.args["station"],
-        ObservationRecord.channel == request.args["channel"],
-        ObservationRecord.sampling_rate == request.args["sampling_rate"],
-        ObservationRecord.start <= request.args["start"],
-        ObservationRecord.end >= request.args["end"],
-    ).all()
-    return str([i.__dict__ for i in q]), status.HTTP_200_OK
+@app.route("/<obs_id>", methods=["GET", "DELETE"])
+def get(obs_id):
+    ds = Datastore(MINIO_HOST, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET)
+    if request.method == "DELETE":
+        try:
+            # Delete DB entry
+            s = get_session(DB_URL)
+            s.query(ObservationRecord).filter(ObservationRecord.obs_id == obs_id).delete()
+            # Delete Object
+            ds.delete(obs_id)
+            # Commit DB if all went well
+            s.commit()
+            return '', status.HTTP_204_NO_CONTENT
+        except DatastoreError as e:
+            raise ErrorHandler(e, 500)
+    elif request.method == "GET":
+        try:
+            data = ds.get(obs_id)
+            return send_file(data, mimetype="application/octet")
+        except DatastoreError as e:
+            raise ErrorHandler(e, 500)
+    else:
+        raise ErrorHandler("{} not implemented.".format(request.method))
 
 if __name__ == '__main__':
     app.run(
