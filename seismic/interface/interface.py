@@ -21,13 +21,19 @@ nav = SimpleNavigator((
     ("Explore/SAX", "/sax"),
 ))
 
-QUERY = getenv("QUERY", "http://localhost:8003")
+QUERY = getenv("QUERY", "http://localhost:8002")
 
 
 # CSS Assets
 @app.route("/css/<path:path>", )
 def static_css(path):
     return send_from_directory("assets/css", path)
+
+
+# JS Assets
+@app.route("/js/<path:path>", )
+def static_js(path):
+    return send_from_directory("assets/js", path)
 
 
 @app.route("/")

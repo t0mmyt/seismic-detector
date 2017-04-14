@@ -4,52 +4,43 @@
 {% block explain %}List currently stored observations{% endblock %}
 {% block head %}{% endblock %}
 {% block contents %}
+<div ng-app="obs" ng-controller="obsCtrl">
 <form>
   <div class="row">
     <div class="col-lg-2 form-group">
       <label for="network">Network</label><br>
-      <select class="form-control" id="network" name="network" size=4>
-        <option value="YW" selected>YW</option>
+      <select ng-model="selectedNetwork" ng-options="i for i in networks"
+              ng-change="getStations()"
+              class="form-control" id="network" name="network" size=4>
       </select>
     </div>
     <div class="col-lg-2 form-group">
       <label for="station">Station</label><br>
-      <select class="form-control" id="station" name="station" size=4>
-        <option value="NAB1" selected>NAB1</option>
-        <option value="NAB2">NAB2</option>
-        <option value="NAB3">NAB3</option>
-        <option value="NAB4">NAB4</option>
-        <option value="NAB5">NAB5</option>
-        <option value="NAB6">NAB6</option>
-        <option value="NAB7">NAB7</option>
-        <option value="NAB8">NAB8</option>
+      <select ng-model="selectedStation" ng-options="i for i in stations"
+              ng-change="getChannels()"
+              class="form-control" id="station" name="station" size=4>
       </select>
     </div>
     <div class="col-lg-1 form-group">
       <label for="channel">Channel</label><br>
-      <select class="form-control" id="channel" name="channel" size=4>
-        <option value="Z" selected>Z</option>
-        <option value="N">N</option>
-        <option value="E">E</option>
+      <select ng-model="selectedChannel" ng-options="i for i in channels"
+              ng-change="getObservations()"
+              class="form-control" id="channel" name="channel" size=4>
       </select>
     </div>
   </div>
 </form>
-<script>
-    $('#network').on("change", updateNetwork());
-    $('#station').on("change", updateStation());
-    $('#channel').on("change", updateChannel());
-
-    function updateNetwork() {
-        1;
-    }
-
-    function updateStation() {
-        1;
-    }
-
-    function updateChannel() {
-        1;
-    }
-</script>
+<table ng-show="observations.length > 0" class="table">
+    <thead>
+    <tr><th>Id</th><th>Start</th><th>End</th><th>Sampling Rate</th></tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="i in observations">
+        <td>{a i.id a}</td><td>{a i.start a}</td><td>{a i.end a}</td><td>{a i.sampling_rate a}</td>
+    </tr>
+    </tbody>
+</table>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+<script src="/js/observations.js"></script>
+</div>
 {% endblock %}
