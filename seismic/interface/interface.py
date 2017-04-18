@@ -3,12 +3,16 @@ Main Web Interface
 """
 import os
 from os import getenv
-from flask import Flask, render_template, abort, request, jsonify, send_from_directory
+from flask import Flask, render_template, abort, request, send_from_directory, jsonify
+from flask_api import status
 from jinja2 import TemplateNotFound
+from celery import Celery
 
 from seismic.interface.nav import SimpleNavigator
 from seismic.interface.importer import Importer
 from seismic.interface.proxy import Proxy
+from seismic.interface.errors import ErrorHandler
+from seismic.worker.tasks import detector
 
 template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
 app = Flask(__name__, template_folder=template_dir)
@@ -19,9 +23,26 @@ nav = SimpleNavigator((
     ("Import", "/import"),
     ("Observations", "/observations"),
     ("Explore/SAX", "/sax"),
+    ("Tasks", "/tasks"),
 ))
 
 QUERY = getenv("QUERY", "http://localhost:8002")
+BROKER_URL = getenv("BROKER_URL", "redis://localhost:6379")
+
+celery_app = Celery('tasks', broker=BROKER_URL)
+
+
+@app.errorhandler(ErrorHandler)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
+
+# TODO - Favicon
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory("assets", "favicon.ico")
 
 
 # CSS Assets
@@ -34,6 +55,12 @@ def static_css(path):
 @app.route("/js/<path:path>", )
 def static_js(path):
     return send_from_directory("assets/js", path)
+
+
+# Vendor Assets
+@app.route("/vendor/<path:path>", )
+def static_vendor(path):
+    return send_from_directory("assets/vendor", path)
 
 
 @app.route("/")
@@ -73,18 +100,36 @@ def page_import():
         abort(404)
 
 
-@app.route("/observations")
-def page_observations():
-    return render_template(
-        "observations.html",
-        nav=nav.render_as("Observations")
-    )
+@app.route("/<page>")
+def page_generic(page):
+    """
+    Renders a page that has a template, needs no further processing from the 
+    interface module and the Navigation element can be inferred from the page 
+    name. (e.g observations: template=observations.html, title='Observations')
+
+    Args:
+        page: page to render
+    """
+    try:
+        return render_template(
+            "{}.html".format(page),
+            nav=nav.render_as(page.title())
+        )
+    except TemplateNotFound:
+        abort(status.HTTP_404_NOT_FOUND)
 
 
-@app.route("/observations/<path>")
+@app.route("/observations/<path>", methods=["GET", "DELETE"])
 def ajax_observations(path):
     proxy = Proxy(QUERY)
     return proxy(path, **request.args.to_dict())
+
+
+# TODO - this should be combined with ajax_observations
+@app.route("/observations/view/<obs_id>")
+def view_observations(obs_id):
+    proxy = Proxy(QUERY)
+    return proxy("view/{}".format(obs_id), **request.args.to_dict())
 
 
 @app.route("/sax")
@@ -95,32 +140,27 @@ def page_sax():
         abort(404)
 
 
-
-
-
-# @app.route("/raw_json/<channel>")
-# def raw_json(channel):
-#     try:
-#         r = requests.get(
-#             "{}/v1/metrics/{}".format(TSDATASTORE, channel),
-#             params=request.args
-#         )
-#         if r.status_code != 200:
-#             abort(r.status_code)
-#         return jsonify(r.json())
-#     except ConnectionError:
-#         abort(503)
-#
-#
-# @app.route("/v1/sax/<channel>")
-# def proxy_sax(channel):
-#     proxy = ProxySax()
-#     response = proxy(channel, **request.args)
-#     # If we're 200, then return JSON, else as text
-#     if response[1] == status.HTTP_200_OK:
-#         return jsonify(response[0]), response[1]
-#     return response
-
+@app.route("/run/<task_name>")
+def run_task(task_name):
+    if task_name == "detect":
+        req_params = ("obsId", "bandpassLow", "bandpassHigh", "shortWindow", "longWindow", "nStds", "triggerLen")
+        missing_params = [k for k in req_params if k not in request.args]
+        if len(missing_params) > 0:
+            raise ErrorHandler("Missing parameters: {}".format(", ".join(missing_params)))
+        # TODO - This does not support multiple traces in a file (see Eww)
+        task = detector.delay(
+            obs_id=request.args['obsId'],
+            trace=0,  # <- Eww
+            bp_low=int(request.args['bandpassLow']),
+            bp_high=int(request.args['bandpassHigh']),
+            short_window=int(request.args['shortWindow']),
+            long_window=int(request.args['longWindow']),
+            nstds=int(request.args['nStds']),
+            trigger_len=int(request.args['triggerLen']),
+        )
+        return jsonify({"taskId": task.id})
+    else:
+        abort(404)
 
 if __name__ == "__main__":
     TSDATASTORE = os.getenv('TSDATASTORE', "http://localhost:8163")

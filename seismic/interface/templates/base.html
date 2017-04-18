@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>{% block title %}{% endblock %} - Seismic</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-  <link rel="stylesheet" href="css/base.css" type="text/css">
-  {% block head %}{% endblock %}
+    <title>{% block title %}{% endblock %} - Seismic</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="vendor/bootstrap-toggle.min.css" type="text/css">
+    <link rel="stylesheet" href="css/base.css" type="text/css">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/vendor/bootstrap-toggle.min.js"></script>
+    {%- block head %}{% endblock -%}
 </head>
 <body>
   <div class="full-height">
@@ -20,5 +24,4 @@
     </div>
   </div>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </html>

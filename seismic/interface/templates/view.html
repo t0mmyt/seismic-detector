@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}View{% endblock %}
+{% block head %}
+<link href="/vendor/c3.min.css" rel="stylesheet" type="text/css">
+<script src="/vendor/d3.v3.min.js" charset="utf-8"></script>
+<script src="/vendor/c3.js"></script>
+{% endblock %}
+{% block contents %}
+<div id="chart"></div>
+<script>
+var chart = c3.generate({
+    bindto: '#chart',
+    data: {
+        url: "/observations/view/900e058ec3a546488d2fb3f76a070c57",
+        mimeType: "json",
+        keys: {
+            x: 't',
+            value: ['y']
+        }
+    },
+    axis: {
+        x: {
+            type: 'timeseries',
+            tick: {
+                format: function (e) {
+                    var date = new Date(e);
+                    return date.toTimeString();
+                }
+            }
+        }
+    },
+    subchart: { show: true },
+    point: {show: false}
+});
+</script>
+{% endblock %}

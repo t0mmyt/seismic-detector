@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import request, jsonify
 from flask_api import status
 import requests
 
@@ -25,12 +25,17 @@ class Proxy(object):
         Returns:
             (content, status_code)
         """
-        print(kwargs)
         try:
             url = "{}/{}".format(self.url, path)
-            r = requests.get(url=url, params=kwargs)
+            r = requests.request(
+                method=request.method,
+                url=url,
+                params=kwargs
+            )
             if r.status_code > 400:
                 return jsonify({"error": "Got {} from {}".format(r.status_code, url)}), r.status_code
+            elif r.status_code == status.HTTP_204_NO_CONTENT:
+                return '', status.HTTP_204_NO_CONTENT
             data = r.json()
             return jsonify(data), status.HTTP_200_OK
         except requests.ConnectionError as e:

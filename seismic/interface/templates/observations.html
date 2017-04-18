@@ -2,7 +2,12 @@
 {% block title %}Observations{% endblock %}
 {% block heading %}Observations{% endblock %}
 {% block explain %}List currently stored observations{% endblock %}
-{% block head %}{% endblock %}
+{% block head %}
+    <script src="/js/observations.js"></script>
+    <link href="/vendor/c3.min.css" rel="stylesheet" type="text/css">
+    <script src="/vendor/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/vendor/c3.js"></script>
+{% endblock %}
 {% block contents %}
 <div ng-app="obs" ng-controller="obsCtrl">
 <form>
@@ -11,22 +16,39 @@
       <label for="network">Network</label><br>
       <select ng-model="selectedNetwork" ng-options="i for i in networks"
               ng-change="getStations()"
-              class="form-control" id="network" name="network" size=4>
+              class="form-control" id="network" name="network" size=7>
+          <option>Choose network ...</option>
       </select>
     </div>
     <div class="col-lg-2 form-group">
       <label for="station">Station</label><br>
       <select ng-model="selectedStation" ng-options="i for i in stations"
               ng-change="getChannels()"
-              class="form-control" id="station" name="station" size=4>
+              class="form-control" id="station" name="station" size=7>
       </select>
     </div>
     <div class="col-lg-1 form-group">
       <label for="channel">Channel</label><br>
       <select ng-model="selectedChannel" ng-options="i for i in channels"
               ng-change="getObservations()"
-              class="form-control" id="channel" name="channel" size=4>
+              class="form-control" id="channel" name="channel" size=7>
       </select>
+    </div>
+    <div class="col-lg-2 form-group">
+        <label for="bandpassLow">Bandpass Low</label>
+        <input type="number" id="bandpassLow" ng-model="detectSettings.bandpassLow">
+        <label for="bandpassHigh">Bandpass High</label>
+        <input type="number" id="bandpassHigh" ng-model="detectSettings.bandpassHigh">
+        <label for="shortWindow">Short Window (ms)</label>
+        <input type="number" id="shortWindow" ng-model="detectSettings.shortWindow">
+    </div>
+    <div class="col-lg-2 form-group">
+        <label for="longWindow">Long Window (ms)</label>
+        <input type="number" id="longWindow" ng-model="detectSettings.longWindow">
+        <label for="nStds">Std Devs to trigger</label>
+        <input type="number" id="nStds" ng-model="detectSettings.nStds">
+        <label for="triggerLen">Min Trigger Length (ms)</label>
+        <input type="number" id="triggerLen" ng-model="detectSettings.triggerLen">
     </div>
   </div>
 </form>
@@ -34,13 +56,24 @@
     <thead>
     <tr><th>Id</th><th>Start</th><th>End</th><th>Sampling Rate</th></tr>
     </thead>
-    <tbody>
-    <tr ng-repeat="i in observations">
+    <tbody ng-repeat="i in observations">
+    <tr ng-click="showOptions[i.id] = !showOptions[i.id]">
         <td>{a i.id a}</td><td>{a i.start a}</td><td>{a i.end a}</td><td>{a i.sampling_rate a}</td>
+        <td>
+            <input ng-model="showOptions[i.id]" type="checkbox" checked data-toggle="toggle" id="{a 'opt_' + i.id a}">
+        </td>
+    </tr>
+    <tr ng-if="showOptions[i.id]">
+        <td colspan="100%">
+            <!--<div id="chart_{a i.id a}" ng-init="renderChart(i.id)"></div>-->
+            <button ng-click="detectEvents(i.id)" class="btn btn-primary btn-sm">detect events</button>
+            <button ng-click="getObservations()" class="btn btn-primary btn-sm">refresh</button>
+            <button ng-click="deleteEvents(i.id)" class="btn btn-warning btn-sm">delete events</button>
+            <button ng-click="deleteObservation(i.id)" class="btn btn-danger btn-sm">delete observation</button>
+            <small ng-show="status[i.id]">{a status[i.id] a}</small>
+        </td>
     </tr>
     </tbody>
 </table>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
-<script src="/js/observations.js"></script>
 </div>
 {% endblock %}
