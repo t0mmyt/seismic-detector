@@ -19,6 +19,8 @@ setup(
         'matplotlib',
         'obspy',
         'iso8601',
+        'pandas',
+        'pytz',
         'sqlalchemy',
         'psycopg2',
         'minio',

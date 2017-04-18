@@ -2,6 +2,8 @@ numpy
 obspy
 matplotlib
 sqlalchemy
+pandas
+pytz
 psycopg2
 minio
 msgpack-python
