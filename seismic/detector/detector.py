@@ -21,13 +21,14 @@ class Detector(object):
         self.trace = trace
         self.freq = sampling_rate
         self.interval = 1000 / sampling_rate
-        
+        self._abs = None
+
     @property
     def abs(self):
         """
         Absolute values of trace
         """
-        if not hasattr(self, "_abs"):
+        if self._abs is None:
             self._abs = np.abs(self.trace)
         return self._abs
     
@@ -63,7 +64,7 @@ class Detector(object):
             long_window_length, short_window_length, long/1000, short/1000))
         i = long_window_length
         while i + short_window_length < len(self.trace):
-#            long_window = Detector.normalised_to_peak(self.abs[i - long_window_length:i])
+            # long_window = Detector.normalised_to_peak(self.abs[i - long_window_length:i])
             long_window = self.abs[i - long_window_length:i]
             long_window_mean = np.mean(long_window)
             long_window_std = np.std(long_window)
@@ -88,11 +89,13 @@ class Detector(object):
         long_window_length = int(long / self.interval)
         short_window_length = int(short / self.interval)
         iter_len = int(short_window_length / 2)
-        trigger_len = int(trigger_len / self.interval)
+        trigger_len = int(trigger_len / self.interval)  # Convert from ms to number of obs
         debug("Window lengths: {}, {} ({}s, {}s)".format(
             long_window_length, short_window_length, long/1000, short/1000))
         i = long_window_length + short_window_length
         triggered = False
+        off_threshold = 0
+        triggered_obs = 0
         while i + short_window_length < len(self.trace):
             long_window = self.abs[i - long_window_length - short_window_length:i - short_window_length]
             long_window_mean = np.mean(long_window)
@@ -100,18 +103,18 @@ class Detector(object):
             short_window_mean = np.mean(self.abs[i - short_window_length:i])
             if not triggered:
                 if short_window_mean > (long_window_mean + (long_window_std * nstds)):
-                    off_threshold = long_window_mean# + (long_window_std * nstds)
-#                    print(off_threshold)
+                    off_threshold = long_window_mean
                     triggered = True
                     triggered_obs = 1
-#                    print(i)
-            else: # if triggered
+            else:  # if triggered
                 triggered_obs += iter_len
-                if short_window_mean < off_threshold: # trigger over
-#                    print(off_threshold)
+                if short_window_mean < off_threshold:  # trigger over
                     triggered = False
                     if triggered_obs > trigger_len:
-                        yield(int(i - triggered_obs - (short_window_length / 2)), i)
+                        yield(
+                            int(i - triggered_obs - (short_window_length / 2)) * self.interval,
+                            i * self.interval
+                        )
                     triggered_obs = 0
             i += iter_len
             

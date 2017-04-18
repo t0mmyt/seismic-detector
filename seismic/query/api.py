@@ -3,7 +3,8 @@ from flask import Flask, request, send_file, jsonify
 from flask_api import status
 
 from seismic.datastore import Datastore, DatastoreError
-from seismic.metadb import get_session, ObservationRecord
+from seismic.metadb import get_session, ObservationRecord, EventRecord
+from seismic.query.view import View, ViewError
 
 app = Flask(__name__)
 
@@ -46,11 +47,16 @@ def search():
             .filter_by(**{k: request.args[k] for k in ("network", "station", "channel")})\
             .order_by(ObservationRecord.start)\
             .all()
+        evt_counts = {}
+        for o in r:
+            evt_counts[o.obs_id] = \
+                s.query(EventRecord).filter(EventRecord.obs_id == o.obs_id).count()
         return jsonify([{
             "id": o.obs_id,
             "start": o.start.isoformat() + "Z",
             "end": o.end.isoformat() + "Z",
-            "sampling_rate": o.sampling_rate
+            "sampling_rate": o.sampling_rate,
+            "events": evt_counts[o.obs_id]
         } for o in r])
     elif all(k in request.args for k in ("network", "station")):
         r = s.query(ObservationRecord.channel)\
@@ -66,14 +72,17 @@ def search():
 
 @app.route("/<obs_id>", methods=["GET", "DELETE"])
 def get(obs_id):
+    events_only = True if request.args.get("eventsOnly") == "true" else False
     ds = Datastore(MINIO_HOST, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET)
     if request.method == "DELETE":
         try:
             # Delete DB entry
             s = get_session(DB_URL)
-            s.query(ObservationRecord).filter(ObservationRecord.obs_id == obs_id).delete()
-            # Delete Object
-            ds.delete(obs_id)
+            s.query(EventRecord).filter(EventRecord.obs_id == obs_id).delete()
+            if not events_only:
+                s.query(ObservationRecord).filter(ObservationRecord.obs_id == obs_id).delete()
+                # Delete Object
+                ds.delete(obs_id)
             # Commit DB if all went well
             s.commit()
             return '', status.HTTP_204_NO_CONTENT
@@ -87,6 +96,16 @@ def get(obs_id):
             raise ErrorHandler(e, 500)
     else:
         raise ErrorHandler("{} not implemented.".format(request.method))
+
+
+@app.route("/view/<obs_id>")
+def view(obs_id):
+    try:
+        v = View(obs_id)
+        return jsonify(v.downsampled(ms=5000))
+    except ViewError as e:
+        raise ErrorHandler(e)
+
 
 if __name__ == '__main__':
     app.run(

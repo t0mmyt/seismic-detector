@@ -1,1 +1,1 @@
-from seismic.query.api import app
+from .api import app
