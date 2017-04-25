@@ -65,12 +65,17 @@
     </tr>
     <tr ng-if="showOptions[i.id]">
         <td colspan="100%">
-            <!--<div id="chart_{a i.id a}" ng-init="renderChart(i.id)"></div>-->
             <button ng-click="detectEvents(i.id)" class="btn btn-primary btn-sm">detect events</button>
             <button ng-click="getObservations()" class="btn btn-primary btn-sm">refresh</button>
             <button ng-click="deleteEvents(i.id)" class="btn btn-warning btn-sm">delete events</button>
             <button ng-click="deleteObservation(i.id)" class="btn btn-danger btn-sm">delete observation</button>
             <small ng-show="status[i.id]">{a status[i.id] a}</small>
+            <input ng-model="showEvents[i.id]" type="checkbox" checked data-toggle="toggle" id="{a 'evt_' + i.id a}">
+        </td>
+    </tr>
+    <tr ng-if="showEvents[i.id]">
+        <td colspan="100%">
+            Events
         </td>
     </tr>
     </tbody>

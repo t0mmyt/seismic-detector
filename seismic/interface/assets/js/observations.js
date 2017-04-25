@@ -14,6 +14,8 @@ app.controller('obsCtrl', function($scope, $http) {
     $scope.channels = [];
     $scope.observations = [];
     $scope.showOptions = {};
+    $scope.showEvents = {};
+    $scope.events = {};
     $scope.status = {};
     $scope.charts = [];
     $scope.detectSettings = {

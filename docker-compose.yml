@@ -34,9 +34,19 @@ services:
         ports:
             - 8080:8000
         command:
+            - --log-level=debug
             - seismic.interface:app
+        depends_on:
+            - minio
         environment:
+            - BROKER_URL=redis://redis:6379
             - OBSLOADER=http://obsloader:8000
+            - QUERY=http://query:8000
+            - MINIO_HOST=minio:9000
+            - MINIO_BUCKET=raw
+            - MINIO_ACCESS_KEY=dev-TKE8KC10YL
+            - MINIO_SECRET_KEY=dev-ALUP1N7WUO
+            - DB_URL=postgresql://seismic:d3v3l0pm3nt!@postgres:5432/seismic
 
     obsloader:
         image: seismic/app:1.0
@@ -57,7 +67,13 @@ services:
             - 8002:8000
         command:
             - seismic.query:app
+        depends_on:
+            - minio
         environment:
+            - MINIO_HOST=minio:9000
+            - MINIO_BUCKET=raw
+            - MINIO_ACCESS_KEY=dev-TKE8KC10YL
+            - MINIO_SECRET_KEY=dev-ALUP1N7WUO
             - DB_URL=postgresql://seismic:d3v3l0pm3nt!@postgres:5432/seismic
 
     worker:
@@ -68,5 +84,9 @@ services:
             - -A=seismic.worker.tasks
             - --loglevel=info
         environment:
-            - DB_URL=postgresql://seismic:d3v3l0pm3nt!@postgres:5432/seismic
             - BROKER_URL=redis://redis:6379
+            - DB_URL=postgresql://seismic:d3v3l0pm3nt!@postgres:5432/seismic
+            - MINIO_HOST=minio:9000
+            - MINIO_BUCKET=raw
+            - MINIO_ACCESS_KEY=dev-TKE8KC10YL
+            - MINIO_SECRET_KEY=dev-ALUP1N7WUO

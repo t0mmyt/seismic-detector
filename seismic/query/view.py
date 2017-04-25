@@ -70,7 +70,7 @@ class View(object):
             freq=("{}L".format(int(orig['interval']))),
         )
         df = pd.DataFrame({"y": orig['datapoints']}, index=rng)
-        downsampled = df.asfreq("{}L".format(int(ms)))
-        downsampled["t"] = downsampled.index.astype(np.int64) // 10 ** 6
-        d = downsampled.to_dict("rows")
+        # downsampled = df.asfreq("{}L".format(int(ms)))
+        # downsampled["t"] = downsampled.index.astype(np.int64) // 10 ** 6
+        d = df.to_dict("rows")
         return d

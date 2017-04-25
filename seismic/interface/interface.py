@@ -7,6 +7,7 @@ from flask import Flask, render_template, abort, request, send_from_directory, j
 from flask_api import status
 from jinja2 import TemplateNotFound
 from celery import Celery
+import logging
 
 from seismic.interface.nav import SimpleNavigator
 from seismic.interface.importer import Importer
@@ -26,6 +27,15 @@ nav = SimpleNavigator((
     ("Tasks", "/tasks"),
 ))
 
+
+@app.before_first_request
+def setup_logging():
+    if not app.debug:
+        # In production mode, add log handler to sys.stderr.
+        app.logger.addHandler(logging.StreamHandler())
+        app.logger.setLevel(logging.DEBUG)
+
+
 QUERY = getenv("QUERY", "http://localhost:8002")
 BROKER_URL = getenv("BROKER_URL", "redis://localhost:6379")
 
@@ -39,28 +49,34 @@ def handle_invalid_usage(error):
     return response
 
 
+def send_relative_dir(d, f):
+    d = os.path.join(os.path.dirname(os.path.abspath(__file__)), d)
+    app.logger.debug("Sending asset ({}) from {}".format(f, d))
+    return send_from_directory(d, f)
+
+
 # TODO - Favicon
 @app.route("/favicon.ico")
 def favicon():
-    return send_from_directory("assets", "favicon.ico")
+    return send_relative_dir("assets", "favicon.ico")
 
 
 # CSS Assets
 @app.route("/css/<path:path>", )
 def static_css(path):
-    return send_from_directory("assets/css", path)
+    return send_relative_dir("assets/css", path)
 
 
 # JS Assets
 @app.route("/js/<path:path>", )
 def static_js(path):
-    return send_from_directory("assets/js", path)
+    return send_relative_dir("assets/js", path)
 
 
 # Vendor Assets
 @app.route("/vendor/<path:path>", )
 def static_vendor(path):
-    return send_from_directory("assets/vendor", path)
+    return send_relative_dir("assets/vendor", path)
 
 
 @app.route("/")

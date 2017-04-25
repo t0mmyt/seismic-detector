@@ -42,10 +42,10 @@ class Paa(object):
 
         while start_pos < len(t):
             t_start = t[start_pos]
-            end_pos = np.searchsorted(t[start_pos:], t_start + interval) + start_pos
+            end_pos = np.searchsorted(t[start_pos:], (t_start + interval) + start_pos
             if end_pos > len(t) - 1:
                 raise StopIteration
-            #t_end = t[end_pos]
+            # t_end = t[end_pos]123
             this_val = np.mean(v[start_pos:end_pos])
             this_time = t[start_pos]
             yield(this_time, this_val)

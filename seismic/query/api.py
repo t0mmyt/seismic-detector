@@ -70,6 +70,21 @@ def search():
     return jsonify(r)
 
 
+@app.route("/events/<obs_id>", methods=["GET"])
+def events(obs_id):
+    # TODO - Exceptions
+    s = get_session(DB_URL)
+    r = s.query(EventRecord).\
+        filter_by(obs_id=obs_id).\
+        order_by(EventRecord.start).\
+        all()
+    return jsonify([{
+        "evt_id": e.evt_id,
+        "obs_id": e.obs_id,
+        "start": e.start.isoformat() + "Z"
+    } for e in r])
+
+
 @app.route("/<obs_id>", methods=["GET", "DELETE"])
 def get(obs_id):
     events_only = True if request.args.get("eventsOnly") == "true" else False
@@ -102,7 +117,7 @@ def get(obs_id):
 def view(obs_id):
     try:
         v = View(obs_id)
-        return jsonify(v.downsampled(ms=5000))
+        return jsonify(v.original())
     except ViewError as e:
         raise ErrorHandler(e)
 

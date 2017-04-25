@@ -15,17 +15,17 @@ MINIO_HOST = getenv("MINIO_HOST", "localhost:9000")
 MINIO_ACCESS_KEY = getenv("MINIO_ACCESS_KEY", "dev-TKE8KC10YL")
 MINIO_SECRET_KEY = getenv("MINIO_SECRET_KEY", "dev-ALUP1N7WUO")
 MINIO_BUCKET = getenv("MINIO_BUCKET", "raw")
-DB_URL = "postgresql://seismic:d3v3l0pm3nt!@localhost:5432/seismic"
+DB_URL = getenv("DB_URL", "postgresql://seismic:d3v3l0pm3nt!@localhost:5432/seismic")
 BROKER_URL = getenv("BROKER_URL", "redis://localhost:6379")
 
-app = Celery('tasks', broker=BROKER_URL)
+capp = Celery('tasks', broker=BROKER_URL)
 ds = Datastore(MINIO_HOST, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET)
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
-@app.task()
+@capp.task()
 def detector(obs_id, trace, bp_low, bp_high, short_window, long_window, nstds, trigger_len):
     """
     Run detector to find events and store in metadb
