@@ -6,14 +6,14 @@ from os import getenv
 from flask import Flask, render_template, abort, request, send_from_directory, jsonify
 from flask_api import status
 from jinja2 import TemplateNotFound
-from celery import Celery
+from celery import Celery, chain
 import logging
 
 from seismic.interface.nav import SimpleNavigator
 from seismic.interface.importer import Importer
 from seismic.interface.proxy import Proxy
 from seismic.interface.errors import ErrorHandler
-from seismic.worker.tasks import detector
+from seismic.worker.tasks import detector, make_graphs
 
 template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
 app = Flask(__name__, template_folder=template_dir)
@@ -135,17 +135,19 @@ def page_generic(page):
         abort(status.HTTP_404_NOT_FOUND)
 
 
-@app.route("/observations/<path>", methods=["GET", "DELETE"])
-def ajax_observations(path):
-    proxy = Proxy(QUERY)
-    return proxy(path, **request.args.to_dict())
+@app.route("/observations/<path:path>", methods=["GET", "DELETE"])
+def view_observations(path):
+    """
+    Proxy requests with /observation prefix to the query service
+    
+    Args:
+        path: relative path on query service
 
-
-# TODO - this should be combined with ajax_observations
-@app.route("/observations/view/<obs_id>")
-def view_observations(obs_id):
+    Returns:
+        JSON
+    """
     proxy = Proxy(QUERY)
-    return proxy("view/{}".format(obs_id), **request.args.to_dict())
+    return proxy("{}".format(path), **request.args.to_dict())
 
 
 @app.route("/sax")
@@ -164,16 +166,19 @@ def run_task(task_name):
         if len(missing_params) > 0:
             raise ErrorHandler("Missing parameters: {}".format(", ".join(missing_params)))
         # TODO - This does not support multiple traces in a file (see Eww)
-        task = detector.delay(
-            obs_id=request.args['obsId'],
-            trace=0,  # <- Eww
-            bp_low=int(request.args['bandpassLow']),
-            bp_high=int(request.args['bandpassHigh']),
-            short_window=int(request.args['shortWindow']),
-            long_window=int(request.args['longWindow']),
-            nstds=int(request.args['nStds']),
-            trigger_len=int(request.args['triggerLen']),
-        )
+        task = chain(
+            detector.s(
+                obs_id=request.args['obsId'],
+                trace=0,  # <- Eww
+                bp_low=int(request.args['bandpassLow']),
+                bp_high=int(request.args['bandpassHigh']),
+                short_window=int(request.args['shortWindow']),
+                long_window=int(request.args['longWindow']),
+                nstds=int(request.args['nStds']),
+                trigger_len=int(request.args['triggerLen']),
+            ),
+            make_graphs.s()
+        ).apply_async()
         return jsonify({"taskId": task.id})
     else:
         abort(404)

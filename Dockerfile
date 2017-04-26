@@ -5,10 +5,9 @@ EXPOSE 8000
 
 ADD requirements.txt /
 RUN apt-get -qq update &&\
-    DEBIAN_FRONTEND=noninteractive apt-get -yqq install \
-      python3 python3-pip && \
-      pip3 install --upgrade --no-cache-dir pip numpy && pip install --upgrade --no-cache-dir -r requirements.txt && \
+    DEBIAN_FRONTEND=noninteractive apt-get -yqq install python3 python3-pip python3-tk && \
     groupadd app && useradd -r -g app app
+RUN pip3 install --upgrade --no-cache-dir pip numpy && pip install --upgrade --no-cache-dir -r requirements.txt
 
 ARG SEISMIC_VER=1.0
 COPY dist/seismic-${SEISMIC_VER}.tar.gz /opt

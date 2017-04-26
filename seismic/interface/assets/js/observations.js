@@ -141,5 +141,14 @@ app.controller('obsCtrl', function($scope, $http) {
         });
     };
 
+    $scope.getEvents = function (obs_id) {
+        $http({
+            method: "GET",
+            url: "/observations/events/" + obs_id
+        }).then(function (result) {
+            $scope.events[obs_id] = result.data
+        })
+    };
+
     $scope.getNetworks()
 });

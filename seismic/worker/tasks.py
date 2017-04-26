@@ -3,9 +3,14 @@ from celery import Celery
 import logging
 from logging import error, info
 import obspy
+from obspy import UTCDateTime
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 import pytz
 from datetime import timedelta
+import matplotlib as mpl
+mpl.use('Agg')
+import matplotlib.pyplot as plt
+from io import BytesIO
 
 from seismic.datastore import Datastore, DatastoreError
 from seismic.metadb import get_session, ObservationRecord, EventRecord
@@ -65,7 +70,33 @@ def detector(obs_id, trace, bp_low, bp_high, short_window, long_window, nstds, t
             )
             s.add(er)
         s.commit()
+        return obs_id
     except (DatastoreError, DetectorError) as e:
         error(str(e))
     except (NoResultFound, MultipleResultsFound) as e:
         error("No single result from DB: {}".format(e))
+
+
+@capp.task()
+def make_graphs(obs_id):
+    try:
+        s = get_session(DB_URL)
+        r = s.query(EventRecord).filter_by(obs_id=obs_id).all()
+        raw = ds.get(obs_id)
+        obs = obspy.read(raw)
+        for e in r:
+            b = BytesIO()
+            sli = obs.slice(UTCDateTime(e.start), UTCDateTime(e.end))
+            fig = plt.figure(figsize=(1, .4), dpi=100)
+            ax = fig.add_subplot(111)
+            fig.tight_layout(pad=-.5)
+            ax.axis("off")
+            ax.plot(sli[0].data)
+            plt.savefig(b)
+            b.seek(0)
+            ds.put("thumbnails/{}/{}".format(obs_id, e.evt_id), b, b.getbuffer().nbytes)
+            plt.close()
+    except NoResultFound:
+        return "No results"
+    except DatastoreError as e:
+        return "Error writing to datastore: {}".format(e)

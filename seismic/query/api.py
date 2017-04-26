@@ -1,6 +1,7 @@
 from os import getenv
-from flask import Flask, request, send_file, jsonify
+from flask import Flask, request, send_file, jsonify, Response
 from flask_api import status
+import matplotlib.pyplot as plt
 
 from seismic.datastore import Datastore, DatastoreError
 from seismic.metadb import get_session, ObservationRecord, EventRecord
@@ -81,7 +82,9 @@ def events(obs_id):
     return jsonify([{
         "evt_id": e.evt_id,
         "obs_id": e.obs_id,
-        "start": e.start.isoformat() + "Z"
+        "start": e.start.isoformat() + "Z",
+        "end": e.end.isoformat() + "Z",
+        "duration": int((e.end - e.start).total_seconds() * 1000)
     } for e in r])
 
 
@@ -111,6 +114,13 @@ def get(obs_id):
             raise ErrorHandler(e, 500)
     else:
         raise ErrorHandler("{} not implemented.".format(request.method))
+
+
+@app.route("/event/thumbnail/<obs_id>/<evt_id>.png")
+def evt_thumbnail(obs_id, evt_id):
+    ds = Datastore(MINIO_HOST, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET)
+    img = ds.get("thumbails/{}/{}".format(obs_id, evt_id))
+    return Response(img.read(), mimetype="image/png")
 
 
 @app.route("/view/<obs_id>")

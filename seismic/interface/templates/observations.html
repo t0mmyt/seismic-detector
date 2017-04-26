@@ -70,12 +70,22 @@
             <button ng-click="deleteEvents(i.id)" class="btn btn-warning btn-sm">delete events</button>
             <button ng-click="deleteObservation(i.id)" class="btn btn-danger btn-sm">delete observation</button>
             <small ng-show="status[i.id]">{a status[i.id] a}</small>
-            <input ng-model="showEvents[i.id]" type="checkbox" checked data-toggle="toggle" id="{a 'evt_' + i.id a}">
+            <input ng-model="showEvents[i.id]" type="checkbox" checked data-toggle="toggle"
+                   id="{a 'evt_' + i.id a}">
         </td>
     </tr>
-    <tr ng-if="showEvents[i.id]">
+    <tr ng-if="showEvents[i.id]" ng-init="getEvents(i.id)">
         <td colspan="100%">
-            Events
+            <table class="table">
+                <thead><tr>
+                    <th>Event ID</th><th>Start</th><th>Duration (ms)</th>
+                </tr></thead>
+                <tbody>
+                    <tr ng-repeat="j in events[i.id]">
+                        <td>{a j.evt_id a}</td><td>{a j.start a}</td><td>{a j.duration a}</td>
+                    </tr>
+                </tbody>
+            </table>
         </td>
     </tr>
     </tbody>
