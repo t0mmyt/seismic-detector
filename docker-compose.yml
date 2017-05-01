@@ -53,6 +53,7 @@ services:
         ports:
             - 8001:8000
         command:
+            - --log-level=debug
             - seismic.obsloader:app
         environment:
             - MINIO_HOST=minio:9000

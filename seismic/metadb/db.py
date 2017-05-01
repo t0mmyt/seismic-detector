@@ -19,6 +19,7 @@ class ObservationRecord(Base):
     end = Column(DateTime, index=True)
     format = Column(String)
     sampling_rate = Column(Integer)
+    filename = Column(String)
 
     __table_args__ = (
         Index("obs_network_station_channel", "network", "station", "channel"),

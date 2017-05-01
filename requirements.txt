@@ -12,6 +12,7 @@ gunicorn
 flask
 flask-appconfig>=0.10
 flask-api
+flask-restplus
 requests
 celery
 redis
