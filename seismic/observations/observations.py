@@ -104,11 +104,6 @@ class ObservationDAO(object):
     def view(self):
         t = self.stream[0].copy()
         duration = (t.meta.endtime - t.meta.starttime)
-        # resample_ratio = 1000 / t.meta.npts
-        # resample_freq = int(t.meta.sampling_rate * resample_ratio * 100) / 100
-        # log.debug("Resample target freq: {}".format(resample_freq))
-        # t.resample(resample_freq)
-        # log.debug("npts: {}".format(t.meta.npts))
         rng = pd.date_range(
             start=pd.to_datetime(
                 parse_date(str(t.meta.starttime)).replace(tzinfo=pytz.UTC).timestamp() * 1000, unit="ms"),
@@ -119,11 +114,8 @@ class ObservationDAO(object):
         y = t.data
         y = y.byteswap().newbyteorder()
         df = pd.DataFrame({"y": y}, index=rng)
-        # resample_target = duration
         log.debug("Duration: {}".format(duration))
-        smpl = df.resample("{}L".format(int(duration / 4))).apply(min_max)
-        # smpl = df.resample("1S".format(int(duration))).mean()
+        smpl = df.resample("{}L".format(int(duration / 2))).apply(min_max)
         log.debug("Len: {}".format(len(smpl)))
         smpl["t"] = smpl.index.astype(np.int64) // 10 ** 6
-        # df["y"] = df["y"].astype(np.int64)
         return json.loads(smpl.to_json(orient="records"))
