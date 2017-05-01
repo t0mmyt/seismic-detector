@@ -3,10 +3,10 @@
 {% block heading %}Observations{% endblock %}
 {% block explain %}List currently stored observations{% endblock %}
 {% block head %}
-    <script src="/js/observations.js"></script>
-    <link href="/vendor/c3.min.css" rel="stylesheet" type="text/css">
-    <script src="/vendor/d3.v3.min.js" charset="utf-8"></script>
-    <script src="/vendor/c3.js"></script>
+    <script src="/assets/js/observations.js"></script>
+    <link href="/assets/vendor/c3.min.css" rel="stylesheet" type="text/css">
+    <script src="/assets/vendor/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/assets/vendor/c3.js"></script>
 {% endblock %}
 {% block contents %}
 <div ng-app="obs" ng-controller="obsCtrl">
@@ -58,7 +58,7 @@
     </thead>
     <tbody ng-repeat="i in observations">
     <tr ng-click="showOptions[i.id] = !showOptions[i.id]">
-        <td>{a i.id a}</td><td>{a i.start a}</td><td>{a i.end a}</td><td>{a i.sampling_rate a}</td>
+        <td>{a i.id a} / {a i.filename a}</td><td>{a i.start a}</td><td>{a i.end a}</td><td>{a i.sampling_rate a}</td>
         <td>
             <input ng-model="showOptions[i.id]" type="checkbox" checked data-toggle="toggle" id="{a 'opt_' + i.id a}">
         </td>
@@ -72,6 +72,7 @@
             <small ng-show="status[i.id]">{a status[i.id] a}</small>
             <input ng-model="showEvents[i.id]" type="checkbox" checked data-toggle="toggle"
                    id="{a 'evt_' + i.id a}">
+            <div id="chart_{a i.id a}" ng-bind="chart(i.id)" ng-init="renderChart(i.id)"></div>
         </td>
     </tr>
     <tr ng-if="showEvents[i.id]" ng-init="getEvents(i.id)">

@@ -16,7 +16,7 @@ from seismic.interface.errors import ErrorHandler
 from seismic.worker.tasks import detector, make_graphs
 
 template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
-app = Flask(__name__, template_folder=template_dir)
+app = Flask("interface", template_folder=template_dir)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 nav = SimpleNavigator((
@@ -28,17 +28,8 @@ nav = SimpleNavigator((
 ))
 
 
-@app.before_first_request
-def setup_logging():
-    if not app.debug:
-        # In production mode, add log handler to sys.stderr.
-        app.logger.addHandler(logging.StreamHandler())
-        app.logger.setLevel(logging.DEBUG)
-
-
-QUERY = getenv("QUERY", "http://localhost:8002")
+OBSERVATIONS = getenv("QUERY", "http://localhost:8000")
 BROKER_URL = getenv("BROKER_URL", "redis://localhost:6379")
-
 celery_app = Celery('tasks', broker=BROKER_URL)
 
 
@@ -61,22 +52,10 @@ def favicon():
     return send_relative_dir("assets", "favicon.ico")
 
 
-# CSS Assets
-@app.route("/css/<path:path>", )
+# Assets
+@app.route("/assets/<path:path>", )
 def static_css(path):
-    return send_relative_dir("assets/css", path)
-
-
-# JS Assets
-@app.route("/js/<path:path>", )
-def static_js(path):
-    return send_relative_dir("assets/js", path)
-
-
-# Vendor Assets
-@app.route("/vendor/<path:path>", )
-def static_vendor(path):
-    return send_relative_dir("assets/vendor", path)
+    return send_relative_dir("assets/", path)
 
 
 @app.route("/")
@@ -96,11 +75,9 @@ def page_import():
             importer = Importer()
             files = request.files.getlist("files")
             for f in files:
-                importer.add(f.read())
-            status = importer.send()
-            results = dict(zip([f.filename for f in files], status))
+                importer.add(f.read(), filename=f.filename)
             results_html = "<table>"
-            for filename, result in results.items():
+            for filename, result in importer.status.items():
                 if result:
                     results_html += '<tr class="success"><td>{}</td></tr>'.format(filename)
                 else:
@@ -146,8 +123,8 @@ def view_observations(path):
     Returns:
         JSON
     """
-    proxy = Proxy(QUERY)
-    return proxy("{}".format(path), **request.args.to_dict())
+    proxy = Proxy(OBSERVATIONS)
+    return proxy("observations/{}".format(path), **request.args.to_dict())
 
 
 @app.route("/sax")
@@ -185,6 +162,8 @@ def run_task(task_name):
 
 if __name__ == "__main__":
     TSDATASTORE = os.getenv('TSDATASTORE', "http://localhost:8163")
+    # app.logger.addHandler(logging.StreamHandler())
+    app.logger.setLevel(logging.DEBUG)
     app.run(
         debug=True,
         host="0.0.0.0",

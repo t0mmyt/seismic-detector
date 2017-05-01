@@ -17,7 +17,7 @@ app.controller('obsCtrl', function($scope, $http) {
     $scope.showEvents = {};
     $scope.events = {};
     $scope.status = {};
-    $scope.charts = [];
+    $scope.charts = {};
     $scope.detectSettings = {
         bandpassLow: 5,
         bandpassHigh: 10,
@@ -82,7 +82,7 @@ app.controller('obsCtrl', function($scope, $http) {
         console.log("Got DELETE:" + id);
         $http({
             method: 'DELETE',
-            url: 'observatiPotential Events: {a i.events a}ons/' + id
+            url: 'observations/' + id
         }).then(function() {
             $scope.getObservations()
         })
@@ -115,10 +115,10 @@ app.controller('obsCtrl', function($scope, $http) {
 
     $scope.renderChart = function (obs_id) {
         console.log("Rendering " + obs_id)
-        return c3.generate({
+        $scope.charts[obs_id] = c3.generate({
             bindto: "#chart_" + obs_id,
             data: {
-                url: "/observations/view/" + obs_id,
+                url: "/observations/" + obs_id + "/view",
                 mimeType: "json",
                 keys: {
                     x: 't',
@@ -131,12 +131,20 @@ app.controller('obsCtrl', function($scope, $http) {
                     tick: {
                         format: function (e) {
                             var date = new Date(e);
-                            return date.toTimeString();
+                            return date.toISOString();
+                        },
+                        culling: {
+                           max: 5
                         }
                     }
                 }
             },
-            subchart: {show: true},
+            grid: {
+                y: {
+                    lines: [{value: 0}]
+                }
+            },
+            subchart: {show: false},
             point: {show: false}
         });
     };
@@ -144,9 +152,16 @@ app.controller('obsCtrl', function($scope, $http) {
     $scope.getEvents = function (obs_id) {
         $http({
             method: "GET",
-            url: "/observations/events/" + obs_id
+            url: "/observations/" + obs_id + "/events"
         }).then(function (result) {
-            $scope.events[obs_id] = result.data
+            $scope.events[obs_id] = result.data;
+            result.data.forEach(function (x) {
+                console.log("Marking from " + x.start);
+                $scope.charts[obs_id].xgrids.add([
+                    {value: Date.parse(x.start), text: 'Start', position: 'end'},
+                    {value: Date.parse(x.end), text: 'End', position: 'end'}
+                ])
+            })
         })
     };
 
