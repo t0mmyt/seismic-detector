@@ -58,7 +58,9 @@ def detector(obs_id, trace, bp_low, bp_high, short_window, long_window, nstds, t
         obs_rec = s.query(ObservationRecord).\
             filter_by(obs_id=obs_id).one()
         start_time = obs_rec.start.replace(tzinfo=pytz.UTC)
+        evts = 0
         for evt in d.detect(short_window, long_window, nstds, trigger_len):
+            evts += 1
             er = EventRecord(
                 obs_id=obs_id,
                 network=obs_rec.network,
@@ -70,6 +72,7 @@ def detector(obs_id, trace, bp_low, bp_high, short_window, long_window, nstds, t
             )
             s.add(er)
         s.commit()
+        info("Got {} events from {}".format(evts, obs_id))
         return obs_id
     except (DatastoreError, DetectorError) as e:
         error(str(e))
