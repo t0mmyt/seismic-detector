@@ -133,6 +133,7 @@ app.controller('obsCtrl', function($scope, $http) {
                             var date = new Date(e);
                             return date.toISOString();
                         },
+                        count: 5,
                         culling: {
                            max: 5
                         }
@@ -144,7 +145,7 @@ app.controller('obsCtrl', function($scope, $http) {
                     lines: [{value: 0}]
                 }
             },
-            subchart: {show: false},
+            subchart: {show: true},
             point: {show: false}
         });
     };
