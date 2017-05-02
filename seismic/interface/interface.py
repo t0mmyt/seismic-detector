@@ -28,7 +28,7 @@ nav = SimpleNavigator((
 ))
 
 
-OBSERVATIONS = getenv("QUERY", "http://localhost:8000")
+OBSERVATIONS = getenv("OBSERVATIONS", "http://localhost:8000")
 BROKER_URL = getenv("BROKER_URL", "redis://localhost:6379")
 celery_app = Celery('tasks', broker=BROKER_URL)
 
