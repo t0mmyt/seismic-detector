@@ -6,7 +6,7 @@ services:
     postgres:
         image: postgres:9.6
         ports:
-            - 5432:5432
+            - 127.0.0.1:5432:5432
         environment:
             - POSTGRES_USER=seismic
             - POSTGRES_PASSWORD=d3v3l0pm3nt!
@@ -19,7 +19,7 @@ services:
             - server
             - /data
         ports:
-            - 9000:9000
+            - 127.0.0.1:9000:9000
         environment:
             - MINIO_ACCESS_KEY=dev-TKE8KC10YL
             - MINIO_SECRET_KEY=dev-ALUP1N7WUO
@@ -32,7 +32,7 @@ services:
     interface:
         image: seismic/app:1.0
         ports:
-            - 8080:8000
+            - 127.0.0.1:8080:8000
         command:
             - --log-level=debug
             - seismic.interface:app
@@ -51,7 +51,7 @@ services:
     observations:
         image: seismic/app:1.0
         ports:
-            - 8000:8000
+            - 127.0.0.1:8000:8000
         command:
             - --log-level=debug
             - seismic.observations:app
