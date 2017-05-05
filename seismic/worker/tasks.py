@@ -1,8 +1,11 @@
 from os import getenv
+from io import BytesIO
 from celery import Celery
 import logging
 from logging import error, info
+import pandas as pd
 import obspy
+import datetime
 from obspy import UTCDateTime
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 import pytz
@@ -10,7 +13,6 @@ from datetime import timedelta
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
-from io import BytesIO
 
 from seismic.datastore import Datastore, DatastoreError
 from seismic.metadb import get_session, ObservationRecord, EventRecord
@@ -57,7 +59,7 @@ def detector(obs_id, trace, bp_low, bp_high, short_window, long_window, nstds, t
         s = get_session(DB_URL)
         obs_rec = s.query(ObservationRecord).\
             filter_by(obs_id=obs_id).one()
-        start_time = obs_rec.start.replace(tzinfo=pytz.UTC)
+        start_time = datetime.datetime.fromtimestamp(obs_rec.start.timestamp())
         evts = 0
         for evt in d.detect(short_window, long_window, nstds, trigger_len):
             evts += 1
@@ -72,6 +74,10 @@ def detector(obs_id, trace, bp_low, bp_high, short_window, long_window, nstds, t
             )
             s.add(er)
         s.commit()
+        tv = d.trigger_values.copy()
+        tv.t.add(start_time.timestamp() * 1000)
+        tv_bytes = BytesIO(bytes(tv.to_json(), encoding="UTF-8"))
+        ds.put("trigger_data/{}.json".format(obs_id), tv_bytes, tv_bytes.getbuffer().nbytes)
         info("Got {} events from {}".format(evts, obs_id))
         return obs_id
     except (DatastoreError, DetectorError) as e:

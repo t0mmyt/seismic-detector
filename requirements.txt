@@ -2,6 +2,7 @@ numpy
 obspy
 matplotlib
 sqlalchemy
+sqlalchemy-utcdatetime
 pandas
 pytz
 psycopg2

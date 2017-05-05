@@ -130,7 +130,7 @@ def view_observations(path):
 @app.route("/sax")
 def page_sax():
     try:
-        return render_template("sax.html", nav=nav.render_as('Explore/SAX'))
+        return render_template("explore.html", nav=nav.render_as('Explore/SAX'))
     except TemplateNotFound:
         abort(404)
 
@@ -154,7 +154,7 @@ def run_task(task_name):
                 nstds=int(request.args['nStds']),
                 trigger_len=int(request.args['triggerLen']),
             ),
-            make_graphs.s()
+            # make_graphs.s()
         ).apply_async()
         return jsonify({"taskId": task.id})
     else:

@@ -1,5 +1,6 @@
 import sqlalchemy
-from sqlalchemy import Column, Index, String, DateTime, Integer
+from sqlalchemy import Column, Index, String, Integer
+from sqlalchemy_utcdatetime import UTCDateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from uuid import uuid4
@@ -15,8 +16,8 @@ class ObservationRecord(Base):
     network = Column(String)
     station = Column(String)
     channel = Column(String)
-    start = Column(DateTime, index=True)
-    end = Column(DateTime, index=True)
+    start = Column(UTCDateTime, index=True)
+    end = Column(UTCDateTime, index=True)
     format = Column(String)
     sampling_rate = Column(Integer)
     filename = Column(String)
@@ -47,8 +48,8 @@ class EventRecord(Base):
     network = Column(String)
     station = Column(String)
     channel = Column(String)
-    start = Column(DateTime, index=True)
-    end = Column(DateTime, index=True)
+    start = Column(UTCDateTime, index=True)
+    end = Column(UTCDateTime, index=True)
     sampling_rate = Column(Integer)
 
     __table_args__ = (

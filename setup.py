@@ -22,6 +22,7 @@ setup(
         'pandas',
         'pytz',
         'sqlalchemy',
+        'sqlalchemy-utcdatetime',
         'psycopg2',
         'minio',
         'msgpack-python',

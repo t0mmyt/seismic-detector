@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from logging import debug
+from logging import debug, info
 import numpy as np
+import pandas as pd
 from obspy.signal.filter import bandpass
 
 
@@ -22,6 +23,7 @@ class Detector(object):
         self.freq = sampling_rate
         self.interval = 1000 / sampling_rate
         self._abs = None
+        self.trigger_values = None
 
     @property
     def abs(self):
@@ -86,9 +88,12 @@ class Detector(object):
         Yields:
             (time from start, long window mean, short window mean)        
         """
+        trigger_values = []
+
         long_window_length = int(long / self.interval)
         short_window_length = int(short / self.interval)
-        iter_len = int(short_window_length / 2)
+        # iter_len = int(short_window_length / 2)
+        iter_len = 1
         trigger_len = int(trigger_len / self.interval)  # Convert from ms to number of obs
         debug("Window lengths: {}, {} ({}s, {}s)".format(
             long_window_length, short_window_length, long/1000, short/1000))
@@ -101,6 +106,7 @@ class Detector(object):
             long_window_mean = np.mean(long_window)
             long_window_std = np.std(long_window)
             short_window_mean = np.mean(self.abs[i - short_window_length:i])
+            trigger_values.append((i * self.interval, short_window_mean, long_window_mean, long_window_std * nstds))
             if not triggered:
                 if short_window_mean > (long_window_mean + (long_window_std * nstds)):
                     off_threshold = long_window_mean
@@ -117,22 +123,8 @@ class Detector(object):
                         )
                     triggered_obs = 0
             i += iter_len
-            
-#    def multiwindow(self, before_len, after_len, delay_offset, delay_len, alpha):
-#         before_len = int(before_len / self.interval)
-#         after_len = int(after_len / self.interval)
-#         delay_len = int(delay_len / self.interval)
-#         delay_offset = int(delay_offset / self.interval)
-#         
-#         i = before_len + delay_len + delay_offset
-#         while i <= len(self.abs - after_len):
-#             dta = np.mean(self.abs[i - delay_offset - delay_len:i - delay_len])
-#             H1 = dta + (alpha * np.std(self.abs[i - delay_offset - delay_len:i - delay_len]))
-#             R1 = self.abs[i]
-#             if R1 > H1:
-#                 bta = np.mean(self.abs[i - before_len:i])
-#                 ata = np.mean(self.abs[i:i + after_len])
-#                 R2 = ata / bta
-#                 R3 = dta / bta
-#                 
-#             i += 100
+        # Get trigger values
+        self.trigger_values = pd.DataFrame(
+            trigger_values,
+            columns=("t", "sm", "lm", "trigger"),
+        )

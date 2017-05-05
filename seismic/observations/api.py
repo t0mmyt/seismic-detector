@@ -1,6 +1,10 @@
 from os import getenv
 from io import BytesIO
 import logging
+import pandas as pd
+import numpy as np
+import pytz
+import json
 from flask import Flask, request, send_file
 from flask_api import status
 from flask_restplus import Api, Resource, fields
@@ -10,7 +14,6 @@ from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from seismic.observations.observations import ObservationDAO, ObservationDAOError
 from seismic.datastore import Datastore, DatastoreError
 from seismic.metadb.db import get_session, ObservationRecord, EventRecord
-
 
 MINIO_HOST = getenv("MINIO_HOST", "localhost:9000")
 MINIO_ACCESS_KEY = getenv("MINIO_ACCESS_KEY", "dev-TKE8KC10YL")
@@ -116,8 +119,8 @@ class Events(Resource):
         return [{
             "evt_id": e.evt_id,
             "obs_id": e.obs_id,
-            "start": e.start.isoformat() + "Z",
-            "end": e.end.isoformat() + "Z",
+            "start": e.start.replace(tzinfo=pytz.UTC).timestamp(),
+            "end": e.end.replace(tzinfo=pytz.UTC).timestamp(),
             "duration": int((e.end - e.start).total_seconds() * 1000)
         } for e in r]
 
@@ -137,8 +140,8 @@ class Search(Resource):
                     db.query(EventRecord).filter(EventRecord.obs_id == o.obs_id).count()
             return [{
                 "id": o.obs_id,
-                "start": o.start.isoformat() + "Z",
-                "end": o.end.isoformat() + "Z",
+                "start": o.start.timestamp(),
+                "end": o.end.timestamp(),
                 "sampling_rate": o.sampling_rate,
                 "filename": o.filename,
                 "events": evt_counts[o.obs_id]
@@ -156,6 +159,28 @@ class Search(Resource):
         # return [i for j in r for i in j]  # Flatten r
         return r
 
+
+@obs_ns.route("/<obs_id>/trigger_data")
+class TriggerData(Resource):
+    def get(self, obs_id):
+        try:
+            ds = Datastore(MINIO_HOST, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET)
+            db = get_session(DB_URL)
+            obs_rec = db.query(ObservationRecord).filter_by(obs_id=obs_id).one()
+            raw = ds.get("trigger_data/{}.json".format(obs_id))
+            df = pd.read_json(raw)
+            start_ms = obs_rec.start.timestamp() * 1000
+            end_ms = obs_rec.end.timestamp() * 1000
+            app.logger.info("Start: {}".format(start_ms))
+            df["t"] = df["t"].add(start_ms)
+            df["t"] = pd.to_datetime(df["t"], unit="ms")
+            downsample_freq = int((end_ms - start_ms) / 1000)
+            df.set_index("t", inplace=True)
+            downsample = df.resample("{}L".format(downsample_freq)).mean()
+            downsample["t"] = downsample.index.astype(np.int64) // 10 ** 6
+            return json.loads(downsample.to_json(orient="records"))
+        except DatastoreError as e:
+            return str(e), status.HTTP_404_NOT_FOUND
 
 if __name__ == "__main__":
     app.logger.setLevel(logging.DEBUG)

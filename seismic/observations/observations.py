@@ -5,6 +5,7 @@ import obspy
 import pandas as pd
 import numpy as np
 from iso8601 import parse_date
+import datetime
 import logging
 import pytz
 import json
@@ -16,7 +17,15 @@ log = logging.getLogger("observations")
 
 
 def min_max(series):
-    # assert isinstance(series, np.ndarray), "series should be an ndarray, got {}".format(type(series))
+    """
+    Aggregation function to return either the max value if +ve or the min if -ve for use with Pandas resampling
+     
+    Args:
+        series: window of data to aggregate on 
+
+    Returns:
+        min or max
+    """
     mn = np.min(series)
     mx = np.max(series)
     return mx if mx > abs(mn) else mn
@@ -26,11 +35,7 @@ class ObservationDAOError(Exception):
     """
     Exception to contain all errors relating to loading the observations
     """
-    def __init__(self, msg):
-        self.msg = msg
-
-    def __str__(self):
-        return self.msg
+    pass
 
 
 class ObservationDAO(object):
@@ -90,16 +95,29 @@ class ObservationDAO(object):
         Returns:
             ObservationRecord
         """
+        log.debug("Obs Start: {}".format(datetime.datetime.fromtimestamp(self.stats.starttime.timestamp).timestamp()))
         return ObservationRecord(
             network=self.stats.network,
             station=self.stats.station,
             channel=self.stats.channel,
-            start=parse_date(str(self.stats.starttime)),
-            end=parse_date(str(self.stats.endtime)),
+            start=datetime.datetime.fromtimestamp(self.stats.starttime.timestamp),
+            end=datetime.datetime.fromtimestamp(self.stats.endtime.timestamp),
             format=self.stats._format,
             filename=self.filename,
             sampling_rate=self.stats.sampling_rate
         )
+
+    def slice(self, start, end):
+        """
+        Perform an inplace obspy slice on the data to work on a smaller dataset.
+        
+        Args:
+            start (float): Seconds since the epoch
+            end (float): Seconds since the epoch 
+        """
+        self.stream = self.stream.slice(
+            starttime=obspy.UTCDateTime(start),
+            endtime=obspy.UTCDateTime(end))
 
     def view(self, npts=2000):
         """

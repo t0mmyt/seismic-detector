@@ -21,8 +21,8 @@ app.controller('obsCtrl', function($scope, $http) {
     $scope.detectSettings = {
         bandpassLow: 5,
         bandpassHigh: 10,
-        shortWindow: 250,
-        longWindow: 15000,
+        shortWindow: 50,
+        longWindow: 5000,
         nStds: 3,
         triggerLen: 5000
     };
@@ -138,6 +138,10 @@ app.controller('obsCtrl', function($scope, $http) {
                            max: 5
                         }
                     }
+                },
+                y2: {
+                    show: false,
+                    default: [0, 10]
                 }
             },
             grid: {
@@ -159,10 +163,24 @@ app.controller('obsCtrl', function($scope, $http) {
             result.data.forEach(function (x) {
                 console.log("Marking from " + x.start);
                 $scope.charts[obs_id].xgrids.add([
-                    {value: Date.parse(x.start), text: 'Start', position: 'end'},
-                    {value: Date.parse(x.end), text: 'End', position: 'end'}
-                ])
-            })
+                    {value: x.start * 1000, text: 'Start', position: 'end'},
+                    {value: x.end * 1000, text: 'End', position: 'end'}
+                ]);
+            });
+            $scope.charts[obs_id].load({
+                url: "/observations/" + obs_id + "/trigger_data",
+                mimeType: "json",
+                keys: {
+                    x: 't',
+                    value: ['lm', 'sm', 'trigger']
+                },
+                axes: {
+                    lm: "y2",
+                    sm: "y2",
+                    trigger: "y2"
+                }
+            });
+            $scope.charts[obs_id].show('axis.y2');
         })
     };
 

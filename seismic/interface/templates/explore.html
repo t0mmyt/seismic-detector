@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Explore/SAX{% endblock %}
+{% block heading %}Explore / SAX{% endblock %}
+{% block explain %}Perform post-processing and do SAX analysis{% endblock %}
+{% block head %}
+    <script src="/assets/js/explore.js"></script>{% endblock %}
+{% block contents %}
+<div ng-app="explore" ng-controller="exploreCtrl">
+<form>
+    <div class="row">
+        <div class="col-lg-4 form-group">
+            <label for="event">Event</label><br>
+            <input type="text" id="event" class="form-control" ng-model="params.event">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2 form-group">
+            <input type="checkbox" id="absolute" ng-model="params.absolute">
+            <label for="absolute">Absolute</label><br>
+        </div>
+        <div class="col-lg-2 form-group">
+			<input type="checkbox" name="bandpass" id="bandpass" ng-model="params.bandpass">
+            <label for="bandpass">Bandpass</label><br>
+			<label for="bandpassLow">Bandpass Low (Hz)</label><br>
+            <input type="text" id="bandpassLow" ng-model="params.bandpassLow" ng-disabled="!params.bandpass"><br>
+            <label for="bandpassHigh">Bandpass High (Hz)</label><br>
+            <input type="text" id="bandpassHigh" ng-model="params.bandpassHigh" ng-disabled="!params.bandpass">
+        </div>
+		<div class="col-lg-2 form-group">
+			<input type="checkbox" id="sax" ng-model="params.sax">
+            <label for="sax">SAX</label><br>
+			<label for="interval">PAA Interval (ms)</label><br>
+			<input type="text" id="interval" ng-model="params.paaInt" ng-disabled="!params.sax"><br>
+			<label for="alphabet">SAX Alphabet</label><br>
+			<input type="text" id="alphabet" ng-model="params.saxAlphabet" ng-disabled="!params.sax">
+		</div>
+    </div>
+</form>
+</div>
+{% endblock %}
