@@ -59,7 +59,7 @@ def detector(obs_id, trace, bp_low, bp_high, short_window, long_window, nstds, t
         s = get_session(DB_URL)
         obs_rec = s.query(ObservationRecord).\
             filter_by(obs_id=obs_id).one()
-        start_time = datetime.datetime.fromtimestamp(obs_rec.start.timestamp())
+        start_time = datetime.datetime.fromtimestamp(obs_rec.start.timestamp(), pytz.UTC)
         evts = 0
         for evt in d.detect(short_window, long_window, nstds, trigger_len):
             evts += 1
