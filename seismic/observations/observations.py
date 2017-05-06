@@ -100,8 +100,8 @@ class ObservationDAO(object):
             network=self.stats.network,
             station=self.stats.station,
             channel=self.stats.channel,
-            start=datetime.datetime.fromtimestamp(self.stats.starttime.timestamp),
-            end=datetime.datetime.fromtimestamp(self.stats.endtime.timestamp),
+            start=datetime.datetime.fromtimestamp(self.stats.starttime.timestamp, pytz.UTC),
+            end=datetime.datetime.fromtimestamp(self.stats.endtime.timestamp, pytz.UTC),
             format=self.stats._format,
             filename=self.filename,
             sampling_rate=self.stats.sampling_rate
