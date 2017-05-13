@@ -51,6 +51,7 @@ class ObservationDAO(object):
             self.stream = obspy.core.stream.read(path)
             self.filename = filename
             log.debug("Read {}".format(filename))
+            self.stream[0].data = self.stream[0].data.byteswap().newbyteorder()
         except (IOError, TypeError) as e:
             raise ObservationDAOError('Failed to read {}: {}'.format(path, e))
 
@@ -119,6 +120,14 @@ class ObservationDAO(object):
             starttime=obspy.UTCDateTime(start),
             endtime=obspy.UTCDateTime(end))
 
+    def normalise(self):
+        x = self.stream[0].data
+        self.stream[0].data = (x - x.mean()) / x.std()
+
+    def absolute(self):
+        x = self.stream[0].data
+        self.stream[0].data = np.abs(x)
+
     def view(self, npts=2000):
         """
         Return downsampled graph data for rendering in the browser.
@@ -139,10 +148,9 @@ class ObservationDAO(object):
             freq=("{}U".format(int(10 ** 3 * duration / (t.meta.npts - 1))))
         )
         y = t.data
-        y = y.byteswap().newbyteorder()
         df = pd.DataFrame({"y": y}, index=rng)
         log.debug("Duration: {}".format(duration))
-        smpl = df.resample("{}L".format(int(duration / npts))).apply(min_max)
+        smpl = df.resample("{}L".format(int(duration / npts))).apply(min_max).interpolate(method='time')
         log.debug("Len: {}".format(len(smpl)))
         smpl["t"] = smpl.index.astype(np.int64) // 10 ** 6
         return json.loads(smpl.to_json(orient="records"))

@@ -7,7 +7,7 @@ import pytz
 import json
 from flask import Flask, request, send_file
 from flask_api import status
-from flask_restplus import Api, Resource, fields
+from flask_restplus import Api, Resource, reqparse
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
@@ -32,9 +32,17 @@ sax_ns = api.namespace("sax")  # TODO Description
 
 
 @sax_ns.route("/<evt_id>/view")
+@sax_ns.param("absolute", "Work on absolute values", type="boolean")
+@sax_ns.param("bandpass", "Whether or not to perform a bandpass filter", type="boolean")
+@sax_ns.param("bandpassLow", "Low frequency (Hz) for bandpass", type="integer")
+@sax_ns.param("bandpassHigh", "High frequency (Hz) for bandpass", type="integer")
+@sax_ns.param("sax", "Whether or not to perform SAX construction", type="boolean")
+@sax_ns.param("paaInt", "PAA Interval for SAX", type="boolean")
+@sax_ns.param("alphabet", "Alphabet for SAX", type="boolean")
 class View(Resource):
     def get(self, evt_id):
         try:
+            params = reqparse()
             ds = Datastore(MINIO_HOST, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET)
             db = get_session(DB_URL)
             evt = db.query(EventRecord).filter_by(evt_id=evt_id).one()
@@ -44,9 +52,12 @@ class View(Resource):
                 start=evt.start.timestamp(),
                 end=evt.end.timestamp()
             )
+            obs.normalise()
+            if absolute:
+                obs.absolute()
             return obs.view()
         except NoResultFound:
-            return None, status.HTTP_404_NOT_FOUND
+            raise NotFound
         except MultipleResultsFound:
             raise InternalServerError("Multiple results found, this is bad")
         except DatastoreError as e:

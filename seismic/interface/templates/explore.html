@@ -3,14 +3,26 @@
 {% block heading %}Explore / SAX{% endblock %}
 {% block explain %}Perform post-processing and do SAX analysis{% endblock %}
 {% block head %}
-    <script src="/assets/js/explore.js"></script>{% endblock %}
+    <script src="/assets/js/explore.js"></script>
+    <link href="/assets/vendor/c3.min.css" rel="stylesheet" type="text/css">
+    <script src="/assets/vendor/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/assets/vendor/c3.js"></script>
+    <script>
+        angular.module('ngUrlBindExample', ['ngUrlBind'])
+            .controller('mainCtrl', function($scope, ngUrlBind){
+                $scope.evt = {};
+                ngUrlBind($scope, 'evt')
+            })
+    </script>
+{% endblock %}
 {% block contents %}
 <div ng-app="explore" ng-controller="exploreCtrl">
 <form>
     <div class="row">
         <div class="col-lg-4 form-group">
             <label for="event">Event</label><br>
-            <input type="text" id="event" class="form-control" ng-model="params.event">
+            <input type="text" id="event" class="form-control" ng-model="evt.id"
+                   ng-blur="renderChart(1)">
         </div>
     </div>
     <div class="row">
@@ -34,6 +46,9 @@
 			<label for="alphabet">SAX Alphabet</label><br>
 			<input type="text" id="alphabet" ng-model="params.saxAlphabet" ng-disabled="!params.sax">
 		</div>
+    </div>
+    <div class="row">
+        <div id="chart_1"></div>
     </div>
 </form>
 </div>

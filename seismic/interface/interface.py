@@ -29,6 +29,7 @@ nav = SimpleNavigator((
 
 
 OBSERVATIONS = getenv("OBSERVATIONS", "http://localhost:8000")
+SAX = getenv("SAX", "http://localhost:8001")
 BROKER_URL = getenv("BROKER_URL", "redis://localhost:6379")
 celery_app = Celery('tasks', broker=BROKER_URL)
 
@@ -42,7 +43,6 @@ def handle_invalid_usage(error):
 
 def send_relative_dir(d, f):
     d = os.path.join(os.path.dirname(os.path.abspath(__file__)), d)
-    app.logger.debug("Sending asset ({}) from {}".format(f, d))
     return send_from_directory(d, f)
 
 
@@ -115,7 +115,7 @@ def page_generic(page):
 @app.route("/observations/<path:path>", methods=["GET", "DELETE"])
 def view_observations(path):
     """
-    Proxy requests with /observation prefix to the query service
+    Proxy requests with /observation prefix to the Observations API
     
     Args:
         path: relative path on query service
@@ -125,6 +125,22 @@ def view_observations(path):
     """
     proxy = Proxy(OBSERVATIONS)
     return proxy("observations/{}".format(path), **request.args.to_dict())
+
+
+@app.route("/sax/<path:path>", methods=["GET", "DELETE"])
+def view_sax(path):
+    """
+    Proxy requests with /sax prefix to the SAX API
+
+    Args:
+        path: relative path on query service
+
+    Returns:
+        JSON
+    """
+    proxy = Proxy(SAX)
+    app.logger.debug("Sending to SAX")
+    return proxy("sax/{}".format(path), **request.args.to_dict())
 
 
 @app.route("/sax")
