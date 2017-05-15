@@ -31,6 +31,18 @@ api = Api(
 sax_ns = api.namespace("sax")  # TODO Description
 
 
+def is_true(s=str):
+    """
+    Checks if a string sounds truth-y (e.g. from a url encoded string)
+    Args:
+        s (string): string to check
+
+    Returns:
+        Boolean
+    """
+    return s.lower() in ["true", "yes", "y", "1"] if s else False
+
+
 @sax_ns.route("/<evt_id>/view")
 @sax_ns.param("absolute", "Work on absolute values", type="boolean")
 @sax_ns.param("bandpass", "Whether or not to perform a bandpass filter", type="boolean")
@@ -42,7 +54,15 @@ sax_ns = api.namespace("sax")  # TODO Description
 class View(Resource):
     def get(self, evt_id):
         try:
-            params = reqparse()
+            parser = reqparse.RequestParser()
+            parser.add_argument("absolute", type=str)
+            parser.add_argument("bandpass", type=str)
+            parser.add_argument("bandpassLow", type=int)
+            parser.add_argument("bandpassHigh", type=int)
+            parser.add_argument("sax", type=str)
+            parser.add_argument("paaInt", type=int)
+            parser.add_argument("alphabet", type=str)
+            p = parser.parse_args()
             ds = Datastore(MINIO_HOST, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET)
             db = get_session(DB_URL)
             evt = db.query(EventRecord).filter_by(evt_id=evt_id).one()
@@ -53,7 +73,9 @@ class View(Resource):
                 end=evt.end.timestamp()
             )
             obs.normalise()
-            if absolute:
+            if is_true(p["bandpass"]):
+                obs.bandpass(p["bandpassLow"], p["bandpassHigh"])
+            if is_true(p["absolute"]):
                 obs.absolute()
             return obs.view()
         except NoResultFound:
@@ -64,7 +86,7 @@ class View(Resource):
             raise InternalServerError(e)
 
 if __name__ == "__main__":
-    app.logger.setLevel(logging.DEBUG)
+    app.logger.setLevel(logging.INFO)
     app.run(
         host="0.0.0.0",
         port=8001,

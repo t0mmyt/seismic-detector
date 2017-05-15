@@ -16,14 +16,15 @@ app.controller('exploreCtrl', function($scope, $http, ngUrlBind) {
         bandpassHigh: 20,
         sax: false,
         paaInt: 50,
-        saxAlphabet: "abcdefg"
+        alphabet: "abcdefg"
     };
     $scope.charts = [];
 
     $scope.renderChart = function (i) {
         $http({
             method: 'GET',
-            url: '/sax/' + $scope.evt.id + '/view'
+            url: '/sax/' + $scope.evt.id + '/view',
+            params: $scope.params
         }).then(function onSuccess(result) {
             $scope.charts[i] = c3.generate({
                 bindto: "#chart_" + i,

@@ -2,6 +2,7 @@
 Library for reading SAC observations for import to a TSDB
 """
 import obspy
+from obspy.signal.filter import bandpass
 import pandas as pd
 import numpy as np
 from iso8601 import parse_date
@@ -128,6 +129,9 @@ class ObservationDAO(object):
         x = self.stream[0].data
         self.stream[0].data = np.abs(x)
 
+    def bandpass(self, low, high):
+        self.stream[0].data = bandpass(self.stream[0].data, low, high, self.stream[0].meta.sampling_rate)
+
     def view(self, npts=2000):
         """
         Return downsampled graph data for rendering in the browser.
@@ -154,3 +158,20 @@ class ObservationDAO(object):
         log.debug("Len: {}".format(len(smpl)))
         smpl["t"] = smpl.index.astype(np.int64) // 10 ** 6
         return json.loads(smpl.to_json(orient="records"))
+
+    def upsample(self):
+        t = self.stream[0].copy()
+        duration = (t.meta.endtime - t.meta.starttime) * 1000
+        rng = pd.date_range(
+            start=pd.to_datetime(
+                parse_date(str(t.meta.starttime)).replace(tzinfo=pytz.UTC).timestamp() * 1000, unit="ms"),
+            end=pd.to_datetime(
+                parse_date(str(t.meta.endtime)).replace(tzinfo=pytz.UTC).timestamp() * 1000, unit="ms"),
+            freq=("{}U".format(int(10 ** 3 * duration / (t.meta.npts - 1))))
+        )
+        y = t.data
+        df = pd.DataFrame({"y": y}, index=rng)
+        smpl = df.resample("1L").apply(min_max).interpolate(method="time")
+        log.debug("Len: {}".format(len(smpl)))
+        smpl["t"] = smpl.index.astype(np.int64) // 10 ** 6
+        return smpl
