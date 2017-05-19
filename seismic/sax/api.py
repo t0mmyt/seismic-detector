@@ -14,6 +14,7 @@ from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from seismic.observations.observations import ObservationDAO, ObservationDAOError
 from seismic.datastore import Datastore, DatastoreError
 from seismic.metadb.db import get_session, ObservationRecord, EventRecord
+from seismic.sax import Paa, PaaError
 
 MINIO_HOST = getenv("MINIO_HOST", "localhost:9000")
 MINIO_ACCESS_KEY = getenv("MINIO_ACCESS_KEY", "dev-TKE8KC10YL")
@@ -48,10 +49,10 @@ def is_true(s=str):
 @sax_ns.param("bandpass", "Whether or not to perform a bandpass filter", type="boolean")
 @sax_ns.param("bandpassLow", "Low frequency (Hz) for bandpass", type="integer")
 @sax_ns.param("bandpassHigh", "High frequency (Hz) for bandpass", type="integer")
-@sax_ns.param("sax", "Whether or not to perform SAX construction", type="boolean")
-@sax_ns.param("paaInt", "PAA Interval for SAX", type="boolean")
-@sax_ns.param("alphabet", "Alphabet for SAX", type="boolean")
-class View(Resource):
+# @sax_ns.param("sax", "Whether or not to perform SAX construction", type="boolean")
+@sax_ns.param("paaInt", "PAA Interval for SAX", type="integer")
+@sax_ns.param("alphabet", "Alphabet for SAX", type="string")
+class Sax(Resource):
     def get(self, evt_id):
         try:
             parser = reqparse.RequestParser()
@@ -60,8 +61,8 @@ class View(Resource):
             parser.add_argument("bandpassLow", type=int)
             parser.add_argument("bandpassHigh", type=int)
             parser.add_argument("sax", type=str)
-            parser.add_argument("paaInt", type=int)
-            parser.add_argument("alphabet", type=str)
+            parser.add_argument("paaInt", type=int, required=True)
+            parser.add_argument("alphabet", type=str, required=True)
             p = parser.parse_args()
             ds = Datastore(MINIO_HOST, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET)
             db = get_session(DB_URL)
@@ -77,7 +78,15 @@ class View(Resource):
                 obs.bandpass(p["bandpassLow"], p["bandpassHigh"])
             if is_true(p["absolute"]):
                 obs.absolute()
-            return obs.view()
+            paa = Paa(obs.series())
+            p = paa(p["paaInt"])
+            paa_results = [{"t": int(k), "p": v} for k, v in json.loads(p.to_json(orient="index")).items()]
+            return {
+                "original": obs.view(),
+                "paa": paa_results
+            }
+        except PaaError as e:
+            raise InternalServerError(e)
         except NoResultFound:
             raise NotFound
         except MultipleResultsFound:

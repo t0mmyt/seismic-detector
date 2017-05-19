@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 class PaaError(Exception):
@@ -6,47 +7,34 @@ class PaaError(Exception):
 
 
 class Paa(object):
-    def __init__(self, times, values):
+    def __init__(self, series=pd.Series):
         """
         Prepare a PAA (Piecewise Aggregate Approximation) object to calculate
-        PAA of a given dataset
+        PAA of a given dataset.  Will perform z-normalisation on data before
+        interpolating linearly to an interval of 1ms.
 
         Args:
-            times (numpy.Array):  times in millisecods (can be epoch)
-            values (numpy.Array): values
+           series (DataFrame): pandas DataFrame with time as index 
         """
-        if not len(times) == len(values):
-            raise PaaError("Lengths of times and values did not match")
-        self.t = np.array(times)
-        self.v = np.array(values)
+        if not isinstance(series, pd.Series):
+            raise PaaError("series should be a pandas Series")
+        series = series.resample("1L").interpolate(method="time")
+        std = np.std(series)
+        mean = np.mean(series)
+        series = (series - mean) / std
+        self.series = series
 
-    def paa(self, interval):
+    def __call__(self, window=int):
         """
-        Calculate PAA.  Assumes time deltas are a factor of interval.  No
-        regression. (this will bite me later.  TODO: np.linspace)
-
+        Return a PAA of the DataFrame
+        
         Args:
-            interval (int): Window size in ms
+            window (int): Number of milliseconds in window 
 
-        Yields:
-            (window start time in ms, value)
+        Returns:
+            pandas.Series
         """
-        if not isinstance(interval, int):
-            raise PaaError("interval should be an integer")
-        v = self.v
-        t = self.t
-
-        start_pos = 0
-        end_pos = 0
-
-        while start_pos < len(t):
-            t_start = t[start_pos]
-            end_pos = np.searchsorted(t[start_pos:], (t_start + interval) + start_pos
-            if end_pos > len(t) - 1:
-                raise StopIteration
-            # t_end = t[end_pos]123
-            this_val = np.mean(v[start_pos:end_pos])
-            this_time = t[start_pos]
-            yield(this_time, this_val)
-            start_pos = end_pos
-        raise StopIteration
+        if not isinstance(window, int):
+            raise PaaError("Window should be an integer")
+        df = self.series.copy()
+        return df.resample("{}L".format(window)).mean().interpolate(method="time")
