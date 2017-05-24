@@ -7,9 +7,11 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
 
 app.controller('exploreCtrl', function($scope, $http, ngUrlBind) {
     $scope.evt = {};
-    ngUrlBind($scope, 'evt')
+    ngUrlBind($scope, 'evt');
     $scope.event = '';
     $scope.params = {
+        offset: 0,
+        length: 5000,
         absolute: false,
         bandpass: false,
         bandpassLow: 1,
@@ -19,6 +21,7 @@ app.controller('exploreCtrl', function($scope, $http, ngUrlBind) {
         alphabet: "abcdefg"
     };
     $scope.charts = [];
+    $scope.chartData = [];
 
     $scope.renderChart = function (i) {
         $http({
@@ -26,33 +29,49 @@ app.controller('exploreCtrl', function($scope, $http, ngUrlBind) {
             url: '/sax/' + $scope.evt.id + '/view',
             params: $scope.params
         }).then(function onSuccess(result) {
-            $scope.charts[i] = c3.generate({
-                bindto: "#chart_" + i,
+            console.time("Rendering chart");
+            $scope.chartData[i] = result.data;
+            $scope.charts[i] = new Chart($("#chart_" + i), {
+                type: 'line',
                 data: {
-                    json: result.data,
-                    keys: {
-                        x: 't',
-                        value: ['y']
-                    }
+                    datasets: [{
+                        label: 'Z',
+                        type: 'line',
+                        pointRadius: 0,
+                        borderColor: "LightSteelBlue",
+                        borderWidth: 1.5,
+                        fill: false,
+                        data: $scope.chartData[i].original
+                    },
+                    {
+                        label: 'PAA',
+                        type: 'line',
+                        steppedLine: true,
+                        pointRadius: 0,
+                        borderColor: "Red",
+                        borderWidth: 1.5,
+                        fill: false,
+                        data: $scope.chartData[i].paa
+                    }]
                 },
-                axis: {
-                    x: {
-                        type: 'timeseries',
-                        tick: {
-                            format: function (e) {
-                                var date = new Date(e);
-                                return date.toISOString();
-                            },
-                            count: 5,
-                            culling: { max: 5 }
-                        }
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            position: 'bottom',
+                            // time: {
+                            //     parser: function (e) {
+                            //         return moment(e).utc()
+                            //     }
+                            // }
+                        }]
                     }
-                },
-                point: {show: false},
-                subchart: {show: true}
-            })
+                }
+            });
+            console.timeEnd("Rendering chart")
+
         }, function onError(result) {
-            console.log(result.status)
+            console.log("Bad stuff happened: " + result.status_code)
         })
     };
 

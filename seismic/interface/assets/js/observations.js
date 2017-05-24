@@ -114,14 +114,14 @@ app.controller('obsCtrl', function($scope, $http) {
     };
 
     $scope.renderChart = function (obs_id) {
-        console.log("Rendering " + obs_id)
+        console.log("Rendering " + obs_id);
         $scope.charts[obs_id] = c3.generate({
             bindto: "#chart_" + obs_id,
             data: {
                 url: "/observations/" + obs_id + "/view",
                 mimeType: "json",
                 keys: {
-                    x: 't',
+                    x: 'x',
                     value: ['y']
                 }
             },

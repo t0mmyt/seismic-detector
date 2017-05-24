@@ -1,12 +1,8 @@
 from os import getenv
-from io import BytesIO
 import logging
-import pandas as pd
-import numpy as np
-import pytz
+from datetime import timedelta
 import json
 from flask import Flask, request, send_file
-from flask_api import status
 from flask_restplus import Api, Resource, reqparse
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
@@ -14,7 +10,7 @@ from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from seismic.observations.observations import ObservationDAO, ObservationDAOError
 from seismic.datastore import Datastore, DatastoreError
 from seismic.metadb.db import get_session, ObservationRecord, EventRecord
-from seismic.sax import Paa, PaaError
+from seismic.sax import Paa, PaaError, Sax, SaxError
 
 MINIO_HOST = getenv("MINIO_HOST", "localhost:9000")
 MINIO_ACCESS_KEY = getenv("MINIO_ACCESS_KEY", "dev-TKE8KC10YL")
@@ -45,17 +41,21 @@ def is_true(s=str):
 
 
 @sax_ns.route("/<evt_id>/view")
+@sax_ns.param("offset", "Offset start of event (ms)", type="integer")
+@sax_ns.param("length", "Length of event", type="integer", required=True)
 @sax_ns.param("absolute", "Work on absolute values", type="boolean")
 @sax_ns.param("bandpass", "Whether or not to perform a bandpass filter", type="boolean")
 @sax_ns.param("bandpassLow", "Low frequency (Hz) for bandpass", type="integer")
 @sax_ns.param("bandpassHigh", "High frequency (Hz) for bandpass", type="integer")
 # @sax_ns.param("sax", "Whether or not to perform SAX construction", type="boolean")
-@sax_ns.param("paaInt", "PAA Interval for SAX", type="integer")
-@sax_ns.param("alphabet", "Alphabet for SAX", type="string")
-class Sax(Resource):
+@sax_ns.param("paaInt", "PAA Interval for SAX", type="integer", required=True)
+@sax_ns.param("alphabet", "Alphabet for SAX", type="string", required=True)
+class SaxRender(Resource):
     def get(self, evt_id):
         try:
             parser = reqparse.RequestParser()
+            parser.add_argument("offset", type=int, default=0)
+            parser.add_argument("length", type=int, required=True)
             parser.add_argument("absolute", type=str)
             parser.add_argument("bandpass", type=str)
             parser.add_argument("bandpassLow", type=int)
@@ -69,9 +69,11 @@ class Sax(Resource):
             evt = db.query(EventRecord).filter_by(evt_id=evt_id).one()
             raw = ds.get(evt.obs_id)
             obs = ObservationDAO(raw)
+            start = (evt.start + timedelta(milliseconds=p["offset"]))
+            end = (start + timedelta(milliseconds=p["length"]))
             obs.slice(
-                start=evt.start.timestamp(),
-                end=evt.end.timestamp()
+                start=start.timestamp(),
+                end=end.timestamp()
             )
             obs.normalise()
             if is_true(p["bandpass"]):
@@ -79,13 +81,15 @@ class Sax(Resource):
             if is_true(p["absolute"]):
                 obs.absolute()
             paa = Paa(obs.series())
-            p = paa(p["paaInt"])
-            paa_results = [{"t": int(k), "p": v} for k, v in json.loads(p.to_json(orient="index")).items()]
+            paa_data = paa(p["paaInt"])
+            paa_results = [{"x": int(k), "y": v} for k, v in json.loads(paa_data.to_json(orient="index")).items()]
+            sax = Sax(paa_data)
             return {
                 "original": obs.view(),
-                "paa": paa_results
+                "paa": paa_results,
+                "sax": "".join([i for i in sax(p["alphabet"])])
             }
-        except PaaError as e:
+        except (PaaError, SaxError) as e:
             raise InternalServerError(e)
         except NoResultFound:
             raise NotFound

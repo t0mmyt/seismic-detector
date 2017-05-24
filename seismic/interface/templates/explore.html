@@ -4,9 +4,7 @@
 {% block explain %}Perform post-processing and do SAX analysis{% endblock %}
 {% block head %}
     <script src="/assets/js/explore.js"></script>
-    <link href="/assets/vendor/c3.min.css" rel="stylesheet" type="text/css">
-    <script src="/assets/vendor/d3.v3.min.js" charset="utf-8"></script>
-    <script src="/assets/vendor/c3.js"></script>
+    <script src="/assets/vendor/Chart.bundle.js"></script>
     <script>
         angular.module('ngUrlBindExample', ['ngUrlBind'])
             .controller('mainCtrl', function($scope, ngUrlBind){
@@ -29,6 +27,10 @@
         <div class="col-lg-2 form-group">
             <input type="checkbox" id="absolute" ng-model="params.absolute" ng-change="renderChart(1)">
             <label for="absolute">Absolute</label><br>
+			<label for="offset">Offset (ms)</label><br>
+            <input type="text" id="offset" ng-model="params.offset" ng-blur="renderChart(1)"><br>
+            <label for="length">Length (ms)</label><br>
+            <input type="text" id="length" ng-model="params.length" ng-blur="renderChart(1)">
         </div>
         <div class="col-lg-2 form-group">
 			<input type="checkbox" name="bandpass" id="bandpass" ng-model="params.bandpass" ng-change="renderChart(1)">
@@ -52,8 +54,9 @@
 		</div>
     </div>
     <div class="row">
-        <div id="chart_1"></div>
+        <canvas id="chart_1"></canvas>
     </div>
+    <pre ng-bind="chartData[1].sax"></pre>
 </form>
 </div>
 {% endblock %}

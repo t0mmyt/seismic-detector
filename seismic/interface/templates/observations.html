@@ -57,7 +57,7 @@
     <tr><th>Id</th><th>Start</th><th>End</th><th>Sampling Rate</th></tr>
     </thead>
     <tbody ng-repeat="i in observations">
-    <tr ng-click="showOptions[i.id] = !showOptions[i.id]">
+    <tr>
         <td>{a i.id a} / {a i.filename a}</td><td>{a i.start * 1000 | date:'yyyy-MM-dd HH:mm:ss Z' :'UTC' a}</td><td>{a i.end * 1000 | date:'HH:mm:ss Z' :'UTC' a}</td><td>{a i.sampling_rate a}</td>
         <td>
             <input ng-model="showOptions[i.id]" type="checkbox" checked data-toggle="toggle" id="{a 'opt_' + i.id a}">
@@ -83,7 +83,8 @@
                 </tr></thead>
                 <tbody>
                     <tr ng-repeat="j in events[i.id]">
-                        <td>{a j.evt_id a}</td><td>{a j.start * 1000 | date:'HH:mm:ss.sss Z' :'UTC' a}</td><td>{a j.duration a}</td>
+                        <td><a href="http://localhost:8080/sax#!?evt=~(id~'{a j.evt_id a})">{a j.evt_id a}</a></td>
+                        </td><td>{a j.start * 1000 | date:'HH:mm:ss.sss Z' :'UTC' a}</td><td>{a j.duration a}</td>
                     </tr>
                 </tbody>
             </table>

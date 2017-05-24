@@ -140,26 +140,17 @@ class ObservationDAO(object):
             npts (int): number points to return
 
         Returns:
-            JSON from Pandas dataframe orientated by records
+            JSON from Pandas DataFrame orientated by records
         """
-        t = self.stream[0].copy()
-        duration = (t.meta.endtime - t.meta.starttime) * 1000
-        rng = pd.date_range(
-            start=pd.to_datetime(
-                parse_date(str(t.meta.starttime)).replace(tzinfo=pytz.UTC).timestamp() * 1000, unit="ms"),
-            end=pd.to_datetime(
-                parse_date(str(t.meta.endtime)).replace(tzinfo=pytz.UTC).timestamp() * 1000, unit="ms"),
-            freq=("{}U".format(int(10 ** 3 * duration / (t.meta.npts - 1))))
-        )
-        y = t.data
-        df = pd.DataFrame({"y": y}, index=rng)
-        log.debug("Duration: {}".format(duration))
+        df = self.dataframe()
+        duration = (df.index[-1] - df.index[0]) / np.timedelta64(1, "ms")
+        log.info(duration)
         smpl = df.resample("{}L".format(int(duration / npts))).apply(min_max).interpolate(method='time')
         log.debug("Len: {}".format(len(smpl)))
-        smpl["t"] = smpl.index.astype(np.int64) // 10 ** 6
+        smpl["x"] = smpl.index.astype(np.int64) // 10 ** 6
         return json.loads(smpl.to_json(orient="records"))
 
-    def upsample(self):
+    def dataframe(self):
         t = self.stream[0].copy()
         duration = (t.meta.endtime - t.meta.starttime) * 1000
         rng = pd.date_range(
@@ -170,8 +161,8 @@ class ObservationDAO(object):
             freq=("{}U".format(int(10 ** 3 * duration / (t.meta.npts - 1))))
         )
         y = t.data
-        df = pd.DataFrame({"y": y}, index=rng)
-        smpl = df.resample("1L").apply(min_max).interpolate(method="time")
-        log.debug("Len: {}".format(len(smpl)))
-        smpl["t"] = smpl.index.astype(np.int64) // 10 ** 6
-        return smpl
+        return pd.DataFrame({"y": y}, index=rng)
+
+    def series(self):
+        df = self.dataframe()
+        return pd.Series(data=df["y"], index=df.index)
