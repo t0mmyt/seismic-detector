@@ -1,0 +1,66 @@
+This is BibTeX, Version 0.99d (TeX Live 2016/Arch Linux)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: report.aux
+The style file: humannat.bst
+Database file #1: bibliography.bib
+I was expecting a `,' or a `}'---line 59 of file bibliography.bib
+ :  
+ :  doi = {10.1785/gssrl.81.3.530}
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Too many commas in name 1 of "M. Beyreuther, R. Barsch, L. Krischer, T. Megies, Y. Behr and J. Wassermann" for entry obspy
+while executing---line 1123 of file humannat.bst
+Too many commas in name 1 of "M. Beyreuther, R. Barsch, L. Krischer, T. Megies, Y. Behr and J. Wassermann" for entry obspy
+while executing---line 1123 of file humannat.bst
+Too many commas in name 1 of "M. Beyreuther, R. Barsch, L. Krischer, T. Megies, Y. Behr and J. Wassermann" for entry obspy
+while executing---line 1123 of file humannat.bst
+Too many commas in name 1 of "M. Beyreuther, R. Barsch, L. Krischer, T. Megies, Y. Behr and J. Wassermann" for entry obspy
+while executing---line 1123 of file humannat.bst
+Warning--empty journal in bbk-suffix
+Too many commas in name 1 of "M. Beyreuther, R. Barsch, L. Krischer, T. Megies, Y. Behr and J. Wassermann" for entry obspy
+while executing---line 1198 of file humannat.bst
+Too many commas in name 1 of "M. Beyreuther, R. Barsch, L. Krischer, T. Megies, Y. Behr and J. Wassermann" for entry obspy
+while executing---line 1198 of file humannat.bst
+Warning--empty journal in obspy
+You've used 5 entries,
+            2155 wiz_defined-function locations,
+            528 strings with 4545 characters,
+and the built_in function-call counts, 1608 in all, are:
+= -- 144
+> -- 68
+< -- 3
++ -- 28
+- -- 24
+* -- 131
+:= -- 305
+add.period$ -- 13
+call.type$ -- 5
+change.case$ -- 37
+chr.to.int$ -- 5
+cite$ -- 7
+duplicate$ -- 65
+empty$ -- 101
+format.name$ -- 31
+if$ -- 292
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 5
+newline$ -- 26
+num.names$ -- 15
+pop$ -- 38
+preamble$ -- 1
+purify$ -- 37
+quote$ -- 0
+skip$ -- 54
+stack$ -- 0
+substring$ -- 64
+swap$ -- 8
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 30
+warning$ -- 2
+while$ -- 10
+width$ -- 0
+write$ -- 58
+(There were 7 error messages)

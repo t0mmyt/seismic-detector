@@ -1,0 +1,31 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Abstract}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Objectives}{section.1}% 3
+\BOOKMARK [1][-]{section.2}{Background}{}% 4
+\BOOKMARK [2][-]{subsection.2.1}{Seismic Waves}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.2}{Symbolic Aggregate Approximation \(SAX\)}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.3}{Suffix Trees}{section.2}% 7
+\BOOKMARK [1][-]{section.3}{Data Analysis}{}% 8
+\BOOKMARK [2][-]{subsection.3.1}{Raw Data}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.2}{Normalisation}{section.3}% 10
+\BOOKMARK [2][-]{subsection.3.3}{PAA \046 SAX}{section.3}% 11
+\BOOKMARK [3][-]{subsubsection.3.3.1}{PAA}{subsection.3.3}% 12
+\BOOKMARK [3][-]{subsubsection.3.3.2}{SAX}{subsection.3.3}% 13
+\BOOKMARK [2][-]{subsection.3.4}{Frequency Analysis}{section.3}% 14
+\BOOKMARK [1][-]{section.4}{Event Detection}{}% 15
+\BOOKMARK [2][-]{subsection.4.1}{Algorithm}{section.4}% 16
+\BOOKMARK [1][-]{section.5}{Application Design \046 Development}{}% 17
+\BOOKMARK [2][-]{subsection.5.1}{Specification}{section.5}% 18
+\BOOKMARK [2][-]{subsection.5.2}{Architecture Overview}{section.5}% 19
+\BOOKMARK [3][-]{subsubsection.5.2.1}{Interface}{subsection.5.2}% 20
+\BOOKMARK [3][-]{subsubsection.5.2.2}{Data Persistence}{subsection.5.2}% 21
+\BOOKMARK [3][-]{subsubsection.5.2.3}{Observations API}{subsection.5.2}% 22
+\BOOKMARK [3][-]{subsubsection.5.2.4}{SAX API}{subsection.5.2}% 23
+\BOOKMARK [3][-]{subsubsection.5.2.5}{Suffix API}{subsection.5.2}% 24
+\BOOKMARK [3][-]{subsubsection.5.2.6}{Deferred \046 Batch Jobs}{subsection.5.2}% 25
+\BOOKMARK [1][-]{section.6}{Conclusions}{}% 26
+\BOOKMARK [1][-]{section.7}{Critical Evaluation}{}% 27
+\BOOKMARK [2][-]{subsection.7.1}{Mistakes}{section.7}% 28
+\BOOKMARK [3][-]{subsubsection.7.1.1}{Time-series Databases}{subsection.7.1}% 29
+\BOOKMARK [3][-]{subsubsection.7.1.2}{Dataset}{subsection.7.1}% 30
+\BOOKMARK [1][-]{subsubsection.7.1.2}{Bibliography}{}% 31

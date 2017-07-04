@@ -1,0 +1,29 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\astroncite{Harris et~al.}{2016}]{bbk-suffix}
+Harris, M., M.~Levene, D.~Zhang, and D.~Levene\leavevmode\nopagebreak\newline
+  2016.
+\newblock The anatomy of a search and mining system for digital archives.
+
+\bibitem[\protect\astroncite{Lin et~al.}{2003}]{sax}
+Lin, J., E.~Keogh, S.~Lonardi, and B.~Chiu\leavevmode\nopagebreak\newline 2003.
+\newblock A symbolic representation of time series, with implications for
+  streaming algorithms.
+\newblock {\em Data Mining and Knowledge Discovery}.
+
+\bibitem[\protect\astroncite{M.~Beyreuther and Wassermann}{2010}]{obspy}
+M.~Beyreuther, R.~Barsch, L. K. T. M. Y.~B. and
+  J.~Wassermann\leavevmode\nopagebreak\newline 2010.
+\newblock Obspy: A python toolbox for seismology.
+
+\bibitem[\protect\astroncite{Ukkone}{1995}]{ukkonens}
+Ukkone, E.\leavevmode\nopagebreak\newline 1995.
+\newblock On-line construction of suffix trees.
+\newblock {\em Algorithmica}.
+
+\bibitem[\protect\astroncite{Weiner}{1973}]{suffix}
+Weiner, P.\leavevmode\nopagebreak\newline 1973.
+\newblock Linear pattern matching algorithms.
+\newblock {\em 14th Annual IEEE Symposium on Switching and Automata Theory}.
+
+\end{thebibliography}

@@ -1,0 +1,16 @@
+\documentclass[../report.tex]{subfiles}
+\begin{document}
+\subsection{Mistakes}
+\subsubsection{Time-series Databases}
+	Early on in the project, I had thought that it would be beneficial to store the raw data in a Time-Series based database such as InfluxDB, OpenTSDB or KairosDB.  This would have allowed for the chaining together of events and in theory provided fast arbitrary access to data.
+	
+	While this should have been the case, none of the databases mentioned were suitable.  All of the open-source time-series databases seemed to be primarily focussed on the gathering of system metrics from a variety of sources and were not suitable for the large amounts of high frequency data points that came with the Seismic Data.  The main sticking point with all three was that they were built for storing irregular data so each data point was stored with a timestamp meaning bytes per point and not bits.
+	
+	None of my research was able to find a suitable time-series database and ultimately I settled on storing the observations in their raw format and then keeping meta data about them in an RDBMS.
+	
+\subsubsection{Dataset}
+	Initially I was provided with a large and mostly unsorted dataset (approximately 180GiB) spanning a years worth of observations from the Nabro Volcano in Eritrea.  I boldly and subsequently fool-heartedly proceeded to attempt to analyse the dataset in full and with insufficient background knowledge to really understand what I was working with.  This was also before I had realised the problems around normalising large datasets where most of the measurements were background noise.
+	
+	Ultimately I was provided with a much smaller dataset of events to work from and this allowed my to get an actual prototype of the application running in its entirety.
+	
+\end{document}

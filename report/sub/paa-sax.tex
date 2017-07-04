@@ -1,0 +1,34 @@
+\documentclass[../report.tex]{subfiles}
+
+\begin{document}
+\subsection{PAA \& SAX}
+	As described in the background section \cref{sec:paasax} on SAX, there are two steps.  PAA (Peicewise Aggregate Approximation) is applied before symbols are calculated based on equal breakpoints following a Gaussian distribution.
+	
+\subsubsection{PAA}
+	A Python class was written to be callable to convert a Dataframe into an array of the aggregated values.  To reduce the number of steps involved in using the class, it performs the normalisation step unless told not to.
+	
+	\lstinputlisting[language=Python]{../seismic/sax/paa.py}
+	
+	When the class is first instantiated, a copy of the series is stored locally in the object.  Unless the normalise parameter is explicitly set to false, the numpy library is used to calculate the mean and standard deviation of the series and then $(x - \bar{x}) / \sigma$ is calculated for the whole series as described in \cref{sec:Z-normalisation}.
+	
+	This returns a callable object with the window size (in milliseconds) as a parameter.  When called, the object uses the resample feature of Pandas to return a series of mean values.	It should be defined and called as follows:
+	
+\begin{lstlisting}[language=Python]
+	p = Paa(series=d)  # where d is a Pandas dataframe with a time index
+	paa_out = p(50)        # performs PAA on d with a window size of 50ms
+\end{lstlisting}
+
+\subsubsection{SAX}
+	Similar to the PAA class, the SAX class was written to produce a callable object.
+
+	\lstinputlisting[language=Python]{../seismic/sax/sax.py}
+	
+	On instantiation, copy of the original series is stored in the object with no additional pre-processing.  The object is then called with the desired alphabet passed as the only parameter.  Then length of the string is used to determine the number of breakpoints to calculate against a normal distribution and these are stored as the \textit{thresholds}.  A Python generator is then returned that uses the numpy \textit{searchsorted} method to establish between which breakpoints a value falls and then return the corresponding character.  The generator can then be used to iterate over the values one at a time by the calling function.  A simple use to print the characters is shown below:
+	
+\begin{lstlisting}[language=Python]
+	s = Sax(paa_out)          # instantiate a callable Sax object
+	for val in s("abcdefg"):  # iterate over the object
+	    print(val, end="")    # print each value (with no newline)
+\end{lstlisting}
+	
+\end{document}

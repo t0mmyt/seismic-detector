@@ -1,0 +1,30 @@
+\documentclass[../report.tex]{subfiles}
+ 
+	The initial idea of the project was to be able to use the \textit{SAX} data to detect events in a measurement over a long period of time.  This ultimately proved to be too difficult to achieve due to the normalisation problems mentioned in \cref{sec:Z-normalisation}.
+	
+	As such, an algorithm was needed to achieve this on unprocessed data.
+	
+\subsection{Algorithm}
+	The algorithm works by iterating through the data on two sliding windows. calculating a short and long term mean of the absolute values of the amplitude.
+
+	
+	\noindent
+	\\
+	$l = $ number of datapoints in LTA \\
+	$s = $ number of datapoints in STA
+
+\begin{equation}
+	\overline{LTA} = \sum_{i=1}^{l}\dfrac{\abs{v(t - i)}}{l}
+\end{equation}
+
+\begin{equation}
+	\overline{STA} = \sum_{i=1}^{s}\dfrac{\abs{v(t - i)}}{s}
+\end{equation}
+	
+	For each iteration, the STA is compared to a number of standard deviations (typically 3) from the LTA, if it exceeds this value, the event is considered triggered on.  The current value of the LTA is then stored.
+	
+	The iteration then continues calculating STA with the triggered value set to true until the STA drops below the original LTA value when the event was triggered.
+	
+	If the event duration is above a pre-set threshold (typically 5s) then the event is recorded, if not the it is discarded as a probable spike.	
+
+	The downside to this approach is that it cannot normally detect an event within the period of the LTA from the start of the observation window.

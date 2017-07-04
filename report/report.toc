@@ -1,0 +1,32 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}Abstract}{3}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Objectives}{3}{subsection.1.2}
+\contentsline {section}{\numberline {2}Background}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}Seismic Waves}{4}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Symbolic Aggregate Approximation (SAX)}{4}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Suffix Trees}{5}{subsection.2.3}
+\contentsline {section}{\numberline {3}Data Analysis}{7}{section.3}
+\contentsline {subsection}{\numberline {3.1}Raw Data}{7}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Normalisation}{7}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}PAA \& SAX}{8}{subsection.3.3}
+\contentsline {subsubsection}{\numberline {3.3.1}PAA}{9}{subsubsection.3.3.1}
+\contentsline {subsubsection}{\numberline {3.3.2}SAX}{10}{subsubsection.3.3.2}
+\contentsline {subsection}{\numberline {3.4}Frequency Analysis}{11}{subsection.3.4}
+\contentsline {section}{\numberline {4}Event Detection}{12}{section.4}
+\contentsline {subsection}{\numberline {4.1}Algorithm}{12}{subsection.4.1}
+\contentsline {section}{\numberline {5}Application Design \& Development}{13}{section.5}
+\contentsline {subsection}{\numberline {5.1}Specification}{13}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Architecture Overview}{13}{subsection.5.2}
+\contentsline {subsubsection}{\numberline {5.2.1}Interface}{15}{subsubsection.5.2.1}
+\contentsline {subsubsection}{\numberline {5.2.2}Data Persistence}{15}{subsubsection.5.2.2}
+\contentsline {subsubsection}{\numberline {5.2.3}Observations API}{16}{subsubsection.5.2.3}
+\contentsline {subsubsection}{\numberline {5.2.4}SAX API}{16}{subsubsection.5.2.4}
+\contentsline {subsubsection}{\numberline {5.2.5}Suffix API}{16}{subsubsection.5.2.5}
+\contentsline {subsubsection}{\numberline {5.2.6}Deferred \& Batch Jobs}{16}{subsubsection.5.2.6}
+\contentsline {section}{\numberline {6}Conclusions}{17}{section.6}
+\contentsline {section}{\numberline {7}Critical Evaluation}{17}{section.7}
+\contentsline {subsection}{\numberline {7.1}Mistakes}{17}{subsection.7.1}
+\contentsline {subsubsection}{\numberline {7.1.1}Time-series Databases}{17}{subsubsection.7.1.1}
+\contentsline {subsubsection}{\numberline {7.1.2}Dataset}{17}{subsubsection.7.1.2}
+\contentsline {section}{Bibliography}{18}{subsubsection.7.1.2}

@@ -1,0 +1,65 @@
+\documentclass[11pt, a4paper]{scrartcl}
+\title{\vspace{-3.0cm}An Infrastructure to Store and Analyse Seismic Data as Suffix Trees}
+\subtitle{MSc Data Analytics - Project Report}
+\date{September 2017}
+\author{Tom Taylor}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage[sort]{natbib}      % references
+\usepackage[nottoc]{tocbibind} % bib om toc
+\usepackage{hyperref}          % clickable links
+\usepackage[all]{hypcap}       % for going to the top of an image when a figure reference is clicked
+\usepackage{cleveref}
+\usepackage{subfiles}
+\usepackage{physics}
+\usepackage[parfill]{parskip}
+\usepackage{courier}
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+
+\bibliographystyle{humannat}
+\graphicspath{ {./img/} }
+\newcommand{\sectionbreak}{\clearpage}
+
+\begin{document}
+	\maketitle
+\begin{itshape}
+		\noindent This report is substantially the result of my own work except where explicitly indicated in the text. I give my permission for it to be submitted to the JISC Plagiarism Detection Service. I have read and understood the sections on plagiarism in the programme Handbook and the College website.
+		
+		\noindent The report may be freely copied and distributed provided the source is explicitly acknowledged.
+\end{itshape}
+\tableofcontents
+\newpage
+
+\section{Introduction}
+\subfile{sub/introduction.tex}
+
+\section{Background}
+\subfile{sub/bkg-seismic.tex}
+\subfile{sub/bkg-sax.tex}
+\subfile{sub/bkg-suffix.tex}
+
+\section{Data Analysis}
+\subfile{sub/data-format.tex}
+\subfile{sub/normalisation.tex}
+\subfile{sub/paa-sax.tex}
+\subfile{sub/frequency.tex}
+
+
+\section{Event Detection}
+\subfile{sub/event-detection.tex}
+
+\section{Application Design \& Development}
+\subfile{sub/architecture}
+
+\section{Conclusions}
+
+\section{Critical Evaluation}
+\subfile{sub/critical_eval.tex}
+
+
+	\bibliography{bibliography}
+\end{document}
