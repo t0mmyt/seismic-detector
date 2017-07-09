@@ -24,12 +24,13 @@ nav = SimpleNavigator((
     ("Import", "/import"),
     ("Observations", "/observations"),
     ("Explore/SAX", "/sax"),
+    ("Suffix Trees", "/suffix"),
     ("Tasks", "/tasks"),
 ))
 
 
-OBSERVATIONS = getenv("OBSERVATIONS", "http://localhost:8000")
-SAX = getenv("SAX", "http://localhost:8001")
+API = getenv("API", "http://localhost:8000")
+SUFFIX = getenv("SUFFIX", "http://localhost:8002")
 BROKER_URL = getenv("BROKER_URL", "redis://localhost:6379")
 celery_app = Celery('tasks', broker=BROKER_URL)
 
@@ -112,23 +113,40 @@ def page_generic(page):
         abort(status.HTTP_404_NOT_FOUND)
 
 
-@app.route("/observations/<path:path>", methods=["GET", "DELETE"])
-def view_observations(path):
+# @app.route("/observations/<path:path>", methods=["GET", "DELETE"])
+# def view_observations(path):
+#     """
+#     Proxy requests with /observation prefix to the Observations API
+#
+#     Args:
+#         path: relative path on query service
+#
+#     Returns:
+#         JSON
+#     """
+#     proxy = Proxy(OBSERVATIONS)
+#     return proxy("observations/{}".format(path), request)
+
+
+@app.route("/api/<path:path>", methods=["GET", "DELETE", "POST", "PUT"])
+def pass_api(path):
     """
-    Proxy requests with /observation prefix to the Observations API
-    
+    Proxy requests with /api prefix to the API
+
     Args:
         path: relative path on query service
 
     Returns:
         JSON
     """
-    proxy = Proxy(OBSERVATIONS)
-    return proxy("observations/{}".format(path), **request.args.to_dict())
+    proxy = Proxy(API)
+    app.logger.debug("Sending to API: {}".format(path))
+    return proxy(path, request)
 
 
-@app.route("/sax/<path:path>", methods=["GET", "DELETE"])
-def view_sax(path):
+@app.route("/api/suffix/", methods=["GET", "DELETE", "POST", "PUT"])
+@app.route("/api/suffix/<path:path>", methods=["GET", "DELETE", "POST", "PUT"])
+def view_suffix(path=""):
     """
     Proxy requests with /sax prefix to the SAX API
 
@@ -138,15 +156,23 @@ def view_sax(path):
     Returns:
         JSON
     """
-    proxy = Proxy(SAX)
-    app.logger.debug("Sending to SAX")
-    return proxy("sax/{}".format(path), **request.args.to_dict())
+    proxy = Proxy(SUFFIX)
+    app.logger.debug("Sending to suffix")
+    return proxy("suffix/{}".format(path), request)
 
 
 @app.route("/sax")
 def page_sax():
     try:
         return render_template("explore.html", nav=nav.render_as('Explore/SAX'))
+    except TemplateNotFound:
+        abort(404)
+
+
+@app.route("/suffix")
+def page_suffix():
+    try:
+        return render_template("suffix.html", nav=nav.render_as('Suffix Trees'))
     except TemplateNotFound:
         abort(404)
 

@@ -30,7 +30,7 @@ app.controller('obsCtrl', function($scope, $http) {
     $scope.getNetworks = function() {
         $http({
             method: 'GET',
-            url: '/observations/search'
+            url: '/api/observations/search'
         }).then(function (result) {
             $scope.networks = result.data;
         });
@@ -39,7 +39,7 @@ app.controller('obsCtrl', function($scope, $http) {
     $scope.getStations = function() {
         $http({
             method: 'GET',
-            url: '/observations/search',
+            url: '/api/observations/search',
             params: {
                 network: $scope.selectedNetwork
             }
@@ -51,7 +51,7 @@ app.controller('obsCtrl', function($scope, $http) {
     $scope.getChannels = function() {
         $http({
             method: 'GET',
-            url: '/observations/search',
+            url: '/api/observations/search',
             params: {
                 network: $scope.selectedNetwork,
                 station: $scope.selectedStation
@@ -64,7 +64,7 @@ app.controller('obsCtrl', function($scope, $http) {
     $scope.getObservations = function() {
         $http({
             method: 'GET',
-            url: '/observations/search',
+            url: '/api/observations/search',
             params: {
                 network: $scope.selectedNetwork,
                 station: $scope.selectedStation,
@@ -82,7 +82,7 @@ app.controller('obsCtrl', function($scope, $http) {
         console.log("Got DELETE:" + id);
         $http({
             method: 'DELETE',
-            url: 'observations/' + id
+            url: '/api/observations/' + id
         }).then(function() {
             $scope.getObservations()
         })
@@ -92,7 +92,7 @@ app.controller('obsCtrl', function($scope, $http) {
         console.log("Got DELETE Events:" + id);
         $http({
             method: 'DELETE',
-            url: 'observations/' + id,
+            url: '/api/observations/' + id,
             params: { eventsOnly: true}
         }).then(function() {
             $scope.getObservations()
@@ -118,7 +118,7 @@ app.controller('obsCtrl', function($scope, $http) {
         $scope.charts[obs_id] = c3.generate({
             bindto: "#chart_" + obs_id,
             data: {
-                url: "/observations/" + obs_id + "/view",
+                url: "/api/observations/" + obs_id + "/view",
                 mimeType: "json",
                 keys: {
                     x: 'x',
@@ -157,7 +157,7 @@ app.controller('obsCtrl', function($scope, $http) {
     $scope.getEvents = function (obs_id) {
         $http({
             method: "GET",
-            url: "/observations/" + obs_id + "/events"
+            url: "/api/observations/" + obs_id + "/events"
         }).then(function (result) {
             $scope.events[obs_id] = result.data;
             result.data.forEach(function (x) {
@@ -168,7 +168,7 @@ app.controller('obsCtrl', function($scope, $http) {
                 ]);
             });
             $scope.charts[obs_id].load({
-                url: "/observations/" + obs_id + "/trigger_data",
+                url: "/api/observations/" + obs_id + "/trigger_data",
                 mimeType: "json",
                 keys: {
                     x: 't',

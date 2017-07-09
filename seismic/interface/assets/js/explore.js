@@ -22,11 +22,13 @@ app.controller('exploreCtrl', function($scope, $http, ngUrlBind) {
     };
     $scope.charts = [];
     $scope.chartData = [];
+    $scope.suffixTrees = [];
+    $scope.selectedSuffixTree = "";
 
     $scope.renderChart = function (i) {
         $http({
             method: 'GET',
-            url: '/sax/' + $scope.evt.id + '/view',
+            url: '/api/sax/event/' + $scope.evt.id + '/view',
             params: $scope.params
         }).then(function onSuccess(result) {
             console.time("Rendering chart");
@@ -49,7 +51,7 @@ app.controller('exploreCtrl', function($scope, $http, ngUrlBind) {
                         steppedLine: true,
                         pointRadius: 0,
                         borderColor: "Red",
-                        borderWidth: 1.5,
+                        borderWidth: 2,
                         fill: false,
                         data: $scope.chartData[i].paa
                     }]
@@ -59,11 +61,11 @@ app.controller('exploreCtrl', function($scope, $http, ngUrlBind) {
                         xAxes: [{
                             type: 'time',
                             position: 'bottom',
-                            // time: {
-                            //     parser: function (e) {
-                            //         return moment(e).utc()
-                            //     }
-                            // }
+                            time: {
+                                parser: function (e) {
+                                    return moment(e).utc()
+                                }
+                            }
                         }]
                     }
                 }
@@ -75,5 +77,27 @@ app.controller('exploreCtrl', function($scope, $http, ngUrlBind) {
         })
     };
 
+    $scope.populateSuffixTrees = function () {
+         $http.get("/api/suffix").then(function (result) {
+             result.data.forEach(function (s) {
+                 $scope.suffixTrees.push(s.description)
+             });
+         })
+    };
+
+    $scope.saveToTree = function () {
+        $http({
+            method: 'put',
+            url: '/api/suffix/' + $scope.currentTreeId,
+            data: {
+                document: $scope.chartData[1].sax,
+                description: $scope.evt
+            }
+        }).then(function (result) {
+            console.log("Saving document to tree: " + result.status_code)
+        })
+    };
+
     if (typeof($scope.evt.id) !== 'undefined' && $scope.evt.id.length > 0) $scope.renderChart(1)
+    $scope.populateSuffixTrees();
 });

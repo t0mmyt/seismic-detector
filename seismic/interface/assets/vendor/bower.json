@@ -1,0 +1,21 @@
+{
+  "name": "vendor",
+  "homepage": "https://github.com/t0mmyt/seismic-detector",
+  "authors": [
+    "Tom Taylor <tom@tommyt.co.uk>"
+  ],
+  "description": "Vendor Code",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "chart.js": "^2.5.0",
+    "moment": "^2.18.1"
+  }
+}

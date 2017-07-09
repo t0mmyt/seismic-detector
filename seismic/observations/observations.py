@@ -40,6 +40,8 @@ class ObservationDAOError(Exception):
 
 
 class ObservationDAO(object):
+    ObservationDAOError = ObservationDAOError
+
     def __init__(self, path, filename=None):
         """
         Read an obspy compatible file (e.g. SAC, miniseed) and return a payload
@@ -84,7 +86,7 @@ class ObservationDAO(object):
             stats["network"] = "Unknown"
         if len(stats["channel"]) > 0:
             stats["channel"] = stats['channel'][-1]
-        elif len(self.filename) > 0 and self.filename[-1].upper() in ("Z", "N", "E"):
+        elif self.filename and len(self.filename) > 0 and self.filename[-1].upper() in ("Z", "N", "E"):
             stats["channel"] = self.filename[-1].upper()
         else:
             stats["channel"] = "?"

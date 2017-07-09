@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Suffix Trees{% endblock %}
+{% block heading %}Suffix Trees{% endblock %}
+{% block explain %}View and Query Suffix Trees{% endblock %}
+{% block head %}
+    <script src="/assets/js/suffix.js"></script>
+    <script>
+        angular.module('ngUrlBindExample', ['ngUrlBind'])
+            .controller('MainCtrl', function($scope, ngUrlBind){
+                $scope.evt = {};
+                ngUrlBind($scope, 'currentTree')
+            })
+    </script>
+{% endblock %}
+{% block contents %}
+<div ng-app="app" ng-controller="MainCtrl">
+    <h3>Current Tree</h3>
+    <p ng-if="currentTree == null" class="bg-warning">No tree selected</p>
+    <div class="row" ng-if="currentTree != null">
+        <div class="col-lg-4 form-group">
+            <h4>Metadata</h4>
+            <span ng-if="currentTree != null">
+                <p>
+                    desc: {a currentTree.description a}<br>
+                    id: <i>{a currentTree.id a}</i><br>
+                    depth: {a currentTree.depth a}
+                </p>
+            </span>
+        </div>
+        <div class="col-lg-4" ng-if="currentTree != null">
+            <h4>Documents</h4>
+            <ul ng-if="currentDocs.length > 0">
+                <li ng-repeat="i in currentDocs">{a i.id a}: {a i.description a}</li>
+            </ul>
+        </div>
+        <div class="col-lg-4 form-group" ng-if="currentTree != null">
+            <h4>Query</h4>
+            <form ng-submit="runQuery(query)">
+                <div class="input-group input-group-md">
+                    <input id="query" class="form-control input-md" ng-model="query">
+                    <span class="input-group-btn"><button class="btn btn-default btn-md" type="submit">Search</button></span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row" ng-if="queryResults != null">
+        <div class="col-lg-12 form-group">
+            <h4>Query Results (top 5)</h4>
+            <table class="table">
+                <thead><th>% match</th><th>Document</th><th>Matching Positions</th></thead>
+                <tbody ng-repeat="r in queryResults.order">
+                    <tr ng-repeat="(d, m) in queryResults.data[r]">
+                        <td>{a (r.length / query.length * 100).toFixed(2) a} / {a r a}</td>
+                        <td>{a d a}: {a currentDocs[d - 1].description a}</td>
+                        <td>{a m a}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <pre>{a queryResults a}</pre>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 form-group">
+            <h3>Create Tree</h3>
+            <form ng-submit="createTree()" class="form-inline">
+                <input id="createDescription" class="form-control" ng-model="createParams.description" placeholder="Description">
+                <input id="createDepth" class="form-control" ng-model="createParams.depth" placeholder="Depth">
+                <button class="btn btn-default btn-md" type="submit">Create</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 form-group">
+            <h3>Available Trees</h3>
+            <table class="table">
+                <thead>
+                <tr><th>Id</th><th>Description</th><th>Created</th><th>Updated</th></tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="i in trees">
+                    <td><a href ng-click="updateCurrentTree(i.id)">{a i.id a}</a></td>
+                    <td>{a i.description a}</td>
+                    <td>{a i.created | date:'yyyy-MM-dd HH:mm:ss Z' a}</td>
+                    <td>{a i.updated | date:'yyyy-MM-dd HH:mm:ss Z' a}</td>
+                    <td><button ng-click="deleteTree(i.id)" class="btn btn-danger btn-sm">delete</button></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
