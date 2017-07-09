@@ -7,21 +7,23 @@ class PaaError(Exception):
 
 
 class Paa(object):
-    def __init__(self, series=pd.Series):
+    def __init__(self, series=pd.Series, normalise=True):
         """
         Prepare a PAA (Piecewise Aggregate Approximation) object to calculate
-        PAA of a given dataset.  Will perform z-normalisation on data before
-        interpolating linearly to an interval of 1ms.
+        PAA of a given dataset.  Will perform z-normalisation by default on
+        data     before interpolating linearly to an interval of 1ms.
 
         Args:
-           series (DataFrame): pandas DataFrame with time as index 
+            series (DataFrame): pandas DataFrame with time as index
+            normalise (bool): Whether or not to normalise
         """
         if not isinstance(series, pd.Series):
             raise PaaError("series should be a pandas Series")
         series = series.resample("1L", how="mean").interpolate(method="time")
-        std = np.std(series)
-        mean = np.mean(series)
-        series = (series - mean) / std
+        if normalise:
+            std = np.std(series)
+            mean = np.mean(series)
+            series = (series - mean) / std
         self.series = series
 
     def __call__(self, window=int):

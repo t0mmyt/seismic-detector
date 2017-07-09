@@ -12,7 +12,7 @@ class Sax(object):
         """
         Provides a generator for SAX data from PAA
         Args:
-            paa: 
+            paa (pd.Series): result from calling Paa
         """
         if not isinstance(paa, Series):
             raise SaxError("paa should be a pandas.Series, got {}".format(type(paa)))

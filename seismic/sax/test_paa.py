@@ -24,7 +24,7 @@ class PaaTest(unittest.TestCase):
         self.assertEquals(len(s), len(self.data), "Series was wrong length")
         p = Paa(s)
         expected_paa_len = self.duration * 1000 + 1
-        self.assertEquals(len(p.series), expected_paa_len, "Paa was wrong length")
+        self.assertEqual(len(p.series), expected_paa_len, "Paa was wrong length")
         res = p(500)
         # self.assertAlmostEqual(res[1], -1.250, 3, "PAA calculation was off")
         # TODO assert time offset is + 0.5 * interval
