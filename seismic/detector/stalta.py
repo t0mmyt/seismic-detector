@@ -5,11 +5,7 @@ import pandas as pd
 from obspy.signal.filter import bandpass
 
 
-class DetectorError(Exception):
-    pass
-
-
-class Detector(object):
+class StaLtaDetect(object):
     def __init__(self, trace, sampling_rate):
         """
         Create a new Detector object

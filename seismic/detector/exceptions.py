@@ -1,0 +1,2 @@
+class DetectorError(Exception):
+    pass
