@@ -1,32 +1,38 @@
 \select@language {english}
-\contentsline {section}{\numberline {1}Introduction}{3}{section.1}
-\contentsline {subsection}{\numberline {1.1}Abstract}{3}{subsection.1.1}
-\contentsline {subsection}{\numberline {1.2}Objectives}{3}{subsection.1.2}
-\contentsline {section}{\numberline {2}Background}{4}{section.2}
-\contentsline {subsection}{\numberline {2.1}Seismic Waves}{4}{subsection.2.1}
-\contentsline {subsection}{\numberline {2.2}Symbolic Aggregate Approximation (SAX)}{4}{subsection.2.2}
-\contentsline {subsection}{\numberline {2.3}Suffix Trees}{5}{subsection.2.3}
-\contentsline {section}{\numberline {3}Data Analysis}{7}{section.3}
-\contentsline {subsection}{\numberline {3.1}Raw Data}{7}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Normalisation}{7}{subsection.3.2}
-\contentsline {subsection}{\numberline {3.3}PAA \& SAX}{8}{subsection.3.3}
-\contentsline {subsubsection}{\numberline {3.3.1}PAA}{9}{subsubsection.3.3.1}
-\contentsline {subsubsection}{\numberline {3.3.2}SAX}{10}{subsubsection.3.3.2}
-\contentsline {subsection}{\numberline {3.4}Frequency Analysis}{11}{subsection.3.4}
-\contentsline {section}{\numberline {4}Event Detection}{12}{section.4}
-\contentsline {subsection}{\numberline {4.1}Algorithm}{12}{subsection.4.1}
-\contentsline {section}{\numberline {5}Application Design \& Development}{13}{section.5}
-\contentsline {subsection}{\numberline {5.1}Specification}{13}{subsection.5.1}
-\contentsline {subsection}{\numberline {5.2}Architecture Overview}{13}{subsection.5.2}
-\contentsline {subsubsection}{\numberline {5.2.1}Interface}{15}{subsubsection.5.2.1}
-\contentsline {subsubsection}{\numberline {5.2.2}Data Persistence}{15}{subsubsection.5.2.2}
-\contentsline {subsubsection}{\numberline {5.2.3}Observations API}{16}{subsubsection.5.2.3}
-\contentsline {subsubsection}{\numberline {5.2.4}SAX API}{16}{subsubsection.5.2.4}
-\contentsline {subsubsection}{\numberline {5.2.5}Suffix API}{16}{subsubsection.5.2.5}
-\contentsline {subsubsection}{\numberline {5.2.6}Deferred \& Batch Jobs}{16}{subsubsection.5.2.6}
-\contentsline {section}{\numberline {6}Conclusions}{17}{section.6}
-\contentsline {section}{\numberline {7}Critical Evaluation}{17}{section.7}
-\contentsline {subsection}{\numberline {7.1}Mistakes}{17}{subsection.7.1}
-\contentsline {subsubsection}{\numberline {7.1.1}Time-series Databases}{17}{subsubsection.7.1.1}
-\contentsline {subsubsection}{\numberline {7.1.2}Dataset}{17}{subsubsection.7.1.2}
-\contentsline {section}{Bibliography}{18}{subsubsection.7.1.2}
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}
+\contentsline {subsection}{\numberline {1.1}Abstract}{4}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Objectives}{4}{subsection.1.2}
+\contentsline {section}{\numberline {2}Background}{5}{section.2}
+\contentsline {subsection}{\numberline {2.1}Seismic Waves}{5}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Symbolic Aggregate Approximation (SAX)}{5}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Suffix Trees}{6}{subsection.2.3}
+\contentsline {section}{\numberline {3}Plan}{8}{section.3}
+\contentsline {subsection}{\numberline {3.1}Importing and Storing Data}{8}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Generate SAX Strings}{8}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Event Detection}{8}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Graphical Representation}{8}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}User Interface}{9}{subsection.3.5}
+\contentsline {section}{\numberline {4}Data Processing}{10}{section.4}
+\contentsline {subsection}{\numberline {4.1}Normalisation}{10}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}PAA \& SAX}{11}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {4.2.1}PAA}{11}{subsubsection.4.2.1}
+\contentsline {subsubsection}{\numberline {4.2.2}SAX}{13}{subsubsection.4.2.2}
+\contentsline {subsection}{\numberline {4.3}Frequency Analysis}{14}{subsection.4.3}
+\contentsline {section}{\numberline {5}Event Detection}{15}{section.5}
+\contentsline {subsection}{\numberline {5.1}Adaptive STA/LTA Algorithm}{15}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}SAX Detection Algorithm}{16}{subsection.5.2}
+\contentsline {section}{\numberline {6}Application Design}{19}{section.6}
+\contentsline {subsection}{\numberline {6.1}Discrete Services}{19}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Data processing API}{19}{subsection.6.2}
+\contentsline {subsubsection}{\numberline {6.2.1}Observations API Namespace}{20}{subsubsection.6.2.1}
+\contentsline {subsubsection}{\numberline {6.2.2}SAX API Namespace}{20}{subsubsection.6.2.2}
+\contentsline {subsection}{\numberline {6.3}Data Persistence}{20}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.4}User Interface}{21}{subsection.6.4}
+\contentsline {subsection}{\numberline {6.5}Deferred \& Batch Jobs}{21}{subsection.6.5}
+\contentsline {subsection}{\numberline {6.6}Suffix API}{22}{subsection.6.6}
+\contentsline {section}{\numberline {7}Conclusions}{23}{section.7}
+\contentsline {section}{\numberline {8}Critical Evaluation}{23}{section.8}
+\contentsline {subsection}{\numberline {8.1}Mistakes}{23}{subsection.8.1}
+\contentsline {subsubsection}{\numberline {8.1.1}Time-series Databases}{23}{subsubsection.8.1.1}
+\contentsline {subsubsection}{\numberline {8.1.2}Dataset}{23}{subsubsection.8.1.2}
+\contentsline {section}{Bibliography}{24}{subsubsection.8.1.2}

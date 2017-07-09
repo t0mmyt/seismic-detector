@@ -1,20 +1,29 @@
 \begin{thebibliography}{}
 
+\bibitem[\protect\astroncite{Beyreuther et~al.}{2010}]{obspy}
+Beyreuther, M., R.~Barsch, L.~Krischer, T.~Megies, Y.~Behr, and
+  J.~Wassermann\leavevmode\nopagebreak\newline 2010.
+\newblock Obspy: A python toolbox for seismology.
+
+\bibitem[\protect\astroncite{Bormann}{2012}]{man-seis-obs}
+Bormann, P.\leavevmode\nopagebreak\newline 2012.
+\newblock New manual of seismological observatory practice.
+
 \bibitem[\protect\astroncite{Harris et~al.}{2016}]{bbk-suffix}
 Harris, M., M.~Levene, D.~Zhang, and D.~Levene\leavevmode\nopagebreak\newline
   2016.
 \newblock The anatomy of a search and mining system for digital archives.
+
+\bibitem[\protect\astroncite{Haustant}{2016}]{restplus}
+Haustant, A.\leavevmode\nopagebreak\newline 2016.
+\newblock {Flask-RESTPlus} fully featured framework for fast, easy and
+  documented api development with flask.
 
 \bibitem[\protect\astroncite{Lin et~al.}{2003}]{sax}
 Lin, J., E.~Keogh, S.~Lonardi, and B.~Chiu\leavevmode\nopagebreak\newline 2003.
 \newblock A symbolic representation of time series, with implications for
   streaming algorithms.
 \newblock {\em Data Mining and Knowledge Discovery}.
-
-\bibitem[\protect\astroncite{M.~Beyreuther and Wassermann}{2010}]{obspy}
-M.~Beyreuther, R.~Barsch, L. K. T. M. Y.~B. and
-  J.~Wassermann\leavevmode\nopagebreak\newline 2010.
-\newblock Obspy: A python toolbox for seismology.
 
 \bibitem[\protect\astroncite{Ukkone}{1995}]{ukkonens}
 Ukkone, E.\leavevmode\nopagebreak\newline 1995.

@@ -1,0 +1,29 @@
+\documentclass[../report.tex]{subfiles}
+
+The following sections follow the objectives as defined in \cref{sec:objectives}
+
+\subsection{Importing and Storing Data}
+
+	Initially the observation data is available as SAC or Miniseed files.  These contain the raw observations along with metadata about the station that recorded the data.  This data can be parsed with the Obspy Python library \citep{obspy}.  Use of this library produces an Python object allowing simplified access to the data and metadata from the file.  The library also contains many methods for post-processing operations such as signal filtering and commonly used seismic analysis tools.
+	
+	In the project, this object will be wrapped in to a Data Access Object (DAO).  This is to add to or simplify many of the commonly used operations such as down-sampling, time slicing and passing through a bandpass filter to remove high and low frequencies.
+	
+	For simplicity when working with many files, a service will be written to extract the metadata and store it in a database and the raw observation file will be stored in an object store for later retrieval.
+
+\subsection{Generate SAX Strings}
+
+	A library and associated service will be written to carry out the normalisation of data, and to calculate PAA and to generate and return the SAX strings.  In itself, this service would not persist the output but return it to the caller to either be rendered or stored.
+
+\subsection{Event Detection}
+
+	Event detection will call on data provided by the SAX service and apply rules or heuristics to determine the onset (and potentially the duration) of events.  This information will be persisted in a database along with the observation metadata.
+
+\subsection{Graphical Representation}
+
+	Rendering of visuals will be rendered client-side in a browser.  One or more Javascript libraries will be utilised to show the various stages of the processing and results.
+
+\subsection{User Interface}
+
+	An HTML/Javascript interface will be rendered from user facing service utilising the other services and passing data back and forth using HTTP requests and JSON payloads.
+	
+	The interface will facilitate the importing and storing of data, searching and rendering results.  It will also allow for the submission of deferred or long running tasks.
