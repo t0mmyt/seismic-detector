@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 from seismic.datastore import Datastore, DatastoreError
 from seismic.metadb import get_session, ObservationRecord, EventRecord
-from seismic.detector import Detector, DetectorError
+from seismic.detector import StaLtaDetect, DetectorError
 
 MINIO_HOST = getenv("MINIO_HOST", "localhost:9000")
 MINIO_ACCESS_KEY = getenv("MINIO_ACCESS_KEY", "dev-TKE8KC10YL")
@@ -54,7 +54,7 @@ def detector(obs_id, trace, bp_low, bp_high, short_window, long_window, nstds, t
         raw = ds.get(obs_id)
         o = obspy.read(raw)
         t = o[trace]
-        d = Detector(t.data, t.meta.sampling_rate)
+        d = StaLtaDetect(t.data, t.meta.sampling_rate)
         d.bandpass(bp_low, bp_high)
         s = get_session(DB_URL)
         obs_rec = s.query(ObservationRecord).\
