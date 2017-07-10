@@ -51,6 +51,7 @@ class EventRecord(Base):
     start = Column(UTCDateTime, index=True)
     end = Column(UTCDateTime, index=True)
     sampling_rate = Column(Integer)
+    method = Column(String)
 
     __table_args__ = (
         Index("evt_network_station_channel", "network", "station", "channel"),
@@ -73,5 +74,5 @@ class EventRecord(Base):
 def get_session(url):
     engine = sqlalchemy.create_engine(url)
     Base.metadata.create_all(engine)
-    Session = sessionmaker(bind=engine)
-    return Session()
+    session = sessionmaker(bind=engine)
+    return session()
