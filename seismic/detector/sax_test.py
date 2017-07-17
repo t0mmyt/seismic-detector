@@ -24,7 +24,6 @@ class SaxDetectTest(unittest.TestCase):
             "ddddddddcccdddddddddddddddddddddedddddddddddddddddddddddddddddddddd"
             "dddddddddddcccdcddddddddddddddddddddddddddddddddddddddddddddddddd")
 
-
         self.sax_str_2 = (
             "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
             "ddddddddddddddddddddddddddddddddfgacaaggaadggaabcgadbfeaffdbebfebbf"

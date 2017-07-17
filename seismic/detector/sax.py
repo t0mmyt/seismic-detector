@@ -1,26 +1,22 @@
 import types
 from collections import deque
 
+from .detector import Detector
 from .exceptions import DetectorError
 
 
-def distance(alphabet, a, b):
-    """
-    Calculates the distance from the centre value in the alphabet of a given s
+class SaxDetect(Detector):
+    def __init__(self, trace, sampling_rate):
+        """
 
-    Args:
-        alphabet (str): alphabet to search
-        a (str): First character
-        b (str): Second character
+        Args:
+            trace:
+            sampling_rate:
+        """
+        super().__init__(trace, sampling_rate)
 
-    Returns:
-        int: distance from centre value
-    """
-    if a not in alphabet:
-        raise DetectorError("{} was not found in {}".format(a, alphabet))
-    if b not in alphabet:
-        raise DetectorError("{} was not found in {}".format(b, alphabet))
-    return abs(alphabet.find(a) - alphabet.find(b))
+    def detect(self, alphabet, paa_int, off_threshold=5000, min_len=5000):
+        pass
 
 
 def near_centre(alphabet, centre, max, s):
@@ -36,7 +32,11 @@ def near_centre(alphabet, centre, max, s):
     Returns:
         bool
     """
-    return s == centre or distance(alphabet, centre, s) <= max
+    if centre not in alphabet:
+        raise DetectorError("{} was not found in {}".format(centre, alphabet))
+    if s not in alphabet:
+        raise DetectorError("{} was not found in {}".format(s, alphabet))
+    return s == centre or abs(alphabet.find(centre) - alphabet.find(s)) <= max
 
 
 def sax_detect(stream, alphabet, paa_int, off_threshold=5000, min_len=5000):
@@ -54,10 +54,12 @@ def sax_detect(stream, alphabet, paa_int, off_threshold=5000, min_len=5000):
     """
     if not isinstance(stream, types.GeneratorType):
         raise DetectorError(
-            "SaxDetect stream expects a generator, got {}".format(type(stream)))
+            "SaxDetect stream expects a generator, got {}".format(
+                type(stream)))
     if not isinstance(alphabet, str):
         raise DetectorError(
-            "SaxDetect alphabet expects a str, got {}".format(type(alphabet)))
+            "SaxDetect alphabet expects a str, got {}".format(
+                type(alphabet)))
     if not len(alphabet) % 2 == 1:
         raise DetectorError(
             "SaxDetect requires an odd length of alphabet to have a centre")
