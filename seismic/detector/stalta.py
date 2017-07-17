@@ -17,7 +17,7 @@ class StaLtaDetect(Detector):
         super().__init__(trace, sampling_rate)
         self.trigger_values = None
 
-    def detect(self, short, long, nstds=1, trigger_len=500):
+    def detect(self, short, long, nstds=1, trigger_len=5000):
         """
         Run a hackish STA-LTA like detection on trace. Looks for short window means
         above nstds standard deviations from the long window mean for more than trigger_len observations.

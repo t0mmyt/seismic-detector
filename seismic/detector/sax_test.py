@@ -1,6 +1,8 @@
 import unittest
 
-from seismic.detector import sax_detect
+from seismic.observations import ObservationDAO
+from seismic.detector import SaxDetect, StaLtaDetect
+from seismic.detector.sax import sax_detect
 
 
 def gen_from_string(ss):
@@ -45,7 +47,6 @@ class SaxDetectTest(unittest.TestCase):
         # String 1
         t = list(sax_detect(gen_from_string(self.sax_str_1), self.alphabet, self.paa_int, 5000, 5000))
         self.assertEqual(len(t), 1, "Only one event should be found")
-        print(t)
         duration_ms = (t[0][1] - t[0][0])
         self.assertTrue(10000 <= duration_ms <= 15000, "Event was between 8 and 15 seconds, got {}".format(duration_ms))
         self.assertAlmostEqual(t[0][0] / 1000, 5, 1, "Event was approximately 5000ms from the start, got {}".format(t[0][0]))
@@ -56,8 +57,35 @@ class SaxDetectTest(unittest.TestCase):
         self.assertTrue(10000 <= duration_ms <= 20000, "Event was between 10 and 20 seconds, got {}".format(duration_ms))
         self.assertAlmostEqual(t[0][0] / 1000, 5, 1, "Event was approximately 5000ms from the start, got {}".format(t[0][0]))
 
-    def test_stalta_detect(self):
-        pass
+    def test_full_sax_detector_class_1(self):
+        o = ObservationDAO("../../sample/_all/cal.z")
+        o.bandpass(5, 10)
+        det = SaxDetect(o.stream[0].data, o.stats.sampling_rate)
+        s, e = det.detect(self.alphabet, self.paa_int).__next__()
+        self.assertTrue((10.5 <= s / 1000 <= 11), "Event start was 10.5 to 11 seconds from start, got {}".format(s / 1000))
+        self.assertTrue((20 <= e / 1000 <= 30), "Event end was 20 to 30 seconds from start, got {}".format(e / 1000))
 
+    def test_full_sax_detector_class_2(self):
+        o = ObservationDAO("../../sample/_all/cao.z")
+        o.bandpass(5, 10)
+        det = SaxDetect(o.stream[0].data, o.stats.sampling_rate)
+        s, e = det.detect(self.alphabet, self.paa_int).__next__()
+        self.assertTrue((11.5 <= s / 1000 <= 12.5), "Event start was 11.5 to 12.5 seconds from start, got {}".format(s / 1000))
+        self.assertTrue((25 <= e / 1000 <= 35), "Event end was 20 to 30 seconds from start, got {}".format(e / 1000))
 
+    def test_full_stalta_detector_class_1(self):
+        o = ObservationDAO("../../sample/_all/cal.z")
+        o.bandpass(5, 10)
+        det = StaLtaDetect(o.stream[0].data, o.stats.sampling_rate)
+        s, e = det.detect(short=50, long=5000, nstds=3, trigger_len=5000).__next__()
+        self.assertTrue((10.5 <= s / 1000 <= 11), "Event start was 10.5 to 11 seconds from start, got {}".format(s / 1000))
+        self.assertTrue((20 <= e / 1000 <= 30), "Event end was 25 to 35 seconds from start, got {}".format(e / 1000))
+
+    def test_full_stalta_detector_class_2(self):
+        o = ObservationDAO("../../sample/_all/cao.z")
+        o.bandpass(5, 10)
+        det = StaLtaDetect(o.stream[0].data, o.stats.sampling_rate)
+        s, e = det.detect(short=50, long=5000, nstds=3, trigger_len=5000).__next__()
+        self.assertTrue((11.5 <= s / 1000 <= 12.5), "Event start was 11.5 to 12.5 seconds from start, got {}".format(s / 1000))
+        self.assertTrue((25 <= e / 1000 <= 35), "Event end was 25 to 35 seconds from start, got {}".format(e / 1000))
 

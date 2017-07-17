@@ -19,7 +19,7 @@ class Paa(object):
         """
         if not isinstance(series, pd.Series):
             raise PaaError("series should be a pandas Series")
-        series = series.resample("1L", how="mean").interpolate(method="time")
+        series = series.resample("1L").mean().interpolate(method="time")
         if normalise:
             std = np.std(series)
             mean = np.mean(series)
