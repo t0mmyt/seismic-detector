@@ -1,5 +1,6 @@
 import types
 from collections import deque
+import numpy as np
 import pandas as pd
 
 from seismic.sax import Paa, PaaError, Sax, SaxError
@@ -18,11 +19,13 @@ class SaxDetect(Detector):
         super().__init__(trace, sampling_rate)
         # Some nasty data munging to get around weird sampling rates
         end_time = len(trace) * (1000 / sampling_rate)
-        rng = pd.date_range(
-            start=pd.to_datetime(0, unit="ms"),
-            end=pd.to_datetime(end_time, unit="ms"),
-            freq="{}U".format(int(10 ** 3 * end_time / (len(trace) - 1)))
-        )
+        timestamps = np.linspace(0, end_time, num=len(trace))
+        # rng = pd.date_range(
+        #     start=pd.to_datetime(0, unit="ms"),
+        #     end=pd.to_datetime(end_time, unit="ms"),
+        #     freq="{}U".format(int(10 ** 3 * end_time / (len(trace) - 1)))
+        # )
+        rng = pd.to_datetime(timestamps, unit="ms")
         self.series = pd.Series(data=trace, index=rng)
 
     def detect(self, alphabet, paa_int, off_threshold=5000, min_len=5000):

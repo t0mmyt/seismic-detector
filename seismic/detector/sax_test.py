@@ -63,7 +63,7 @@ class SaxDetectTest(unittest.TestCase):
         det = SaxDetect(o.stream[0].data, o.stats.sampling_rate)
         s, e = det.detect(self.alphabet, self.paa_int).__next__()
         self.assertTrue((10.5 <= s / 1000 <= 11), "Event start was 10.5 to 11 seconds from start, got {}".format(s / 1000))
-        self.assertTrue((20 <= e / 1000 <= 30), "Event end was 20 to 30 seconds from start, got {}".format(e / 1000))
+        self.assertTrue((20.0 <= e / 1000 <= 30.0), "Event end was 20 to 30 seconds from start, got {}".format(e / 1000))
 
     def test_full_sax_detector_class_2(self):
         o = ObservationDAO("../../sample/_all/cao.z")
@@ -71,7 +71,15 @@ class SaxDetectTest(unittest.TestCase):
         det = SaxDetect(o.stream[0].data, o.stats.sampling_rate)
         s, e = det.detect(self.alphabet, self.paa_int).__next__()
         self.assertTrue((11.5 <= s / 1000 <= 12.5), "Event start was 11.5 to 12.5 seconds from start, got {}".format(s / 1000))
-        self.assertTrue((25 <= e / 1000 <= 35), "Event end was 20 to 30 seconds from start, got {}".format(e / 1000))
+        self.assertTrue((25.0 <= e / 1000 <= 35.0), "Event end was 20 to 30 seconds from start, got {}".format(e / 1000))
+
+    def test_full_sax_detector_class_3(self):
+        o = ObservationDAO("../../sample/_all/cps.z")
+        o.bandpass(5, 10)
+        det = SaxDetect(o.stream[0].data, o.stats.sampling_rate)
+        s, e = det.detect(self.alphabet, self.paa_int).__next__()
+        self.assertTrue((11.5 <= s / 1000 <= 12.5), "Event start was 11.5 to 12.5 seconds from start, got {}".format(s / 1000))
+        # self.assertTrue((25.0 <= e / 1000 <= 35.0), "Event end was 20 to 30 seconds from start, got {}".format(e / 1000))
 
     def test_full_stalta_detector_class_1(self):
         o = ObservationDAO("../../sample/_all/cal.z")
@@ -79,7 +87,7 @@ class SaxDetectTest(unittest.TestCase):
         det = StaLtaDetect(o.stream[0].data, o.stats.sampling_rate)
         s, e = det.detect(short=50, long=5000, nstds=3, trigger_len=5000).__next__()
         self.assertTrue((10.5 <= s / 1000 <= 11), "Event start was 10.5 to 11 seconds from start, got {}".format(s / 1000))
-        self.assertTrue((20 <= e / 1000 <= 30), "Event end was 25 to 35 seconds from start, got {}".format(e / 1000))
+        self.assertTrue((20.0 <= e / 1000 <= 30.0), "Event end was 25 to 35 seconds from start, got {}".format(e / 1000))
 
     def test_full_stalta_detector_class_2(self):
         o = ObservationDAO("../../sample/_all/cao.z")
@@ -87,5 +95,5 @@ class SaxDetectTest(unittest.TestCase):
         det = StaLtaDetect(o.stream[0].data, o.stats.sampling_rate)
         s, e = det.detect(short=50, long=5000, nstds=3, trigger_len=5000).__next__()
         self.assertTrue((11.5 <= s / 1000 <= 12.5), "Event start was 11.5 to 12.5 seconds from start, got {}".format(s / 1000))
-        self.assertTrue((25 <= e / 1000 <= 35), "Event end was 25 to 35 seconds from start, got {}".format(e / 1000))
+        self.assertTrue((25.0 <= e / 1000 <= 35.0), "Event end was 25 to 35 seconds from start, got {}".format(e / 1000))
 
