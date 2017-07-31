@@ -13,7 +13,7 @@ from seismic.interface.nav import SimpleNavigator
 from seismic.interface.importer import Importer
 from seismic.interface.proxy import Proxy
 from seismic.interface.errors import ErrorHandler
-from seismic.worker.tasks import detector, make_graphs
+from seismic.worker.tasks import stalta_detector, sax_detector, make_graphs
 
 template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
 app = Flask("interface", template_folder=template_dir)
@@ -179,14 +179,14 @@ def page_suffix():
 
 @app.route("/run/<task_name>")
 def run_task(task_name):
-    if task_name == "detect":
+    if task_name == "stalta_detect":
         req_params = ("obsId", "bandpassLow", "bandpassHigh", "shortWindow", "longWindow", "nStds", "triggerLen")
         missing_params = [k for k in req_params if k not in request.args]
         if len(missing_params) > 0:
             raise ErrorHandler("Missing parameters: {}".format(", ".join(missing_params)))
         # TODO - This does not support multiple traces in a file (see Eww)
         task = chain(
-            detector.s(
+            stalta_detector.s(
                 obs_id=request.args['obsId'],
                 trace=0,  # <- Eww
                 bp_low=int(request.args['bandpassLow']),
@@ -197,6 +197,26 @@ def run_task(task_name):
                 trigger_len=int(request.args['triggerLen']),
             ),
             # make_graphs.s()
+        ).apply_async()
+        return jsonify({"taskId": task.id})
+    elif task_name == "sax_detect":
+        req_params = ("obsId", "bandpassLow", "bandpassHigh", "paaInt", "alphabet", "offThreshold", "minLen")
+        missing_params = [k for k in req_params if k not in request.args]
+        if len(missing_params) > 0:
+            raise ErrorHandler("Missing parameters: {}".format(", ".join(missing_params)))
+        # TODO - This does not support multiple traces in a file (see Eww)
+        app.logger.debug("Got: {}".format(jsonify(request.args.to_dict())))
+        task = chain(
+            sax_detector.s(
+                obs_id=request.args['obsId'],
+                trace=0,  # <- Eww
+                bp_low=int(request.args['bandpassLow']),
+                bp_high=int(request.args['bandpassHigh']),
+                paa_int=int(request.args['paaInt']),
+                alphabet=request.args['alphabet'],
+                off_threshold=int(request.args['offThreshold']),
+                min_len=int(request.args['minLen'])
+            )
         ).apply_async()
         return jsonify({"taskId": task.id})
     else:

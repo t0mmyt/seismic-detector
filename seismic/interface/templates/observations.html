@@ -11,7 +11,7 @@
 {% block contents %}
 <div ng-app="obs" ng-controller="obsCtrl">
 <form>
-  <div class="row">
+<div class="row">
     <div class="col-lg-2 form-group">
       <label for="network">Network</label><br>
       <select ng-model="selectedNetwork" ng-options="i for i in networks"
@@ -27,30 +27,33 @@
               class="form-control" id="station" name="station" size=7>
       </select>
     </div>
-    <div class="col-lg-1 form-group">
-      <label for="channel">Channel</label><br>
-      <select ng-model="selectedChannel" ng-options="i for i in channels"
+    <div class="col-lg-2 form-group">
+        <label for="channel">Channel</label><br>
+        <select ng-model="selectedChannel" ng-options="i for i in channels"
               ng-change="getObservations()"
               class="form-control" id="channel" name="channel" size=7>
-      </select>
+        </select>
     </div>
     <div class="col-lg-2 form-group">
         <label for="bandpassLow">Bandpass Low</label>
-        <input type="number" id="bandpassLow" ng-model="detectSettings.bandpassLow">
+        <input type="number" id="bandpassLow" ng-model="StaLtaDetectSettings.bandpassLow">
         <label for="bandpassHigh">Bandpass High</label>
-        <input type="number" id="bandpassHigh" ng-model="detectSettings.bandpassHigh">
-        <label for="shortWindow">Short Window (ms)</label>
-        <input type="number" id="shortWindow" ng-model="detectSettings.shortWindow">
+        <input type="number" id="bandpassHigh" ng-model="StaLtaDetectSettings.bandpassHigh">
+        <label for="longWindow">Long Window (ms)</label>
+        <input type="number" id="longWindow" ng-model="StaLtaDetectSettings.longWindow">
     </div>
     <div class="col-lg-2 form-group">
-        <label for="longWindow">Long Window (ms)</label>
-        <input type="number" id="longWindow" ng-model="detectSettings.longWindow">
+        <label for="shortWindow">Short Window (ms)</label>
+        <input type="number" id="shortWindow" ng-model="StaLtaDetectSettings.shortWindow">
         <label for="nStds">Std Devs to trigger</label>
-        <input type="number" id="nStds" ng-model="detectSettings.nStds">
+        <input type="number" id="nStds" ng-model="StaLtaDetectSettings.nStds">
         <label for="triggerLen">Min Trigger Length (ms)</label>
-        <input type="number" id="triggerLen" ng-model="detectSettings.triggerLen">
+        <input type="number" id="triggerLen" ng-model="StaLtaDetectSettings.triggerLen">
     </div>
-  </div>
+    <div class="col-lg-2 form-group">
+
+    </div>
+    </div>
 </form>
 <table ng-show="observations.length > 0" class="table">
     <thead>
@@ -65,8 +68,9 @@
     </tr>
     <tr ng-if="showOptions[i.id]">
         <td colspan="100%">
-            <button ng-click="detectEvents(i.id)" class="btn btn-primary btn-sm">detect events</button>
-            <button ng-click="getObservations()" class="btn btn-primary btn-sm">refresh</button>
+            <button ng-click="StaLtaDetect(i.id)" class="btn btn-primary btn-sm">STALTA detect events</button>
+            <button ng-click="SaxDetect(i.id)" class="btn btn-primary btn-sm">SAX detect events</button>
+            <button ng-click="getObservations(i.id)" class="btn btn-info btn-sm">refresh</button>
             <button ng-click="deleteEvents(i.id)" class="btn btn-warning btn-sm">delete events</button>
             <button ng-click="deleteObservation(i.id)" class="btn btn-danger btn-sm">delete observation</button>
             <small ng-show="status[i.id]">{a status[i.id] a}</small>
@@ -83,7 +87,7 @@
                 </tr></thead>
                 <tbody>
                     <tr ng-repeat="j in events[i.id]">
-                        <td><a href="http://localhost:8080/sax#!?evt=~(id~'{a j.evt_id a})">{a j.evt_id a}</a></td>
+                        <td><a href="/sax#!?evt=~(id~'{a j.evt_id a})">{a j.evt_id a}</a></td>
                         </td><td>{a j.start * 1000 | date:'HH:mm:ss.sss Z' :'UTC' a}</td><td>{a j.duration a}</td>
                     </tr>
                 </tbody>

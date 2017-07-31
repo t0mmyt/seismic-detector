@@ -18,13 +18,22 @@ app.controller('obsCtrl', function($scope, $http) {
     $scope.events = {};
     $scope.status = {};
     $scope.charts = {};
-    $scope.detectSettings = {
+    $scope.detector = null;
+    $scope.StaLtaDetectSettings = {
         bandpassLow: 5,
         bandpassHigh: 10,
         shortWindow: 50,
         longWindow: 5000,
         nStds: 3,
         triggerLen: 5000
+    };
+    $scope.SaxDetectSettings = {
+        bandpassLow: 5,
+        bandpassHigh: 10,
+        paaInt: 50,
+        alphabet: 'abcdefg',
+        offThreshold: 5000,
+        minLen: 5000
     };
 
     $scope.getNetworks = function() {
@@ -99,13 +108,27 @@ app.controller('obsCtrl', function($scope, $http) {
         })
     };
 
-    $scope.detectEvents = function (id) {
+    $scope.StaLtaDetect = function (id) {
         // This does not copy
-        var p = $scope.detectSettings;
+        var p = $scope.StaLtaDetectSettings;
         p.obsId = id;
         $http({
             method: 'GET',
-            url: '/run/detect',
+            url: '/run/stalta_detect',
+            params: p
+        }).then(function(result) {
+            $scope.status[id] = "Dispatched job: " + result.data.taskId;
+            console.log("Dispatched job " + result.data.taskId + " for obs: " + id)
+        });
+    };
+
+    $scope.SaxDetect = function (id) {
+        // This does not copy
+        var p = $scope.SaxDetectSettings;
+        p.obsId = id;
+        $http({
+            method: 'GET',
+            url: '/run/sax_detect',
             params: p
         }).then(function(result) {
             $scope.status[id] = "Dispatched job: " + result.data.taskId;
@@ -167,19 +190,19 @@ app.controller('obsCtrl', function($scope, $http) {
                     {value: x.end * 1000, text: 'End', position: 'end'}
                 ]);
             });
-            $scope.charts[obs_id].load({
-                url: "/api/observations/" + obs_id + "/trigger_data",
-                mimeType: "json",
-                keys: {
-                    x: 't',
-                    value: ['lm', 'sm', 'trigger']
-                },
-                axes: {
-                    lm: "y2",
-                    sm: "y2",
-                    trigger: "y2"
-                }
-            });
+            // $scope.charts[obs_id].load({
+            //     url: "/api/observations/" + obs_id + "/trigger_data",
+            //     mimeType: "json",
+            //     keys: {
+            //         x: 't',
+            //         value: ['lm', 'sm', 'trigger']
+            //     },
+            //     axes: {
+            //         lm: "y2",
+            //         sm: "y2",
+            //         trigger: "y2"
+            //     }
+            // });
             $scope.charts[obs_id].show('axis.y2');
         })
     };

@@ -14,9 +14,10 @@ import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 
+from seismic.observations import ObservationDAO, ObservationDAOError
 from seismic.datastore import Datastore, DatastoreError
 from seismic.metadb import get_session, ObservationRecord, EventRecord
-from seismic.detector import StaLtaDetect, DetectorError
+from seismic.detector import StaLtaDetect, SaxDetect, DetectorError
 
 MINIO_HOST = getenv("MINIO_HOST", "localhost:9000")
 MINIO_ACCESS_KEY = getenv("MINIO_ACCESS_KEY", "dev-TKE8KC10YL")
@@ -33,7 +34,7 @@ logger.setLevel(logging.DEBUG)
 
 
 @capp.task()
-def detector(obs_id, trace, bp_low, bp_high, short_window, long_window, nstds, trigger_len):
+def stalta_detector(obs_id, trace, bp_low, bp_high, short_window, long_window, nstds, trigger_len):
     """
     Run detector to find events and store in metadb
     
@@ -52,10 +53,10 @@ def detector(obs_id, trace, bp_low, bp_high, short_window, long_window, nstds, t
     """
     try:
         raw = ds.get(obs_id)
-        o = obspy.read(raw)
-        t = o[trace]
+        o = ObservationDAO(raw)
+        o.bandpass(bp_low, bp_high)
+        t = o.stream[0]
         d = StaLtaDetect(t.data, t.meta.sampling_rate)
-        d.bandpass(bp_low, bp_high)
         s = get_session(DB_URL)
         obs_rec = s.query(ObservationRecord).\
             filter_by(obs_id=obs_id).one()
@@ -70,7 +71,8 @@ def detector(obs_id, trace, bp_low, bp_high, short_window, long_window, nstds, t
                 channel=obs_rec.channel,
                 start=start_time + timedelta(milliseconds=evt[0]),
                 end=start_time + timedelta(milliseconds=evt[1]),
-                sampling_rate=obs_rec.sampling_rate
+                sampling_rate=obs_rec.sampling_rate,
+                method="stalta"
             )
             s.add(er)
         s.commit()
@@ -85,6 +87,39 @@ def detector(obs_id, trace, bp_low, bp_high, short_window, long_window, nstds, t
     except (NoResultFound, MultipleResultsFound) as e:
         error("No single result from DB: {}".format(e))
 
+@capp.task()
+def sax_detector(obs_id, trace, bp_low, bp_high, paa_int, alphabet, off_threshold, min_len):
+    try:
+        raw = ds.get(obs_id)
+        o = ObservationDAO(raw)
+        o.bandpass(bp_low, bp_high)
+        t = o.stream[0]
+        d = SaxDetect(t.data, t.meta.sampling_rate)
+        s = get_session(DB_URL)
+        obs_rec = s.query(ObservationRecord).\
+            filter_by(obs_id=obs_id).one()
+        start_time = datetime.datetime.fromtimestamp(obs_rec.start.timestamp(), pytz.UTC)
+        evts = 0
+        for evt in d.detect(alphabet, paa_int, off_threshold, min_len):
+            evts += 1
+            er = EventRecord(
+                obs_id=obs_id,
+                network=obs_rec.network,
+                station=obs_rec.station,
+                channel=obs_rec.channel,
+                start=start_time + timedelta(milliseconds=evt[0]),
+                end=start_time + timedelta(milliseconds=evt[1]),
+                sampling_rate=obs_rec.sampling_rate,
+                method="sax"
+            )
+            s.add(er)
+        s.commit()
+        info("Got {} events from {}".format(evts, obs_id))
+        return obs_id
+    except (DatastoreError, DetectorError) as e:
+        error(str(e))
+    except (NoResultFound, MultipleResultsFound) as e:
+        error("No single result from DB: {}".format(e))
 
 @capp.task()
 def make_graphs(obs_id):
