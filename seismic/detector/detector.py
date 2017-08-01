@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import numpy as np
+import pandas as pd
 from obspy.signal.filter import bandpass
 
 from .exceptions import DetectorError
@@ -7,7 +8,7 @@ from .exceptions import DetectorError
 
 class Detector(ABC):
     """
-    Base class for a detector
+    Base class for a stalta_detector
     """
     @abstractmethod
     def __init__(self, trace, sampling_rate):
@@ -17,6 +18,16 @@ class Detector(ABC):
         self.freq = sampling_rate
         self.interval = 1000 / sampling_rate
         self._abs = None
+        # Some nasty data munging to get around weird sampling rates
+        end_time = len(trace) * (1000 / sampling_rate)
+        timestamps = np.linspace(0, end_time, num=len(trace))
+        rng = pd.to_datetime(timestamps, unit="ms")
+        self.series = pd.Series(data=trace, index=rng)
+
+
+    @abstractmethod
+    def detect(self, *args, **kwargs):
+        pass
 
     @property
     def abs(self):
@@ -52,6 +63,8 @@ class Detector(ABC):
         """
         self.trace = bandpass(self.trace, low, high, self.freq)
 
-    @abstractmethod
-    def detect(self, *args, **kwargs):
-        pass
+    def slice(self, start, end):
+        ind_start = self.series.index.searchsorted(pd.to_datetime(start, unit="ms"))
+        ind_end = self.series.index.searchsorted(pd.to_datetime(end, unit="ms"))
+        return self.series[ind_start:ind_end]
+
