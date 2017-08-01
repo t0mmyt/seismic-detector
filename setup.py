@@ -34,5 +34,6 @@ setup(
         'celery',
         'redis',
         'flask-api',
+        'gensim',
     )
 )
