@@ -36,3 +36,6 @@ class Sax(object):
         )
         for i in self.paa:
             yield alphabet[np.searchsorted(thresholds, i)]
+
+    def __str__(self, alphabet=str):
+        return "".join([i for i in self.__call__(alphabet)])

@@ -3,9 +3,10 @@ import numpy as np
 import pandas as pd
 import pytz
 import json
+from datetime import timedelta
 from flask import request, send_file, current_app as app
 from flask_api import status
-from flask_restplus import Namespace, Resource, fields
+from flask_restplus import Namespace, Resource, reqparse
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
@@ -90,8 +91,6 @@ class View(Resource):
         try:
             ds = Datastore(MINIO_HOST, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET)
             o = ObservationDAO(ds.get(obs_id))
-            ov = o.view()
-            app.logger.debug(ov)
             return o.view()
         except DatastoreError as e:
             raise InternalServerError(e)
@@ -116,6 +115,50 @@ class Events(Resource):
         } for e in r]
 
 
+@api.route("/<obs_id>/<evt_id>")
+@api.param("offset", "Offset start of event (ms)", type="integer")
+@api.param("length", "Length of event", type="integer", required=True)
+@api.param("filename", "Optional filename for downlaoded file", type="string")
+class Event(Resource):
+    def get(self, obs_id, evt_id):
+        """ Retrieve a SAC file for an event """
+        try:
+            parser = reqparse.RequestParser()
+            parser.add_argument("offset", type=int, default=0)
+            parser.add_argument("length", type=int)
+            parser.add_argument("filename", type=str)
+            p = parser.parse_args()
+            # Get observation
+            ds = Datastore(MINIO_HOST, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET)
+            db = get_session(DB_URL)
+            evt = db.query(EventRecord).filter_by(obs_id=obs_id, evt_id=evt_id).one()
+            obs = ObservationDAO(ds.get(obs_id))
+            # Slice event from observation
+            start = (evt.start + timedelta(milliseconds=p["offset"]))
+            if p["length"]:
+                end = (start + timedelta(milliseconds=p["length"]))
+            else:
+                end = evt.end
+            obs.slice(start.timestamp(), end.timestamp())
+            # Prepare download
+            filename = p["filename"] if p["filename"] else "{}.SAC".format(evt_id)
+            b = BytesIO()
+            obs.stream.write(b, format="SAC")
+            b.seek(0)
+            return send_file(
+                b,
+                as_attachment=True,
+                attachment_filename=filename,
+                mimetype="application/octet"
+            )
+        except NoResultFound:
+            raise NotFound
+        except MultipleResultsFound:
+            raise InternalServerError("Multiple results found, this is bad")
+        except DatastoreError as e:
+            raise InternalServerError(e)
+
+
 @api.route("/search")
 class Search(Resource):
     def get(self):
@@ -132,6 +175,9 @@ class Search(Resource):
                     db.query(EventRecord).filter(EventRecord.obs_id == o.obs_id).count()
             return [{
                 "id": o.obs_id,
+                "network": o.network,
+                "station": o.station,
+                "channel": o.channel,
                 "start": o.start.timestamp(),
                 "end": o.end.timestamp(),
                 "sampling_rate": o.sampling_rate,

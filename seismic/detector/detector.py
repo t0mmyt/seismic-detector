@@ -10,7 +10,6 @@ class Detector(ABC):
     """
     Base class for a stalta_detector
     """
-    @abstractmethod
     def __init__(self, trace, sampling_rate):
         if not isinstance(trace, np.ndarray):
             raise DetectorError("Trace should be an ndarray")
@@ -23,7 +22,6 @@ class Detector(ABC):
         timestamps = np.linspace(0, end_time, num=len(trace))
         rng = pd.to_datetime(timestamps, unit="ms")
         self.series = pd.Series(data=trace, index=rng)
-
 
     @abstractmethod
     def detect(self, *args, **kwargs):
@@ -52,6 +50,11 @@ class Detector(ABC):
         assert isinstance(a, np.ndarray), "normalisation only works on numpy arrays"
         d = np.divide(a, max(np.max(a), -np.min(a)))
         return d
+
+    def znormalise(self):
+        std = np.std(self.series)
+        mean = np.mean(self.series)
+        self.series = (self.series - mean) / std
 
     def bandpass(self, low, high):
         """

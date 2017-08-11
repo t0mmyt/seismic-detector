@@ -12,6 +12,7 @@ import pytz
 import json
 
 from seismic.metadb import ObservationRecord
+from io import BytesIO
 
 
 log = logging.getLogger("observations")
@@ -168,3 +169,10 @@ class ObservationDAO(object):
     def series(self):
         df = self.dataframe()
         return pd.Series(data=df["y"], index=df.index)
+
+    def write(self, fmt="SAC"):
+        b = BytesIO()
+        self.stream.write(b, format=fmt)
+        b.seek(0)
+        return b
+

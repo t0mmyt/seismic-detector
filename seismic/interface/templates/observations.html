@@ -79,15 +79,16 @@
             <div id="chart_{a i.id a}" ng-bind="chart(i.id)" ng-init="renderChart(i.id)"></div>
         </td>
     </tr>
-    <tr ng-if="showEvents[i.id]" ng-init="getEvents(i.id)">
+    <tr ng-if="showOptions[i.id] && showEvents[i.id]" ng-init="getEvents(i.id)">
         <td colspan="100%">
             <table class="table">
                 <thead><tr>
-                    <th>Event ID</th><th>Start</th><th>Duration (ms)</th>
+                    <th>Event ID</th><th>Raw Event (5s)</th><th>Start</th><th>Duration (ms)</th>
                 </tr></thead>
                 <tbody>
                     <tr ng-repeat="j in events[i.id]">
                         <td><a href="/sax#!?evt=~(id~'{a j.evt_id a})">{a j.evt_id a}</a></td>
+                        <td><a href="/api/observations/{a i.id a}/{a j.evt_id a}?length=5000&filename={a i.network a}.{a i.station a}.{a i.channel a}-{a j.start a}.SAC">Download</a></td>
                         </td><td>{a j.start * 1000 | date:'HH:mm:ss.sss Z' :'UTC' a}</td><td>{a j.duration a}</td>
                     </tr>
                 </tbody>
