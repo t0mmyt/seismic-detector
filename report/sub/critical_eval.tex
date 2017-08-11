@@ -1,6 +1,9 @@
 \documentclass[../report.tex]{subfiles}
 \begin{document}
-\subsection{Mistakes}
+\subsection{Divergence from Original Objectives} \label{sec:alteration-objectives}
+\subsubsection{Suffix Trees}
+	The original objectives had focussed on building SAX strings suitable for storage and interpretation using Suffix Trees.  Something that was not picked up during the early research stages was the difficulty in finding patterns between different observations of the same event.  Once this had been established, it was clear that Suffix Trees 
+
 \subsubsection{Time-series Databases}
 	Early on in the project, I had thought that it would be beneficial to store the raw data in a Time-Series based database such as InfluxDB, OpenTSDB or KairosDB.  This would have allowed for the chaining together of events and in theory provided fast arbitrary access to data.
 	

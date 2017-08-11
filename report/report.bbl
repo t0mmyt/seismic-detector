@@ -9,6 +9,32 @@ Beyreuther, M., R.~Barsch, L.~Krischer, T.~Megies, Y.~Behr, and
 Bormann, P.\leavevmode\nopagebreak\newline 2012.
 \newblock New manual of seismological observatory practice.
 
+\bibitem[\protect\astroncite{Butterworth}{1930}]{bandpass}
+Butterworth, S.\leavevmode\nopagebreak\newline 1930.
+\newblock On the theory of filter amplifiers.
+\newblock {\em Experimental Wireless and the Wireless Engineer}, 7.
+
+\bibitem[\protect\astroncite{Garnero}{2017}]{faultangle}
+Garnero, E.~J.\leavevmode\nopagebreak\newline 2017.
+\newblock "seismology 101" images.
+\newblock [Online; accessed August, 2017].
+
+\bibitem[\protect\astroncite{Goitom et~al.}{2015}]{eritrea1}
+Goitom, B., C.~Oppenheimer, J.~O.~S. Hammond, R.~Grandin, T.~Barnie,
+  A.~Donovan, G.~Ogubazghi, E.~Yohannes, G.~Kibrom, J.-M. Kendall, S.~A. Carn,
+  D.~Fee, C.~Sealing, D.~Keir, A.~Ayele, J.~Blundy, J.~Hamlyn, T.~Wright, and
+  S.~Berhe\leavevmode\nopagebreak\newline 2015.
+\newblock First recorded eruption of nabro volcano, eritrea.
+\newblock {\em Bulletin of Volcanology}.
+
+\bibitem[\protect\astroncite{Hamlyn et~al.}{2014}]{eritrea2}
+Hamlyn, J.~E., D.~Keir, T.~J. Wright, J.~W. Neuberg, B.~Goitom, J.~O.~S.
+  Hammond, C.~Pagli, C.~Oppenheimer, J.-M. Kendall, and
+  R.~Grandin\leavevmode\nopagebreak\newline 2014.
+\newblock Seismicity and subsidence following the 2011 nabro eruption, eritrea:
+  Insights into the plumbing system of an off-rift volcano.
+\newblock {\em Journal of Geophysical Research: SolidEarth}.
+
 \bibitem[\protect\astroncite{Harris et~al.}{2016}]{bbk-suffix}
 Harris, M., M.~Levene, D.~Zhang, and D.~Levene\leavevmode\nopagebreak\newline
   2016.

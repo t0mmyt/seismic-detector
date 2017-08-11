@@ -2,7 +2,7 @@
 
 \subsection{Discrete Services}
 
-	The application was decided to be split in to discrete components with an all of the data processing  bundled together behind an API exposed via HTTP with mostly JSON payloads (the observation data is transferred and stored in its original binary format).  The interface is a separate service that is mostly an HTML and Javascript powered application that speaks to the API on the HTTP/JSON interface.  A third instance of the application runs to carry out long running or deferred tasks and is communicated with via Redis as a message queue.  Additionally data persistence services (see \cref{sec:data-persistence}) run separately.
+	The application was decided to be split in to discrete components with an all of the data processing  bundled together behind a single API exposed via HTTP with mostly JSON payloads (the observation data is transferred and stored in its original binary format).  The interface is a separate service that is mostly an HTML and Javascript powered application that speaks to the API on the HTTP/JSON interface.  A third instance of the application runs to carry out long running or deferred tasks and is communicated with via Redis as a message queue.  Additionally data persistence services (see \cref{sec:data-persistence}) run separately.
 	
 \begin{figure}[h]
 	\centering
@@ -15,7 +15,7 @@
 
 	As previously mentioned, the data processing functions (with the exception of the Suffix Tree code) are bundled in to a single API process broken in to separate namespaces for the different parts.
 
-	The \textit{observations} namespace used to manipulate observation files.  It supports a REST like interface for CRUD (Create, Read, Update and Delete) operations and RPC (Remote Procedure Call) for running event detection and retrieving results.
+	The \textit{observations} namespace used to manipulate observation files.  It supports a REST like interface for CRUD (Create, Read, Update and Delete) operations and RPCs (Remote Procedure Calls) for running event detection and retrieving results.
 	
 	The \textit{SAX} namespace is exposed via a JSON based HTTP API.  Its purpose is to perform PAA and SAX operations on a given observation or event and return data for rendering visualisations as well as the produced string from the SAX calculation.
 	
@@ -48,7 +48,7 @@
 	The view and control components of the interface were written in HTML (using Twitter's Bootstrap) and Javascript (using AngularJS, Charts.js and c3.js).  AngularJS allows for two way data binding between the Broswers DOM and elements such as form inputs and renders with minimal additional code.  It also provides a mechanism for sending requests to the APIs exposed by the aforementioned Proxy module.  Chart.js and c3.js are two open source Javascript charting libraries that utilise features included in HTML5 used in this case for rendering observation data.
 
 
-\subsection{Deferred \& Batch Jobs}
+\subsection{Deferred \& Batch Jobs} \label{sec:worker}
 	For the running of deferred and batch jobs, Celery (another Python based project) was selected.  It uses a message queue for receiving and dispatching jobs.  Celery allows for the definition of jobs as functions which can then be imported by other processes (in this case, mostly the user interface).  The application uses Redis as the message queue. It also allows for the chaining together of tasks to ensure order (e.g. event detection before SAX analysis) and the passing of results on to the next function in a functional programming style.
 	
 \subsection{Suffix API}

@@ -1,13 +1,10 @@
 \documentclass[11pt, a4paper]{scrartcl}
-\title{\vspace{-3.0cm}An Infrastructure to Store and Analyse Seismic Data as Suffix Trees}
-\subtitle{MSc Data Analytics - Project Report}
-\date{September 2017}
-\author{Tom Taylor}
 \usepackage{url}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{titlesec}
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{subcaption}
 \usepackage{listings}
 \usepackage[sort]{natbib}      % references
@@ -19,21 +16,38 @@
 \usepackage{physics}
 \usepackage[parfill]{parskip}
 \usepackage{courier}
-
 \lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
-
 \bibliographystyle{humannat}
 \graphicspath{ {./img/} }
 \newcommand{\sectionbreak}{\clearpage}
 
 \begin{document}
-	\maketitle
-\begin{itshape}
+
+\begin{titlepage}
+	\centering
+	{\huge\bfseries An Infrastructure to Detect and Analyse Seismic Events as Strings\par}
+	\vspace{1cm}
+	{\scshape\Large A dissertation submitted in partial fulfilment of the requirements for the MSc in Data Analytics\par}
+	\vspace{1.5cm}
+	{\Large\itshape Thomas Taylor\par}
+	{\large September 2017\par}
+	\vspace{2cm}	{\scshape\LARGE Department of Computer Science and Information Systems \\ Birkbeck College, University of London \par}
+
+	\vfill
+
+	\begin{itshape}
 		\noindent This report is substantially the result of my own work except where explicitly indicated in the text. I give my permission for it to be submitted to the JISC Plagiarism Detection Service. I have read and understood the sections on plagiarism in the programme Handbook and the College website.
 		
 		\noindent The report may be freely copied and distributed provided the source is explicitly acknowledged.
-\end{itshape}
+	\end{itshape}
+	
+
+\end{titlepage}
+
+
+
 \tableofcontents
+\listoffigures
 \newpage
 
 \section{Introduction}
@@ -43,16 +57,20 @@
 \subfile{sub/bkg-seismic.tex}
 \subfile{sub/bkg-sax.tex}
 \subfile{sub/bkg-suffix.tex}
+\subfile{sub/bkg-vsm.tex}
+
 
 \section{Plan}
 \subfile{sub/plan.tex}
 
 \section{Data Processing}
+\subfile{sub/raw-data.tex}
+\subfile{sub/sample-data.tex}
 \subfile{sub/normalisation.tex}
 \subfile{sub/paa-sax.tex}
 \subfile{sub/frequency.tex}
 
-\section{Event Detection}
+\section{Event Detection} \label{sec:eventdetection}
 \subfile{sub/event-detection.tex}
 
 \section{Application Design}

@@ -4,6 +4,27 @@
 \subsection{PAA \& SAX}
 	As described in the background section \cref{sec:paasax} on SAX, there are two steps.  PAA (Peicewise Aggregate Approximation) is applied before symbols are calculated based on equal breakpoints following a Gaussian distribution.
 	
+\subsubsection{Data Distribution} \label{sec:distribution}
+	An assumption that is made by the SAX algorithm is that data is close to normally distributed  once it is \textit{Z-mornalised} (sec:Z-normalisation) to get an effective distribution of the symbols.  As can be seen from \cref{fig:dist_obs} which shows the distribution of data points over the whole observation in blue against a normal distribution in red, the whole data set is not a good fit for a normal distribution.
+
+	However when data is only considered during an event as seen in \cref{fig:dist_evt} it can be seen that the data is a much closer fit.  Automated event detection is discussed in \cref{sec:eventdetection}.
+	
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{img/distribution_obs}
+	\caption{Distribution of Observation Data}
+	\label{fig:dist_obs}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{img/distribution_evt}
+	\caption{Distribution of Observation Data During an Event}
+	\label{fig:dist_evt}
+\end{figure}
+
+	The disparity between the distributions can be attributed to the full observation traces including many data points during quiet periods that would naturally tend towards zero.  As the fit is significantly closer when only looking at data points during an event, it suggests that a sensible distribution of symbols would only occur when looking at events only.
+
 \subsubsection{PAA}
 	A Python class was written to be callable to convert a Dataframe into an array of the aggregated values.  To reduce the number of steps involved in using the class, it performs the normalisation step unless told not to.
 	

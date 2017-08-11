@@ -1,0 +1,6 @@
+\documentclass[../report.tex]{subfiles}
+
+\subsection{Raw Data}
+	The seismic data is provided in either SAC or Miniseed formats that are can be parsed with the Obspy Python library \citep{obspy}.  Use of this library produces an object containing the raw measurements along with metadata about the station it was produced from.  The library also contains many methods for post-processing operations such as signal filtering and commonly used seismic analysis tools.
+	
+	A library was written (\textit{seismic.observations}) to wrap around the Obspy functionality combined with some additional operations specific to the project such as down-sampling for rendering graphs in a browser and providing simpler interfaces to operations such as filtering on frequencies (using a Butterworth bandpass) and slicing events.  The core component of the library is a class called \textit{ObservationDAO}.  This class produces an object that stores the Observation trace and metadata and provides the aforementioned methods.

@@ -1,0 +1,32 @@
+\documentclass[../report.tex]{subfiles}
+
+\subsection{Sample Data} \label{sec:sampledata}
+	The data used to train the techniques from an event in California on June 22nd 1987 at around 11:00 UTC from 9 nearby stations. \cref{fig:calmap} shows a map of the stations extrapolated from the latitude and longitude in their metadata.
+	
+	\cref{fig:calraw} shows the raw unprocessed traces from these stations (the X-axis shows seconds from 11:10:06 UTC).  As can be seen from these plots, there is a high variation of background noise and little obvious correlation between the shapes of the event as observed from different stations.
+	
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{img/cal-map-key}
+	\caption{Map of Seismic Stations}
+	\label{fig:calmap}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{img/cal_raw}
+	\caption{Raw Observation Data}
+	\label{fig:calraw}
+\end{figure}
+
+\subsection{Frequency filtering (Butterworth Bandpass)}
+	As seen in \cref{sec:sampledata} and \cref{fig:calraw}, raw seismic traces contain a lot of background noise.  This consists of both high frequency and low frequency interference which can be cause by many unrelated events such as wind, temperature variations and human events such as traffic and construction work.  A commonly used technique \citep{man-seis-obs} is to perform a Butterworth Filter \citep{bandpass} on the data, eliminating frequencies that are outside of a given range.  The most significant frequencies from a seismic event tend to be between 5 and 10Hz so these values are used going forwards to clean the data.  The bandpass filter is provided by the Obspy library and implemented as a method in the ObservationDAO class.
+	
+	The effects of applying the bandpass filter can be seen in \cref{fig:calbandpass}.  This clearly shows a much cleaner event profile however there is unfortunately still little obvious visual correlation beyond timing between the observations.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{img/cal_bandpass}
+	\caption{Frequency Filtered Observation Data (5-10Hz)}
+	\label{fig:calbandpass}
+\end{figure}
