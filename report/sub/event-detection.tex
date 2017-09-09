@@ -4,7 +4,10 @@
 	
 	In order to evaluate a SAX based detection algorithm, an implementation of STA/LTA was required for comparison  Traditionally STA/LTA thresholds are set manually by experienced seismologists, in this case however, the author does not have the required experience to set these values so an adaptive method was required.
 	
+	Both event detector algorithms were written against a common abstract base class to ensure that they resulted in similar interfaces and provide common methods and exceptions.  The listing for this interface is too long for inclusion but can be found in the module at \textit{seismic.detector.detectorbase.DetectorBase}.
+	
 \subsection{Adaptive STA/LTA Algorithm} \label{sec:stalta-detect}
+\subsubsection{Implementation}
 	\textit{N.B.  This implementation has only been validated on a relatively small sample set and is not recommended for real-world use without further testing.}
 
 	The algorithm works by iterating through the data on two sliding windows calculating a short and long term mean of the absolute values of the amplitude.
@@ -14,27 +17,27 @@
 	$l = $ number of datapoints in LTA \\
 	$s = $ number of datapoints in STA \\
 
-\begin{equation}
-	\overline{LTA} = \sum_{i=1}^{l}\dfrac{\abs{v(t - i)}}{l}
-\end{equation}
+	$$ \text{LTA} = \sum_{i=1}^{l}\dfrac{\abs{v(t - i)}}{l} $$
+	$$ \text{STA} = \sum_{i=1}^{s}\dfrac{\abs{v(t - i)}}{s} $$
 
-\begin{equation}
-	\overline{STA} = \sum_{i=1}^{s}\dfrac{\abs{v(t - i)}}{s}
-\end{equation}
 	
-	For each iteration, the STA is compared to a number of standard deviations (typically 3) from the LTA, if it exceeds this value, the event is considered triggered on.  The current value of the LTA is then stored.
+	For each iteration, the STA is compared to a number of standard deviations (typically 3) from the LTA, if it exceeds this value, the event is considered triggered on.  The current value of the LTA is then stored.  The algorithm is considered adaptive by using the number of standard deviations as opposed to pre-set trigger values.
 	
 	The iteration then continues calculating STA with the triggered value set to true until the STA drops below the original LTA value when the event was triggered.
 	
-	If the event duration is above a pre-set threshold (typically 5s) then the event is recorded, if not the it is discarded as a probable spike.	
+	If the event duration is above a pre-set threshold (typically 5s) then the event is recorded, if not the it is discarded as a probable spike.
+	
+	The code is listed in \cref{sec:stalta-code}.	
 
-	One downside to this approach is that it cannot normally detect an event within the period of the LTA from the start of the observation window.  It also struggles to detect an event when there is significant background noise.
+\subsubsection{Results}
+
+	One downside to this approach is that it cannot normally detect an event within the period of the LTA from the start of the observation window.  It also struggles to detect an event when there is significant background noise. 
 	
 \subsection{SAX Detection Algorithm} \label{sec:sax-detect}
 
 	The \textit{SAX Detection Algorithm} works by firstly calculating a SAX string for the whole observation.  It requires a minimum \textit{trigger on} length in milliseconds (to eliminate spikes), a quiet duration (again in milliseconds) and a distance from the centre value of the alphabet used to produce the SAX string.  This string is then iterated over one character at a time filling a ring buffer that is at least the length of the \textit{trigger on} or the \textit{quiet duration} that is used to establish whether trigger requirements are met.  It is effectively an implementation of Step Detection using the breakpoints defined in the SAX process.
 	
-	\lstinputlisting[language=Python]{../seismic/detector/sax.py}
+	The code is listed in \cref{sec:saxdet-code}.
 
 % Discuss 
 
