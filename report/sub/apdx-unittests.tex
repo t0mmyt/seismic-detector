@@ -1,0 +1,22 @@
+\documentclass[../report.tex]{subfiles}
+
+\section{Sample Tests}
+\subsection{Bag of Words} \label{sec:bow-test}
+
+	Test cases for the \textit{bag\_of\_words} function described in \cref{sec:bow}.
+
+\lstinputlisting[language=Python]{../seismic/similarity/tests/bag_of_words.py}
+
+\newpage
+\subsection{Jaccard} \label{sec:jaccard-test}
+	
+	Test cases for the Jaccard Index function in \cref{sec:jaccard}.
+
+\lstinputlisting[language=Python]{../seismic/similarity/tests/jaccard.py}
+
+\newpage
+\subsection{Detector} \label{sec:detector-test}
+
+	Test cases for both the SAX detector in \cref{sec:sax-detect} and the STA-LTA implementation in \cref{sec:stalta-detect}.
+	
+\lstinputlisting[language=Python]{../seismic/detector/tests/detector.py}

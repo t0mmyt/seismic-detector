@@ -1,0 +1,30 @@
+\documentclass[../report.tex]{subfiles}
+
+\subsection{Text Similarity}
+
+	The following section outlines a selection of Similarity Measures that will be tested to try and identify patterns in the waveforms.
+
+\subsubsection{Jaccard Similirity} \label{sec:jaccard}
+
+	The Jaccard Similarity Coefficient is a measure of similarity between two sets of features.  In the case of text processing, these features are words.  It is defined as the intersection of features divided by their union.  As a pre-processing step, the words are converted to sets therefore removing the frequency of a word as a feature.  Also common words (such as the, at, and) are stripped out.
+	
+	$$
+	J = \frac{|A \cap B|}{|A \cup B|}
+	$$
+	
+	As an example:
+	$$ A = \{0, 2, 3, 5, 7, 9\},\quad B = \{0, 1, 2, 5, 6\} $$
+	$$ A\cap B = \{0, 2, 5\},\quad |A\cap B| = 3 $$
+	$$ A\cup B = \{0, 1, 2, 3, 5, 6, 7, 9\},\quad |A\cup B| = 8	$$
+	$$ J_{AB} = \frac{3}{8} = 0.375 $$
+
+\subsubsection{TF-IDF and the Vector Space Model}
+	
+	In a similar way to that of Jaccard Similarity, TF-IDF when combined with a cosine similarity can be used to give a measure of the similarity of two documents.  Firstly the text is pre-processed in the same way as was done with Jaccard.  That is to normalise the case, remove stop words and split on white space to produce bags of words per document.
+	
+	The \textit{TF-IDF} can then be calculated for a given term \textit{t} by counting its occurrence in a document \textit{tf} and multiplying by the inverse document frequency \textit{idf} which is calculated as the number of documents \textit{N} over the number of documents in the corpus containing the term \textit{$N_{t}$} logarithmically scaled to dampen the effect.
+	
+	$$ \text{idf}_{(t,d)} = \log{\frac{N}{N_{t}}}$$
+	$$ \text{tfidf}_{(t, d)} = \text{tf}_{(t,d)} \cdot \text{idf}_{(t,d)} $$
+	
+	When comparing the similarity between two documents in a corpus, a vector needs to be produced

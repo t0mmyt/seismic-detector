@@ -9,32 +9,32 @@ Warning--empty journal in bbk-suffix
 Warning--empty journal in restplus
 You've used 11 entries,
             2155 wiz_defined-function locations,
-            558 strings with 5817 characters,
-and the built_in function-call counts, 4170 in all, are:
-= -- 360
-> -- 261
+            557 strings with 5615 characters,
+and the built_in function-call counts, 3953 in all, are:
+= -- 346
+> -- 226
 < -- 6
-+ -- 102
-- -- 98
-* -- 374
-:= -- 797
++ -- 88
+- -- 84
+* -- 346
+:= -- 755
 add.period$ -- 29
 call.type$ -- 11
-change.case$ -- 104
+change.case$ -- 97
 chr.to.int$ -- 11
 cite$ -- 15
 duplicate$ -- 140
 empty$ -- 216
-format.name$ -- 109
-if$ -- 744
+format.name$ -- 95
+if$ -- 709
 int.to.chr$ -- 1
 int.to.str$ -- 0
 missing$ -- 10
 newline$ -- 54
 num.names$ -- 33
-pop$ -- 102
+pop$ -- 95
 preamble$ -- 1
-purify$ -- 104
+purify$ -- 97
 quote$ -- 0
 skip$ -- 116
 stack$ -- 0

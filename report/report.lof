@@ -2,14 +2,14 @@
 \contentsline {figure}{\numberline {1}{\ignorespaces Effect of fault geometry on amplitude and phase \citep {faultangle}\relax }}{6}{figure.caption.1}
 \contentsline {figure}{\numberline {3}{\ignorespaces Example Suffix Trie\relax }}{8}{figure.caption.3}
 \contentsline {figure}{\numberline {4}{\ignorespaces Example Suffix Tree (edges shown as text and as positions/offsets)\relax }}{8}{figure.caption.4}
-\contentsline {figure}{\numberline {5}{\ignorespaces Map of Seismic Stations\relax }}{13}{figure.caption.5}
-\contentsline {figure}{\numberline {6}{\ignorespaces Raw Observation Data\relax }}{13}{figure.caption.6}
-\contentsline {figure}{\numberline {7}{\ignorespaces Frequency Filtered Observation Data (5-10Hz)\relax }}{14}{figure.caption.7}
-\contentsline {figure}{\numberline {8}{\ignorespaces Comparison of normalisation with and without background\relax }}{15}{figure.caption.8}
-\contentsline {figure}{\numberline {9}{\ignorespaces Distribution of Observation Data\relax }}{16}{figure.caption.9}
-\contentsline {figure}{\numberline {10}{\ignorespaces Distribution of Observation Data During an Event\relax }}{17}{figure.caption.10}
-\contentsline {figure}{\numberline {11}{\ignorespaces Interpolated Freqencies\relax }}{20}{figure.caption.11}
-\contentsline {figure}{\numberline {12}{\ignorespaces Using SAX distribution for approximate event finding\relax }}{26}{figure.caption.12}
-\contentsline {figure}{\numberline {13}{\ignorespaces Application Architecture\relax }}{27}{figure.caption.13}
-\contentsline {figure}{\numberline {14}{\ignorespaces Swagger interface for Data Processing API\relax }}{28}{figure.caption.14}
-\contentsline {figure}{\numberline {15}{\ignorespaces Swagger interface for Suffix Tree API\relax }}{30}{figure.caption.15}
+\contentsline {figure}{\numberline {5}{\ignorespaces Map of Seismic Stations\relax }}{14}{figure.caption.5}
+\contentsline {figure}{\numberline {6}{\ignorespaces Raw Observation Data\relax }}{14}{figure.caption.6}
+\contentsline {figure}{\numberline {7}{\ignorespaces Frequency Filtered Observation Data (5-10Hz)\relax }}{15}{figure.caption.7}
+\contentsline {figure}{\numberline {8}{\ignorespaces Comparison of normalisation with and without background\relax }}{16}{figure.caption.8}
+\contentsline {figure}{\numberline {9}{\ignorespaces Distribution of Observation Data\relax }}{17}{figure.caption.9}
+\contentsline {figure}{\numberline {10}{\ignorespaces Distribution of Observation Data During an Event\relax }}{18}{figure.caption.10}
+\contentsline {figure}{\numberline {11}{\ignorespaces Interpolated Freqencies\relax }}{22}{figure.caption.11}
+\contentsline {figure}{\numberline {12}{\ignorespaces Using SAX distribution for approximate event finding\relax }}{27}{figure.caption.12}
+\contentsline {figure}{\numberline {13}{\ignorespaces Application Architecture\relax }}{32}{figure.caption.13}
+\contentsline {figure}{\numberline {14}{\ignorespaces Swagger interface for Data Processing API\relax }}{33}{figure.caption.14}
+\contentsline {figure}{\numberline {15}{\ignorespaces Swagger interface for Suffix Tree API\relax }}{35}{figure.caption.15}

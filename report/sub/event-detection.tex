@@ -4,7 +4,7 @@
 	
 	In order to evaluate a SAX based detection algorithm, an implementation of STA/LTA was required for comparison  Traditionally STA/LTA thresholds are set manually by experienced seismologists, in this case however, the author does not have the required experience to set these values so an adaptive method was required.
 	
-\subsection{Adaptive STA/LTA Algorithm}
+\subsection{Adaptive STA/LTA Algorithm} \label{sec:stalta-detect}
 	\textit{N.B.  This implementation has only been validated on a relatively small sample set and is not recommended for real-world use without further testing.}
 
 	The algorithm works by iterating through the data on two sliding windows calculating a short and long term mean of the absolute values of the amplitude.
@@ -30,7 +30,7 @@
 
 	One downside to this approach is that it cannot normally detect an event within the period of the LTA from the start of the observation window.  It also struggles to detect an event when there is significant background noise.
 	
-\subsection{SAX Detection Algorithm} \label{sec:saxdetect}
+\subsection{SAX Detection Algorithm} \label{sec:sax-detect}
 
 	The \textit{SAX Detection Algorithm} works by firstly calculating a SAX string for the whole observation.  It requires a minimum \textit{trigger on} length in milliseconds (to eliminate spikes), a quiet duration (again in milliseconds) and a distance from the centre value of the alphabet used to produce the SAX string.  This string is then iterated over one character at a time filling a ring buffer that is at least the length of the \textit{trigger on} or the \textit{quiet duration} that is used to establish whether trigger requirements are met.  It is effectively an implementation of Step Detection using the breakpoints defined in the SAX process.
 	
@@ -57,4 +57,4 @@
 
 \subsection{Combining the Approximate Detection with the SAX detection}
 
-	The SAX distribution approximation function returns probable events in a 5 minute window.  These windows can then be passed to the SAX Detection Algorithm described in \cref{sec:saxdetect} which has been shown to be effective over shorter windows.  Computationally, the combined process takes approximately 10 seconds to run over a 24 hour period with a sampling rate of 100Hz one an Intel(R) Xeon(R) CPU E3-1505M v5 @ 2.80GHz once the whole observation is loaded in to memory as a Pandas Series object.  Although by the nature of Python's threading model it cannot be optimised for multiple cores for a single observation, there is no reason why it cannot be run in parallel against multiple observations.  This is the model that the worker process described in \cref{sec:worker} takes.
+	The SAX distribution approximation function returns probable events in a 5 minute window.  These windows can then be passed to the SAX Detection Algorithm described in \cref{sec:sax-detect} which has been shown to be effective over shorter windows.  Computationally, the combined process takes approximately 10 seconds to run over a 24 hour period with a sampling rate of 100Hz one an Intel(R) Xeon(R) CPU E3-1505M v5 @ 2.80GHz once the whole observation is loaded in to memory as a Pandas Series object.  Although by the nature of Python's threading model it cannot be optimised for multiple cores for a single observation, there is no reason why it cannot be run in parallel against multiple observations.  This is the model that the worker process described in \cref{sec:worker} takes.

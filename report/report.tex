@@ -1,3 +1,4 @@
+%!TeX program = xelatex
 \documentclass[11pt, a4paper]{scrartcl}
 \usepackage{url}
 \usepackage[utf8]{inputenc}
@@ -15,11 +16,16 @@
 \usepackage{subfiles}
 \usepackage{physics}
 \usepackage[parfill]{parskip}
-\usepackage{courier}
-\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+\usepackage{pgfplotstable}
+\usepackage{booktabs}
+\usepackage{fontspec}
+\usepackage{amsmath}
+\newfontfamily{\lstfira}[Scale=.85,Contextuals={Alternate}]{Fira Mono}
+\lstset{basicstyle=\lstfira,breaklines=true}
 \bibliographystyle{humannat}
 \graphicspath{ {./img/} }
 \newcommand{\sectionbreak}{\clearpage}
+\setmonofont[Contextuals={Alternate}]{Fira Mono}
 
 \begin{document}
 
@@ -44,8 +50,6 @@
 
 \end{titlepage}
 
-
-
 \tableofcontents
 \listoffigures
 \newpage
@@ -57,7 +61,7 @@
 \subfile{sub/bkg-seismic.tex}
 \subfile{sub/bkg-sax.tex}
 \subfile{sub/bkg-suffix.tex}
-\subfile{sub/bkg-vsm.tex}
+\subfile{sub/bkg-similarity.tex}
 
 
 \section{Plan}
@@ -73,6 +77,9 @@
 \section{Event Detection} \label{sec:eventdetection}
 \subfile{sub/event-detection.tex}
 
+\section{Event Similarity}
+\subfile{sub/event-similarity}
+
 \section{Application Design}
 \subfile{sub/architecture}
 
@@ -81,6 +88,9 @@
 \section{Critical Evaluation}
 \subfile{sub/critical_eval.tex}
 
+\appendix
+\subfile{sub/apdx-unittests.tex}
 
-	\bibliography{bibliography}
+\newpage
+\bibliography{bibliography}
 \end{document}

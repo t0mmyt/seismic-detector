@@ -27,14 +27,6 @@ Goitom, B., C.~Oppenheimer, J.~O.~S. Hammond, R.~Grandin, T.~Barnie,
 \newblock First recorded eruption of nabro volcano, eritrea.
 \newblock {\em Bulletin of Volcanology}.
 
-\bibitem[\protect\astroncite{Hamlyn et~al.}{2014}]{eritrea2}
-Hamlyn, J.~E., D.~Keir, T.~J. Wright, J.~W. Neuberg, B.~Goitom, J.~O.~S.
-  Hammond, C.~Pagli, C.~Oppenheimer, J.-M. Kendall, and
-  R.~Grandin\leavevmode\nopagebreak\newline 2014.
-\newblock Seismicity and subsidence following the 2011 nabro eruption, eritrea:
-  Insights into the plumbing system of an off-rift volcano.
-\newblock {\em Journal of Geophysical Research: SolidEarth}.
-
 \bibitem[\protect\astroncite{Harris et~al.}{2016}]{bbk-suffix}
 Harris, M., M.~Levene, D.~Zhang, and D.~Levene\leavevmode\nopagebreak\newline
   2016.
@@ -44,6 +36,12 @@ Harris, M., M.~Levene, D.~Zhang, and D.~Levene\leavevmode\nopagebreak\newline
 Haustant, A.\leavevmode\nopagebreak\newline 2016.
 \newblock {Flask-RESTPlus} fully featured framework for fast, easy and
   documented api development with flask.
+
+\bibitem[\protect\astroncite{Keogh et~al.}{2007}]{sax-hot}
+Keogh, E., J.~Lin, and A.~Fu\leavevmode\nopagebreak\newline 2007.
+\newblock Hot sax: Efficiently finding the most unusual time series
+  subsequence.
+\newblock {\em 5th IEEE International Conference on Data Mining (ICDM 2005)}.
 
 \bibitem[\protect\astroncite{Lin et~al.}{2003}]{sax}
 Lin, J., E.~Keogh, S.~Lonardi, and B.~Chiu\leavevmode\nopagebreak\newline 2003.
