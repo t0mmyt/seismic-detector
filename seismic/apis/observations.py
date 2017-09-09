@@ -118,7 +118,7 @@ class Events(Resource):
 @api.route("/<obs_id>/<evt_id>")
 @api.param("offset", "Offset start of event (ms)", type="integer")
 @api.param("length", "Length of event", type="integer", required=True)
-@api.param("filename", "Optional filename for downlaoded file", type="string")
+@api.param("filename", "Optional filename for downloaded file", type="string")
 class Event(Resource):
     def get(self, obs_id, evt_id):
         """ Retrieve a SAC file for an event """

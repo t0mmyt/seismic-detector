@@ -36,12 +36,29 @@ class SimilarityMatrix(object):
     def put(self, item1, item2, value):
         i1 = self.lookup_item(item1)
         i2 = self.lookup_item(item2)
+        self.put_index(i1, i2, value)
+
+    def put_index(self, i1, i2, value):
         self.matrix[i1, i2] = value
         self.matrix[i2, i1] = value
+
+    def get(self, item1, item2):
+        i1 = self.lookup_item(item1)
+        i2 = self.lookup_item(item2)
+        return self.matrix[i1, i2]
 
     def get_ranked(self, item):
         i = self.lookup_item(item)
         return [i for i in self._ranked(i)]
+
+    def ranked_matrix(self):
+        # Not optimised (expensive!)
+        m = SimilarityMatrix(self._items)
+        for item1 in self._items:
+            i1 = self.lookup_item(item1)
+            for i2 in self._ranked(i1):
+                m.put_index(i1, i2.index, i2.rank)
+        return m
 
     def _ranked(self, i):
         indices = np.argsort(self.matrix[i, ])[::-1]  # type: np.ndarray

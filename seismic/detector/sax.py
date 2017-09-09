@@ -58,15 +58,13 @@ def sax_detect(stream, alphabet, paa_int, off_threshold=5000, min_len=5000):
     Yields:
         (start_ms, end_ms)
     """
-    # if not isinstance(stream, types.GeneratorType):
-    #     raise DetectorError(
-    #         "SaxDetect stream expects a generator, got {}".format(
-    #             type(stream)))
     if not isinstance(alphabet, str):
         raise DetectorError(
             "SaxDetect alphabet expects a str, got {}".format(
                 type(alphabet)))
-    if not len(alphabet) % 2 == 1:
+    if len(set(alphabet)) != len(alphabet):
+        raise DetectorError("Alphabet must only contain unique characters")
+    if len(alphabet) % 2 == 0:
         raise DetectorError(
             "SaxDetect requires an odd length of alphabet to have a centre")
     # Convert the next two values from ms to number of elements

@@ -6,9 +6,7 @@ from iso8601 import parse_date
 import numpy as np
 import obspy
 
-
 line_re = re.compile("ALN_(\d{8}).(\d{6})\s+ALN_(\d{8}).(\d{6})")
-
 
 def read_sims(filename):
     with open(filename, "r") as f:
@@ -60,13 +58,6 @@ class Slicer(object):
             self.station,
             self.channel
         )
-
-
-def bag_of_words(s, word_len):
-    bow = []
-    for i in range(0, len(s) - word_len + 1):
-        bow.append(s[i:i+word_len])
-    return bow
 
 
 def remove_outlier(a):

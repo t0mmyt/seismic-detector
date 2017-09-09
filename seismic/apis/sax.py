@@ -58,6 +58,7 @@ class SaxEvent(Resource):
             paa = Paa(obs.series())
             paa_data = paa(p["paaInt"])
             paa_results = [{"x": int(k), "y": v} for k, v in json.loads(paa_data.to_json(orient="index")).items()]
+            paa_results = sorted(paa_results, key=lambda x: x["x"])
             sax = Sax(paa_data)
             return {
                 "original": obs.view(),

@@ -3,11 +3,10 @@ import numpy as np
 from matplotlib.ticker import FuncFormatter
 
 
-def make_series(data, sampling_rate):
-    end_time = len(data) * (1000 / sampling_rate)
-    timestamps = np.linspace(0, end_time, num=len(data))
+def make_series(data, sampling_rate, start_time=0):
+    end_time = len(data) * (1000 / sampling_rate) + start_time
+    timestamps = np.linspace(start_time, end_time, num=len(data))
     rng = pd.to_datetime(timestamps, unit="ms")
-    # rng = pd.to_timedelta(timestamps, unit="ms")
     return pd.Series(data=data, index=rng)
 
 
