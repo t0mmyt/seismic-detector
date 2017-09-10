@@ -1,4 +1,5 @@
 \documentclass[../report.tex]{subfiles}
+\begin{document}
 	
 \subsection{Normalisation} \label{sec:Z-normalisation}
 	Due to the widely varying types and models of instrument deployed, the values reported from a Seismic Station are often relative only to themselves.  This means while the profile of an event could be established from the seismogram, amplitudes are potentially meaningless when being compared between stations.  It is also not possible to directly infer the strength of a quake from a seismogram without empirical evidence from previous events recorded at the same station.
@@ -29,3 +30,5 @@
 \end{figure}
 
 	In view of these issues, and because \textit{z-normalisation} is an important part of \textit{SAX processing}, it is essential that only significant data be presented to be normalised for analysis.  To meet this requirement, it is important that the start of the event be relatively accurately estimated and only the first few seconds are treated.  This is also important because we are only interested in profiling \textit{P-waves}. The \textit{S-waves} following a few seconds later interfere with the Z-axis recordings.  This is demonstrated in \cref{fig:tosoon} where if earlier background noise is included in the sample (a) the peaks are normalised a little over 4 where if only the event is included, the peaks are nearer to 5.  When looking at longer time ranges, this effect is amplified significantly rendering the event data meaningless.
+
+\end{document}

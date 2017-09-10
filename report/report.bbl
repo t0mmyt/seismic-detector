@@ -49,6 +49,14 @@ Lin, J., E.~Keogh, S.~Lonardi, and B.~Chiu\leavevmode\nopagebreak\newline 2003.
   streaming algorithms.
 \newblock {\em Data Mining and Knowledge Discovery}.
 
+\bibitem[\protect\astroncite{{\v R}eh{\r u}{\v r}ek and
+  Sojka}{2010}]{rehurek_lrec}
+{\v R}eh{\r u}{\v r}ek, R. and P.~Sojka\leavevmode\nopagebreak\newline 2010.
+\newblock {Software Framework for Topic Modelling with Large Corpora}.
+\newblock In {\em {Proceedings of the LREC 2010 Workshop on New Challenges for
+  NLP Frameworks}}, Pp.~ 45--50, Valletta, Malta. ELRA.
+\newblock \url{http://is.muni.cz/publication/884893/en}.
+
 \bibitem[\protect\astroncite{Ukkone}{1995}]{ukkonens}
 Ukkone, E.\leavevmode\nopagebreak\newline 1995.
 \newblock On-line construction of suffix trees.

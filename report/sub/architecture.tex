@@ -1,8 +1,9 @@
 \documentclass[../report.tex]{subfiles}
+\begin{document}
 
 \subsection{Discrete Services}
 
-	The application was decided to be split in to discrete components with an all of the data processing  bundled together behind a single API exposed via HTTP with mostly JSON payloads (the observation data is transferred and stored in its original binary format).  The interface is a separate service that is mostly an HTML and Javascript powered application that speaks to the API on the HTTP/JSON interface.  A third instance of the application runs to carry out long running or deferred tasks and is communicated with via Redis as a message queue.  Additionally data persistence services (see \cref{sec:data-persistence}) run separately.
+	The application was decided to be split in to discrete components with an all of the data processing  bundled together behind a single API exposed via HTTP with mostly JSON payloads (the observation data is transferred and stored in its original binary format).  The interface is a separate service that is mostly an HTML and JavaScript powered application that speaks to the API on the HTTP/JSON interface.  A third instance of the application runs to carry out long running or deferred tasks and is communicated with via Redis as a message queue.  Additionally data persistence services (see \cref{sec:data-persistence}) run separately.
 	
 \begin{figure}[h]
 	\centering
@@ -13,11 +14,11 @@
 
 \subsection{Data processing API}
 
-	As previously mentioned, the data processing functions (with the exception of the Suffix Tree code) are bundled in to a single API process broken in to separate namespaces for the different parts.
+	As previously mentioned, the data processing functions are bundled in to a single API process broken in to separate namespaces for the different parts.
 
 	The \textit{observations} namespace used to manipulate observation files.  It supports a REST like interface for CRUD (Create, Read, Update and Delete) operations and RPCs (Remote Procedure Calls) for running event detection and retrieving results.
 	
-	The \textit{SAX} namespace is exposed via a JSON based HTTP API.  Its purpose is to perform PAA and SAX operations on a given observation or event and return data for rendering visualisations as well as the produced string from the SAX calculation.
+	The \textit{sax} namespace is exposed via a JSON based HTTP API.  Its purpose is to perform PAA and SAX operations on a given observation or event and return data for rendering visualisations as well as the produced string from the SAX calculation.
 	
 	The HTTP/JSON APIs were written using Flask-Restplus \citep{restplus}, a Python framework based on Flask that allows for request and response definition using Python Decorators around classes and methods.  The framework allows for dynamic generation of a swagger.json and provides a Swagger interface.  Swagger is a commonly used standard for defining APIs.  It also provides a user friendly HTML based interface for testing methods and calls during development and also doubles as API documentation.  An example of Swagger used on the Suffix Tree API is shown in \cref{fig:api}.
 	
@@ -68,4 +69,4 @@
 %	\label{fig:swagger}
 %\end{figure}
 	
-
+\end{document}

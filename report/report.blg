@@ -7,45 +7,45 @@ Warning--empty journal in obspy
 Warning--empty journal in man-seis-obs
 Warning--empty journal in bbk-suffix
 Warning--empty journal in restplus
-You've used 11 entries,
+You've used 12 entries,
             2155 wiz_defined-function locations,
-            557 strings with 5615 characters,
-and the built_in function-call counts, 3953 in all, are:
-= -- 346
-> -- 226
-< -- 6
-+ -- 88
-- -- 84
-* -- 346
-:= -- 755
-add.period$ -- 29
-call.type$ -- 11
-change.case$ -- 97
-chr.to.int$ -- 11
-cite$ -- 15
-duplicate$ -- 140
-empty$ -- 216
-format.name$ -- 95
-if$ -- 709
+            565 strings with 5875 characters,
+and the built_in function-call counts, 4462 in all, are:
+= -- 403
+> -- 238
+< -- 8
++ -- 92
+- -- 88
+* -- 383
+:= -- 832
+add.period$ -- 34
+call.type$ -- 12
+change.case$ -- 104
+chr.to.int$ -- 12
+cite$ -- 16
+duplicate$ -- 165
+empty$ -- 255
+format.name$ -- 102
+if$ -- 822
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 10
-newline$ -- 54
-num.names$ -- 33
-pop$ -- 95
+missing$ -- 11
+newline$ -- 60
+num.names$ -- 36
+pop$ -- 102
 preamble$ -- 1
-purify$ -- 97
+purify$ -- 104
 quote$ -- 0
-skip$ -- 116
+skip$ -- 135
 stack$ -- 0
-substring$ -- 136
-swap$ -- 17
-text.length$ -- 0
+substring$ -- 172
+swap$ -- 26
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 66
+type$ -- 72
 warning$ -- 4
-while$ -- 22
+while$ -- 27
 width$ -- 0
-write$ -- 127
+write$ -- 144
 (There were 4 warnings)

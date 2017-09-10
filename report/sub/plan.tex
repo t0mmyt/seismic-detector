@@ -1,4 +1,5 @@
 \documentclass[../report.tex]{subfiles}
+\begin{document}
 
 The following sections follow the objectives as defined in \cref{sec:objectives}
 
@@ -18,16 +19,16 @@ The following sections follow the objectives as defined in \cref{sec:objectives}
 
 	Event detection will call on data provided by the SAX service and apply rules or heuristics to determine the onset (and potentially the duration) of events.  This information will be persisted in a database along with the observation metadata.
 	
-\subsection{Vector Space Model}
+\subsection{Event Similarity}
 
-	VSM on the SAX generated strings will be evaluated for both amplitude and frequency measurements to test similarity for between events.
+	Two commonly used text similarity measures on the SAX generated strings will be evaluated to test similarity for between events.  The methods are the Jaccard Index and TF-IDF with Cosine similarity (Vector Space Model).
 
-\subsection{Graphical Representation}
-
-	Rendering of visuals will be rendered client-side in a browser.  One or more Javascript libraries will be utilised to show the various stages of the processing and results.
-
-\subsection{User Interface}
+\subsection{User Interface \& Graphical Representation}
 
 	An HTML/JavaScript interface will be rendered from user facing service utilising the other services and passing data back and forth using HTTP requests and JSON payloads.
 	
 	The interface will facilitate the importing and storing of data, searching and rendering results.  It will also allow for the submission of deferred or long running tasks.
+	
+	Visuals will be rendered client-side in the browser.  One or more Javascript libraries will be utilised to show the various stages of the processing and results.
+
+\end{document}

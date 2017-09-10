@@ -1,19 +1,31 @@
 \documentclass[../report.tex]{subfiles}
 \begin{document}
-\subsection{Divergence from Original Objectives} \label{sec:alteration-objectives}
-\subsubsection{Suffix Trees}
-	The original objectives had focussed on building SAX strings suitable for storage and interpretation using Suffix Trees.  The difficulty in finding patterns between different observations of the same event (as discussed in the latter part of \cref{sec:seismicwaves}) was not picked up during the early research stages.  Once this had been established, it was felt that Suffix Trees would not allow enough flexibility in detecting similarities in event data and the Vector Space Model was considered instead.
+	
+\subsection{Divergence from Original Objectives regarding Suffix Trees} \label{sec:alteration-objectives}
 
-\subsubsection{Time-series Databases}
-	Early on in the project, I had thought that it would be beneficial to store the raw data in a Time-Series based database such as InfluxDB, OpenTSDB or KairosDB.  This would have allowed for the chaining together of events and in theory provided fast arbitrary access to data.
+	The original objectives had focussed on building SAX strings suitable for storage and interpretation using Suffix Trees.  The difficulty in finding patterns between different observations of the same event (as discussed in the latter part of \cref{sec:seismicwaves}) was not picked up during the early research stages.  Once this had been established, it was felt that Suffix Trees would not allow enough flexibility in detecting similarities in event data and the text similarity models were considered instead.
+
+\subsection{Time-series Databases}
+	Early on in the project, I had thought that it would be beneficial to store the raw data in a Time-Series based database such as InfluxDB, OpenTSDB or KairosDB.  This would have allowed for the chaining together of observations and in theory provided fast arbitrary access to data.
 	
-	While this should have been the case, none of the databases mentioned were suitable.  All of the open-source time-series databases seemed to be primarily focussed on the gathering of system metrics from a variety of sources and were not suitable for the large amounts of high frequency data points that came with the Seismic Data.  The main sticking point with all three was that they were built for storing irregular data so each data point was stored with a timestamp meaning bytes per point and not bits.
+	While this should have been the case, none of the databases investigated were suitable.  All of the open-source time-series databases seemed to be primarily focussed on the gathering of system metrics from a variety of sources and were not suitable for the large amounts of high frequency data points that came with the Seismic Data.  The main stumbling point with all three was that they were built for storing irregular data so each data-point was stored with a timestamp meaning bytes per point and not bits resulting in storage requirements many times bigger than the original data and not sufficiently fast access.  None of my research was able to find a suitable time-series database and ultimately I settled on storing the observations in their raw format and then keeping metadata about them in an RDBMS.
 	
-	None of my research was able to find a suitable time-series database and ultimately I settled on storing the observations in their raw format and then keeping meta data about them in an RDBMS.
+\subsection{Dataset}
+	Initially I was provided with a large and mostly unsorted dataset (approximately 180GiB) spanning a years worth of observations from the Nabro Volcano in Eritrea.  I boldly, and subsequently fool-heartedly, proceeded to attempt to analyse the dataset in full and with insufficient background knowledge to really understand what I was working with.  This was also before I had realised the problems around normalising large datasets where most of the measurements were background noise.
 	
-\subsubsection{Dataset}
-	Initially I was provided with a large and mostly unsorted dataset (approximately 180GiB) spanning a years worth of observations from the Nabro Volcano in Eritrea.  I boldly and subsequently fool-heartedly proceeded to attempt to analyse the dataset in full and with insufficient background knowledge to really understand what I was working with.  This was also before I had realised the problems around normalising large datasets where most of the measurements were background noise.
+	Ultimately I was provided with a much smaller dataset of events to work from and this allowed my to get an actual 
+	prototype of the application running in its entirety.
 	
-	Ultimately I was provided with a much smaller dataset of events to work from and this allowed my to get an actual prototype of the application running in its entirety.
+\subsection{Approach}
+
+	I feel I started work on the supporting application far too early without having first established a minimum viable prototype with regards to the event detection and the similarity measures.  This was probably down to a lack of experience with the statistical and graphing libraries in Python and I had felt that the only way to visualise the data as I wanted to see it was to write the application to support it first.  In hindsight, all of the tooling I needed was there all along.  Had I focussed more time on the models and algorithms and established the problems earlier on, I would have spent less time designing the application and possibly found more effective techniques.
+	
+\subsection{Domain Specific Knowledge}
+
+	I went in to this project with only a passing knowledge of seismic waves.  The reasons behind the lack of patterns as described at the end of \cref{sec:seismicwaves} was something that I only discovered towards the end of the project.  Had this been known at the start then the project may well have taken a completely different approach or been based on another subject entirely.
+	
+\subsection{In conclusion}
+
+	I learned a lot from working on the project, not just about Geophysics and the propagation of seismic waves, but also about development practices.  Test driven development (TDD) only works when you already have an expectation of an outcome and is not necessarily suited to experimental work.  It is important to focus on a working prototype or minimal viable product before attempting to piece together an entire project.
 	
 \end{document}

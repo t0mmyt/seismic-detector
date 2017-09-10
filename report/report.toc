@@ -14,54 +14,56 @@
 \contentsline {subsection}{\numberline {3.1}Importing and Storing Data}{11}{subsection.3.1}
 \contentsline {subsection}{\numberline {3.2}Generate SAX Strings}{11}{subsection.3.2}
 \contentsline {subsection}{\numberline {3.3}Event Detection}{11}{subsection.3.3}
-\contentsline {subsection}{\numberline {3.4}Vector Space Model}{11}{subsection.3.4}
-\contentsline {subsection}{\numberline {3.5}Graphical Representation}{12}{subsection.3.5}
-\contentsline {subsection}{\numberline {3.6}User Interface}{12}{subsection.3.6}
+\contentsline {subsection}{\numberline {3.4}Event Similarity}{11}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}User Interface \& Graphical Representation}{12}{subsection.3.5}
 \contentsline {section}{\numberline {4}Data Processing}{13}{section.4}
 \contentsline {subsection}{\numberline {4.1}Raw Data}{13}{subsection.4.1}
 \contentsline {subsection}{\numberline {4.2}Sample Data}{13}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Frequency filtering (Butterworth Bandpass)}{14}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.3}Frequency filtering (Butterworth Bandpass)}{15}{subsection.4.3}
 \contentsline {subsection}{\numberline {4.4}Normalisation}{15}{subsection.4.4}
 \contentsline {subsection}{\numberline {4.5}PAA \& SAX}{17}{subsection.4.5}
 \contentsline {subsubsection}{\numberline {4.5.1}Data Distribution}{17}{subsubsection.4.5.1}
-\contentsline {subsubsection}{\numberline {4.5.2}PAA}{18}{subsubsection.4.5.2}
+\contentsline {subsubsection}{\numberline {4.5.2}PAA}{19}{subsubsection.4.5.2}
 \contentsline {subsubsection}{\numberline {4.5.3}SAX}{20}{subsubsection.4.5.3}
 \contentsline {subsection}{\numberline {4.6}Frequency Analysis}{21}{subsection.4.6}
 \contentsline {section}{\numberline {5}Event Detection}{23}{section.5}
 \contentsline {subsection}{\numberline {5.1}Adaptive STA/LTA Algorithm}{23}{subsection.5.1}
-\contentsline {subsubsection}{\numberline {5.1.1}Implementation}{23}{subsubsection.5.1.1}
-\contentsline {subsubsection}{\numberline {5.1.2}Results}{24}{subsubsection.5.1.2}
 \contentsline {subsection}{\numberline {5.2}SAX Detection Algorithm}{24}{subsection.5.2}
-\contentsline {subsection}{\numberline {5.3}Approximate Detection of Events by Distribution}{24}{subsection.5.3}
-\contentsline {subsection}{\numberline {5.4}Combining the Approximate Detection with the SAX detection}{25}{subsection.5.4}
-\contentsline {section}{\numberline {6}Event Similarity}{26}{section.6}
-\contentsline {subsection}{\numberline {6.1}Bag of Words}{26}{subsection.6.1}
-\contentsline {subsection}{\numberline {6.2}Jaccard Similarity}{26}{subsection.6.2}
-\contentsline {subsubsection}{\numberline {6.2.1}Implementation}{26}{subsubsection.6.2.1}
-\contentsline {subsubsection}{\numberline {6.2.2}Results}{27}{subsubsection.6.2.2}
+\contentsline {subsection}{\numberline {5.3}Results}{24}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}Approximate Detection of Events by Distribution}{25}{subsection.5.4}
+\contentsline {subsection}{\numberline {5.5}Combining the Approximate Detection with the SAX detection}{26}{subsection.5.5}
+\contentsline {section}{\numberline {6}Event Similarity}{27}{section.6}
+\contentsline {subsection}{\numberline {6.1}Bag of Words}{27}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Jaccard Similarity}{27}{subsection.6.2}
+\contentsline {subsubsection}{\numberline {6.2.1}Implementation}{27}{subsubsection.6.2.1}
+\contentsline {subsubsection}{\numberline {6.2.2}Results}{28}{subsubsection.6.2.2}
 \contentsline {subsection}{\numberline {6.3}Vector Space Model (TF-IDF)}{29}{subsection.6.3}
 \contentsline {subsubsection}{\numberline {6.3.1}Implementation}{29}{subsubsection.6.3.1}
-\contentsline {subsubsection}{\numberline {6.3.2}Results}{29}{subsubsection.6.3.2}
-\contentsline {section}{\numberline {7}Application Design}{29}{section.7}
-\contentsline {subsection}{\numberline {7.1}Discrete Services}{29}{subsection.7.1}
-\contentsline {subsection}{\numberline {7.2}Data processing API}{29}{subsection.7.2}
-\contentsline {subsubsection}{\numberline {7.2.1}Observations API Namespace}{31}{subsubsection.7.2.1}
-\contentsline {subsubsection}{\numberline {7.2.2}SAX API Namespace}{31}{subsubsection.7.2.2}
-\contentsline {subsection}{\numberline {7.3}Data Persistence}{31}{subsection.7.3}
-\contentsline {subsection}{\numberline {7.4}User Interface}{31}{subsection.7.4}
-\contentsline {subsection}{\numberline {7.5}Deferred \& Batch Jobs}{32}{subsection.7.5}
-\contentsline {subsection}{\numberline {7.6}Suffix API}{32}{subsection.7.6}
-\contentsline {section}{\numberline {8}Conclusions}{33}{section.8}
-\contentsline {section}{\numberline {9}Critical Evaluation}{33}{section.9}
-\contentsline {subsection}{\numberline {9.1}Divergence from Original Objectives}{33}{subsection.9.1}
-\contentsline {subsubsection}{\numberline {9.1.1}Suffix Trees}{33}{subsubsection.9.1.1}
-\contentsline {subsubsection}{\numberline {9.1.2}Time-series Databases}{33}{subsubsection.9.1.2}
-\contentsline {subsubsection}{\numberline {9.1.3}Dataset}{33}{subsubsection.9.1.3}
-\contentsline {section}{\numberline {A}Detectors}{35}{appendix.A}
-\contentsline {subsection}{\numberline {A.1}STA/LTA}{35}{subsection.A.1}
-\contentsline {subsection}{\numberline {A.2}SAX}{38}{subsection.A.2}
-\contentsline {section}{\numberline {B}Sample Tests}{40}{appendix.B}
-\contentsline {subsection}{\numberline {B.1}Bag of Words}{40}{subsection.B.1}
-\contentsline {subsection}{\numberline {B.2}Jaccard}{42}{subsection.B.2}
-\contentsline {subsection}{\numberline {B.3}Detector}{43}{subsection.B.3}
-\contentsline {section}{Bibliography}{47}{lstnumber.-11.132}
+\contentsline {subsubsection}{\numberline {6.3.2}Results}{30}{subsubsection.6.3.2}
+\contentsline {section}{\numberline {7}Application Design}{32}{section.7}
+\contentsline {subsection}{\numberline {7.1}Discrete Services}{32}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}Data processing API}{32}{subsection.7.2}
+\contentsline {subsubsection}{\numberline {7.2.1}Observations API Namespace}{33}{subsubsection.7.2.1}
+\contentsline {subsubsection}{\numberline {7.2.2}SAX API Namespace}{33}{subsubsection.7.2.2}
+\contentsline {subsection}{\numberline {7.3}Data Persistence}{33}{subsection.7.3}
+\contentsline {subsection}{\numberline {7.4}User Interface}{34}{subsection.7.4}
+\contentsline {subsection}{\numberline {7.5}Deferred \& Batch Jobs}{34}{subsection.7.5}
+\contentsline {subsection}{\numberline {7.6}Suffix API}{35}{subsection.7.6}
+\contentsline {section}{\numberline {8}Conclusions}{36}{section.8}
+\contentsline {subsection}{\numberline {8.1}Event Detection}{36}{subsection.8.1}
+\contentsline {subsection}{\numberline {8.2}Event Similarity}{36}{subsection.8.2}
+\contentsline {section}{\numberline {9}Critical Evaluation}{37}{section.9}
+\contentsline {subsection}{\numberline {9.1}Divergence from Original Objectives regarding Suffix Trees}{37}{subsection.9.1}
+\contentsline {subsection}{\numberline {9.2}Time-series Databases}{37}{subsection.9.2}
+\contentsline {subsection}{\numberline {9.3}Dataset}{37}{subsection.9.3}
+\contentsline {subsection}{\numberline {9.4}Approach}{38}{subsection.9.4}
+\contentsline {subsection}{\numberline {9.5}Domain Specific Knowledge}{38}{subsection.9.5}
+\contentsline {subsection}{\numberline {9.6}In conclusion}{38}{subsection.9.6}
+\contentsline {section}{\numberline {A}Detectors}{39}{appendix.A}
+\contentsline {subsection}{\numberline {A.1}STA/LTA}{39}{subsection.A.1}
+\contentsline {subsection}{\numberline {A.2}SAX}{42}{subsection.A.2}
+\contentsline {section}{\numberline {B}Sample Tests}{45}{appendix.B}
+\contentsline {subsection}{\numberline {B.1}Bag of Words}{45}{subsection.B.1}
+\contentsline {subsection}{\numberline {B.2}Jaccard}{46}{subsection.B.2}
+\contentsline {subsection}{\numberline {B.3}Detector}{47}{subsection.B.3}
+\contentsline {section}{Bibliography}{51}{lstnumber.-12.132}
