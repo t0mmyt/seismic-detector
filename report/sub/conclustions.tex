@@ -3,9 +3,9 @@
 
 \subsection{Event Detection}
 
-	The SAX detection algorithm performed quite well on an observation with a single event, often within a few milliseconds of the known onset.  Applied naively to a longer time period with multiple events it was much less reliable.  When combined with the distribution function its performance was fair, it detected many events but still missed quite a few.
+	The SAX detection algorithm performed quite well on an observation with a single event, often within a few milliseconds of the known onset.  Applied naively to a longer time period with multiple events it was much less reliable.  When combined with the distribution function its performance was fair, it detected many events but still missed quite a few and picked up many false positives.
 	
-	There are not sufficient patterns in the produced SAX string beyond the change in character distribution that can be used to determine when an event is happening.
+	There are not sufficient patterns in the produced SAX string beyond the step change and the change in character distribution that can be used to reliably determine when an event is happening.
 	
 	While the analysis of the strings is fast, the pre-computation during the PAA phase (the normalisation and aggregation) must still be factored in with the consideration that the string is only to be used once and then discarded as the PAA needs to be recalculated once the event has been isolated.
 	

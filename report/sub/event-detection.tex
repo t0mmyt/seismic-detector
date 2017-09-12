@@ -57,7 +57,7 @@
 
 \subsection{Approximate Detection of Events by Distribution}
 
-	Following on from the discussion in \cref{sec:distribution} and based on a hypothesis that background noise can be considered random and with a high enough number of samples would follow the Central Limit Theorum, it follows that only when a sample contains both background noise and an event would its normalised distribution deviate significantly from a normal one.
+	Following on from the discussion in \cref{sec:distribution} and based on a hypothesis that background noise can be considered random, with a high enough number of samples would it follow the Central Limit Theorem, it follows that only when a sample contains both background noise and an event would its normalised distribution deviate significantly from a normal one.
 	
 	By applying the SAX algorithm to a sample of data, it has effectively been bucketed against a normal or Gaussian distribution.  It therefore leads that the distribution of counts of each symbol in the sample provide an approximate measure of how close the sample is to being normally distributed.
 	
@@ -75,5 +75,23 @@
 \subsection{Combining the Approximate Detection with the SAX detection} \label{sec:sax-combined}
 
 	The SAX distribution approximation function returns probable events in a 5 minute window.  These windows can then be passed to the SAX Detection Algorithm described in \cref{sec:sax-detect} which has been shown to be effective over shorter windows.  Computationally, the combined process takes approximately 10 seconds to run over a 24 hour period with a sampling rate of 100Hz on a single core of an Intel(R) Xeon(R) CPU E3-1505M v5 @ 2.80GHz once the whole observation is loaded in to memory as a Pandas Series object.  Although by the nature of Python's threading model it cannot be optimised for multiple cores for a single observation, there is no reason why it cannot be run in parallel against multiple observations.  This is the model that the worker process described in \cref{sec:worker} takes.
+
+	It is difficult without to accurately measure the effectiveness of the combined algorithm without more domain specific knowledge.  The algorithm did pick up many events (137 over a 24 hour period) but was also easily confused by lower energy longer duration events as was common with the volcanic data.  Also there were some events that were not detected.
+	
+\begin{figure}
+	\begin{tabular}{cc}
+		\includegraphics[width=65mm]{img/combined-1.png} &   \includegraphics[width=65mm]{img/combined-2.png} \\
+		\includegraphics[width=65mm]{img/combined-3.png} &   \includegraphics[width=65mm]{img/combined-4.png} \\
+	\end{tabular}
+	\caption{A Selection of Detected Events by the Combined Algorithm}
+\end{figure}
+
+\begin{figure}
+	\begin{tabular}{cc}
+		\includegraphics[width=65mm]{img/combined-bad1.png} &   \includegraphics[width=65mm]{img/combined-bad2.png} \\
+%		\includegraphics[width=65mm]{img/combined-3.png} &   \includegraphics[width=65mm]{img/combined-4.png} \\
+	\end{tabular}
+	\caption{A Selection of False positives by the Combined Algorithm}
+\end{figure}
 	
 \end{document}

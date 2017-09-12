@@ -58,10 +58,10 @@ word_len = 5
 
 	The table shows the 20 most similar pairs of events sorted by their average rank across the four stations.  The \textit{Match} column shows whether or not the event was a known match.  As can be seen, while some of the matched events score quite highly, there are also many highly scored false positives.  The rankings are of a maximum of 137.  The mean rank for a known match was $48.8$ ($\sigma = 24.7$) and a known non-match was $69.3$ ($\sigma = 23.7$) of 137.  Approximately 69 would be the expected average rank for a non match as it is close to the median rank.  While matched events were more likely to be considered of higher similarity using this method, the effect is only marginal and therefore not a suitable predictor by itself.
 
-\subsection{Vector Space Model (TF-IDF)}
+\subsection{Vector Space Model (TF-IDF)} \label{sec:vsm-impl}
 \subsubsection{Implementation}
 
-	To implement the functionality of TF-IDF and the Cosine similarity functions in a high level language such as Python and in a performant way would have taken a significant amount of work.  It has also already implemented and well tested in many open source libraries and for performance reasons is normally constructed in a lower level language such as C.  It was decided for this project to use an opens source library to use a library called Gensim \citep{rehurek_lrec} that has a fairly sensible API and decent documentation.
+	To implement the functionality of TF-IDF and the Cosine similarity functions in a high level language such as Python and in a performant way would have taken a significant amount of work.  It has also already implemented and well tested in many open source libraries and for performance reasons is normally constructed in a lower level language such as C.  It was decided for this project to use an open source library to use a library called Gensim \citep{rehurek_lrec} that has a fairly sensible API and decent documentation.
 	
 	The following code snippet shows this library being used with the same similarity matrix as the one produced to evaluate the \textit{Jaccard Index} in \cref{sec:jaccard}.  The full code can be found in a Python Notebook under \verb|/notebooks/TFIDF.ipynb| where an aggregate matrix of all of the stations is produced to calculate the combined ranking.  
 	
