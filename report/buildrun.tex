@@ -1,0 +1,35 @@
+\documentclass[../report.tex]{subfiles}
+\begin{document}
+\section{Building and Running the Application}
+\subsection{Building}
+
+	This step is not strictly necessary to run the application as it is available as pre-built docker images but is included for completeness.  To build (probably) requires a Unix like environment (e.g. Linux or Mac OS), Python 3.5+ with pip, GNU make and docker.
+	
+\begin{verbatim}
+	$ cd seismic-detector
+	$ python3 -m virtualenv .
+	$ source bin/activate
+	$ pip install numpy
+	$ make clean sdist docker
+\end{verbatim}
+
+\subsection{Running}
+
+	To run the application pre-built requires docker and docker-compose.  It is hosted on the Docker Hub so it does not need to be built first.
+	
+	From the root of the project (on writeable media such as a hard disk), invoke \texttt{docker-compose up -d}.
+	
+\begin{verbatim}
+	$ docker-compose up -d
+	docker-compose up -d
+	Creating network "seismic_default" with the default driver
+	Creating seismic_api_1
+	Creating seismic_minio_1
+	Creating seismic_postgres_1
+	Creating seismic_redis_1
+	Creating seismic_worker_1
+	Creating seismic_interface_1
+\end{verbatim}
+
+	The application should now be available via a browser on \texttt{http://localhost:8080}.  To terminate, call \texttt{docker-compose down}.
+\end{document}

@@ -76,7 +76,7 @@
 
 	The SAX distribution approximation function returns probable events in a 5 minute window.  These windows can then be passed to the SAX Detection Algorithm described in \cref{sec:sax-detect} which has been shown to be effective over shorter windows.  Computationally, the combined process takes approximately 10 seconds to run over a 24 hour period with a sampling rate of 100Hz on a single core of an Intel(R) Xeon(R) CPU E3-1505M v5 @ 2.80GHz once the whole observation is loaded in to memory as a Pandas Series object.  Although by the nature of Python's threading model it cannot be optimised for multiple cores for a single observation, there is no reason why it cannot be run in parallel against multiple observations.  This is the model that the worker process described in \cref{sec:worker} takes.
 
-	It is difficult without to accurately measure the effectiveness of the combined algorithm without more domain specific knowledge.  The algorithm did pick up many events (137 over a 24 hour period) but was also easily confused by lower energy longer duration events as was common with the volcanic data.  Also there were some events that were not detected.
+	It is difficult to accurately measure the effectiveness of the combined algorithm without more domain specific knowledge.  The algorithm did pick up many events (137 over a 24 hour period) but was also easily confused by lower energy longer duration events as was common with the volcanic data.  Also there were some events that were not detected.
 	
 \begin{figure}
 	\begin{tabular}{cc}

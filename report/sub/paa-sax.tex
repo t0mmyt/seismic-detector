@@ -7,7 +7,7 @@
 \subsubsection{Data Distribution} \label{sec:distribution}
 	An assumption that is made by the SAX algorithm is that data is close to normally distributed  once it is \textit{Z-normalised} (\cref{sec:Z-normalisation}) to get an appropriate distribution of the symbols.  As can be seen from \cref{fig:dist_obs} which shows the distribution of data points over the whole observation in blue against a normal distribution in red, the whole data set is not a good fit for a normal distribution.
 
-	However when data is only considered during an event as seen in \cref{fig:dist_evt} it can be seen that the data is a much closer fit.  Automated event detection is discussed in \cref{sec:eventdetection}.
+	However, when data is only considered during an event as seen in \cref{fig:dist_evt} it can be seen that the data is a much closer fit.  Automated event detection is discussed in \cref{sec:eventdetection}.
 	
 \begin{figure}[H]
 	\centering
@@ -23,10 +23,10 @@
 	\label{fig:dist_evt}
 \end{figure}
 
-	The disparity between the distributions can be attributed to the full observation traces including many data points during quiet periods that would naturally tend towards zero.  As the fit is significantly closer when only looking at data points during an event only, it suggests that a measure of the fit of a normal distribution may be a predictor to en event occurring.
+	The disparity between the distributions can be attributed to the full observation traces including many data points during quiet periods that would naturally tend towards zero.  As the fit is significantly closer when only looking at data points during an event only, it suggests that a measure of the fit of a normal distribution may be a predictor to an event occurring.
 
 \subsubsection{PAA}
-	A Python class was written to be callable to convert a Dataframe into an array of the aggregated values.  To reduce the number of steps involved in using the class, it performs the normalisation step (unless told not to by passing \verb|normalise=False| as a parameter).
+	A Python class was written to be callable to convert a Data-frame into an array of the aggregated values.  To reduce the number of steps involved in using the class, it performs the normalisation step (unless told not to by passing \verb|normalise=False| as a parameter).
 	
 	\lstinputlisting[language=Python]{../seismic/sax/paa.py}
 	

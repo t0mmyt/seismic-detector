@@ -29,7 +29,7 @@
 
 	The Jaccard similarity was run against 138 events with known similarities from the Nabro 2011 data for 4 stations (NAB1..4).  For each event at a given station, a SAX string was produced with the length of the alphabet and the PAA interval as varying parameters between runs.  This was then run through the \textit{bag\_of\_words} function with varying word lengths.  In differing runs, the PAA Interval was set to 5, 10, 25 and 50ms, the alphabet was varied from a length of 4 to 9 characters and the length of the words were set to 5 to 10.
 	
-	For each run, a similarity matrix was produced comparing every pair of events and the similarities ranked.  This was then aggregated in to a single data frame and the ranks and average ranks compared to whether this was a known similar event.  The results for the following parameters are shown below (these parameters showed the best case for matching known events):
+	For each run, a similarity matrix was produced comparing every pair of events and the similarities ranked.  This was then aggregated into a single data-frame and the ranks and average ranks compared to whether this was a known similar event.  The results for the following parameters are shown below (these parameters showed the best case for matching known events):
 	
 \begin{verbatim}
 paa_int = 10
@@ -117,6 +117,6 @@ word_len = 7
 	columns/MeanRank/.style={column name={$\mu$}},
 ]{data/tfidf.csv}}\\
 
-	Interestingly the performance of the Vector Space Model was even worse than the Jaccard Index in terms of accuracy.  Computationally it also took approximately 6 times more CPU time.  The mean ranking for a match was 57.0 ($\sigma = 22.0$) and a non match was 69.1 ($\sigma = 19.4$).  Again, on average, the rank of a known match was higher but it was again marginal so wouldn't be suitable as a predictor by itself.
+	Interestingly, the performance of the Vector Space Model was even worse than the Jaccard Index in terms of accuracy.  Computationally it also took approximately 6 times more CPU time.  The mean ranking for a match was 57.0 ($\sigma = 22.0$) and a non match was 69.1 ($\sigma = 19.4$).  Again, on average, the rank of a known match was higher but it was again marginal so wouldn't be suitable as a predictor by itself.
 	
 \end{document}

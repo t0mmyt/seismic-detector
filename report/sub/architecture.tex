@@ -3,7 +3,7 @@
 
 \subsection{Discrete Services}
 
-	The application was decided to be split in to discrete components with an all of the data processing  bundled together behind a single API exposed via HTTP with mostly JSON payloads (the observation data is transferred and stored in its original binary format).  The interface is a separate service that is mostly an HTML and JavaScript powered application that speaks to the API on the HTTP/JSON interface.  A third instance of the application runs to carry out long running or deferred tasks and is communicated with via Redis as a message queue.  Additionally data persistence services (see \cref{sec:data-persistence}) run separately.
+	The application was decided to be split into discrete components with an all of the data processing  bundled together behind a single API exposed via HTTP with mostly JSON payloads (the observation data is transferred and stored in its original binary format).  The interface is a separate service that is mostly an HTML and JavaScript powered application that speaks to the API on the HTTP/JSON interface.  A third instance of the application runs to carry out long running or deferred tasks and is communicated with via Redis as a message queue.  Additionally data persistence services (see \cref{sec:data-persistence}) run separately.
 	
 \begin{figure}[h]
 	\centering
@@ -40,18 +40,18 @@
 \subsection{Data Persistence} \label{sec:data-persistence}
 	For the persistence of Metadata about observations, detected events and Suffix Trees, PostgreSQL was selected.  PostgreSQL is a performant and mature open-source Relational Database Management System (RDBMS).  Being a fully featured RDBMS means it brings ACID guarantees for data resilience and transaction management.
 	
-	For the persistence of Binary objects (such as Raw Observation Files and Suffix Trees), Minio was selected.  Minio is an open-source object storage application written in Golang designed to emulate the abilities of Amazons Simple Storage Service (S3).  It allows for arbitrary binary objects to be stored and retrieved remotely from \textit{buckets} of grouped resources.  In each bucket, an object has a unique name that can also emulate a filesystem path (e.g. \textit{bucket}/somedir/somefile).
+	For the persistence of Binary objects (such as Raw Observation Files and Suffix Trees), Minio was selected.  Minio is an open-source object storage application written in Golang designed to emulate the abilities of Amazons Simple Storage Service (S3).  It allows for arbitrary binary objects to be stored and retrieved remotely from \textit{buckets} of grouped resources.  In each bucket, an object has a unique name that can also emulate a filesystem path (e.g. \texttt{\{bucket\}/somedir/somefile}).
 	
-	A wrapper class was written around Minio that provides Get, Put and Delete operations.  This interface was intentionally left simple so that it could be replaced easily by another object or file store.
+	A wrapper class was written around Minio that provides Get, Put and Delete operations.  This interface was intentionally left simple so that it could be substituted easily by another object or file store.
 	
 \subsection{User Interface}
 	The user entry point to the application is served by the \textit{interface} service.  This provides a web based interface to the various backend components and rendering of graphs as well as acting as a reverse proxy to the various APIs behind the application.
 	
-	As mentioned previously, the interface to the application is web-based.  This serves two purposes; firstly it provides a unified experience across operating systems and secondly some of the processing can be memory and CPU intensive so is better suited for running on server hardware.  It also facilitates the potential sharing of data between users.
+	As previously mentioned, the interface to the application is web-based.  This serves two purposes; firstly it provides a unified experience across operating systems and secondly some of the processing can be memory and CPU intensive so is better suited for running on server hardware.  It also facilitates the potential sharing of data between users.
 	
 	The interface is served using Flask for Python.  Flask allows for dynamic request handling by converting URL paths directly in to function calls in Python.  It also supports HTML templating via Jinja2.  An module was written to act as a reverse proxy to expose various sections of the backend APIs to the browser.
 	
-	The view and control components of the interface were written in HTML (using Twitter's Bootstrap) and Javascript (using AngularJS, Charts.js and c3.js).  AngularJS allows for two way data binding between the Broswers DOM and elements such as form inputs and renders with minimal additional code.  It also provides a mechanism for sending requests to the APIs exposed by the aforementioned Proxy module.  Chart.js and c3.js are two open source Javascript charting libraries that utilise features included in HTML5 used in this case for rendering observation data.
+	The view and control components of the interface were written in HTML (using Twitter's Bootstrap) and JavaScript (using AngularJS, Charts.js and c3.js).  AngularJS allows for two way data binding between the browser's DOM and elements such as form inputs and renders with minimal additional code.  It also provides a mechanism for sending requests to the APIs exposed by the aforementioned Proxy module.  Chart.js and c3.js are two open source JavaScript charting libraries that utilise features included in HTML5 used in this case for rendering observation data.
 
 
 \subsection{Deferred \& Batch Jobs} \label{sec:worker}

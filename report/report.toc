@@ -8,7 +8,7 @@
 \contentsline {subsection}{\numberline {2.2}Symbolic Aggregate Approximation (SAX)}{7}{subsection.2.2}
 \contentsline {subsection}{\numberline {2.3}Suffix Trees}{8}{subsection.2.3}
 \contentsline {subsection}{\numberline {2.4}Text Similarity}{9}{subsection.2.4}
-\contentsline {subsubsection}{\numberline {2.4.1}Jaccard Similirity}{9}{subsubsection.2.4.1}
+\contentsline {subsubsection}{\numberline {2.4.1}Jaccard Similarity}{10}{subsubsection.2.4.1}
 \contentsline {subsubsection}{\numberline {2.4.2}TF-IDF and the Vector Space Model}{10}{subsubsection.2.4.2}
 \contentsline {section}{\numberline {3}Plan}{11}{section.3}
 \contentsline {subsection}{\numberline {3.1}Importing and Storing Data}{11}{subsection.3.1}
@@ -59,11 +59,14 @@
 \contentsline {subsection}{\numberline {9.4}Approach}{39}{subsection.9.4}
 \contentsline {subsection}{\numberline {9.5}Domain Specific Knowledge}{39}{subsection.9.5}
 \contentsline {subsection}{\numberline {9.6}In conclusion}{39}{subsection.9.6}
-\contentsline {section}{\numberline {A}Detectors}{40}{appendix.A}
-\contentsline {subsection}{\numberline {A.1}STA/LTA}{40}{subsection.A.1}
-\contentsline {subsection}{\numberline {A.2}SAX}{43}{subsection.A.2}
-\contentsline {section}{\numberline {B}Sample Tests}{46}{appendix.B}
-\contentsline {subsection}{\numberline {B.1}Bag of Words}{46}{subsection.B.1}
-\contentsline {subsection}{\numberline {B.2}Jaccard}{47}{subsection.B.2}
-\contentsline {subsection}{\numberline {B.3}Detector}{48}{subsection.B.3}
-\contentsline {section}{Bibliography}{52}{lstnumber.-12.132}
+\contentsline {section}{\numberline {A}Building and Running the Application}{40}{appendix.A}
+\contentsline {subsection}{\numberline {A.1}Building}{40}{subsection.A.1}
+\contentsline {subsection}{\numberline {A.2}Running}{40}{subsection.A.2}
+\contentsline {section}{\numberline {B}Detectors}{41}{appendix.B}
+\contentsline {subsection}{\numberline {B.1}STA/LTA}{41}{subsection.B.1}
+\contentsline {subsection}{\numberline {B.2}SAX}{44}{subsection.B.2}
+\contentsline {section}{\numberline {C}Sample Tests}{47}{appendix.C}
+\contentsline {subsection}{\numberline {C.1}Bag of Words}{47}{subsection.C.1}
+\contentsline {subsection}{\numberline {C.2}Jaccard}{48}{subsection.C.2}
+\contentsline {subsection}{\numberline {C.3}Detector}{49}{subsection.C.3}
+\contentsline {section}{Bibliography}{53}{lstnumber.-12.132}

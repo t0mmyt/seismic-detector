@@ -3,11 +3,11 @@
 
 \subsection{Text Similarity}
 
-	The following section outlines a selection of Similarity Measures that will be tested to try and identify patterns in the waveforms.
+	The following section outlines two of Similarity Measures that will be tested to try and identify patterns in the waveforms.
 
-\subsubsection{Jaccard Similirity} \label{sec:jaccard}
+\subsubsection{Jaccard Similarity} \label{sec:bkg-jaccard}
 
-	The Jaccard Similarity Coefficient is a measure of similarity between two sets of features.  In the case of text processing, these features are words.  It is defined as the intersection of features divided by their union.  As a pre-processing step, the words are converted to sets therefore removing the frequency of a word as a feature.  Also common words (often called stop words) such as "the", "at", "and" are stripped out.
+	The Jaccard Similarity Coefficient is a measure of similarity between two sets of features.  In the case of text processing, these features often words.  It is defined as the intersection of features divided by their union.  As a pre-processing step, the words would be converted to sets therefore removing the frequency of a word as a feature.  Then common words (often called stop words) such as "the", "at", "and" are stripped out.
 	
 	$$
 	J = \frac{|A \cap B|}{|A \cup B|}
