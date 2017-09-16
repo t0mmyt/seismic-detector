@@ -1,13 +1,13 @@
 \documentclass[../report.tex]{subfiles}
 \begin{document}
 
-The following sections follow the objectives as defined in \cref{sec:objectives}
+The following sections follow the objectives as defined in the introduction.
 
 \subsection{Importing and Storing Data}
 
 	Initially the observation data is available as SAC or Miniseed files.  These contain the raw observations along with metadata about the station that recorded the data.  This data can be parsed with the Obspy Python library \citep{obspy}.  Use of this library produces an Python object allowing simplified access to the data and metadata from the file.  The library also contains many methods for post-processing operations such as signal filtering and commonly used seismic analysis tools.
 	
-	In the project, this object will be wrapped in to a Data Access Object (DAO).  This is to add to or simplify many of the commonly used operations such as down-sampling, time slicing and passing through a bandpass filter to remove high and low frequencies.
+%	In the project, this object will be wrapped in to a Data Access Object (DAO).  This is to add to or simplify many of the commonly used operations such as down-sampling, time slicing and passing through a bandpass filter to remove high and low frequencies.
 	
 	For simplicity when working with many files, a service will be written to extract the metadata and store it in a database and the raw observation file will be stored in an object store for later retrieval.
 

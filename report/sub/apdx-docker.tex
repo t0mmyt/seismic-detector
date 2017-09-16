@@ -1,0 +1,13 @@
+\documentclass[../report.tex]{subfiles}
+\begin{document}
+\section{Docker environment} \label{sec:apdx-docker}
+
+	The listing below shows the \texttt{Dockerfile} used to bundle the application in to a container.
+
+\lstinputlisting{../Dockerfile}
+
+	The listing below shows the declarative YAML file that defines the infrastructure to run the application as used in \cref{sec:start-stop}.  All of the application components use the same container image but with different entry points.
+	
+\lstinputlisting{../docker-compose.yaml}
+
+\end{document}

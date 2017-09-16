@@ -1,17 +1,23 @@
 \select@language {english}
-\contentsline {figure}{\numberline {1}{\ignorespaces Effect of fault geometry on amplitude and phase \citep {faultangle}\relax }}{7}{figure.caption.1}
-\contentsline {figure}{\numberline {3}{\ignorespaces Example Suffix Trie\relax }}{8}{figure.caption.3}
-\contentsline {figure}{\numberline {4}{\ignorespaces Example Suffix Tree (edges shown as text and as positions/offsets)\relax }}{9}{figure.caption.4}
-\contentsline {figure}{\numberline {5}{\ignorespaces Map of Seismic Stations\relax }}{14}{figure.caption.5}
-\contentsline {figure}{\numberline {6}{\ignorespaces Raw Observation Data\relax }}{14}{figure.caption.6}
-\contentsline {figure}{\numberline {7}{\ignorespaces Frequency Filtered Observation Data (5-10Hz)\relax }}{15}{figure.caption.7}
-\contentsline {figure}{\numberline {8}{\ignorespaces Comparison of normalisation with and without background\relax }}{16}{figure.caption.8}
-\contentsline {figure}{\numberline {9}{\ignorespaces Distribution of Observation Data as a whole\relax }}{17}{figure.caption.9}
-\contentsline {figure}{\numberline {10}{\ignorespaces Distribution of Observation Data During an Event\relax }}{18}{figure.caption.10}
-\contentsline {figure}{\numberline {11}{\ignorespaces Interpolated Freqencies\relax }}{22}{figure.caption.11}
-\contentsline {figure}{\numberline {12}{\ignorespaces Using SAX distribution for approximate event finding\relax }}{26}{figure.caption.12}
-\contentsline {figure}{\numberline {13}{\ignorespaces A Selection of Detected Events by the Combined Algorithm\relax }}{27}{figure.caption.13}
-\contentsline {figure}{\numberline {14}{\ignorespaces A Selection of False positives by the Combined Algorithm\relax }}{27}{figure.caption.14}
-\contentsline {figure}{\numberline {15}{\ignorespaces Application Architecture\relax }}{33}{figure.caption.15}
-\contentsline {figure}{\numberline {16}{\ignorespaces Swagger interface for Data Processing API\relax }}{34}{figure.caption.16}
-\contentsline {figure}{\numberline {17}{\ignorespaces Swagger interface for Suffix Tree API\relax }}{36}{figure.caption.17}
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Effect of fault geometry on amplitude and phase \citep {faultangle}\relax }}{3}{figure.caption.1}
+\contentsline {figure}{\numberline {1.3}{\ignorespaces Example Suffix Trie\relax }}{4}{figure.caption.3}
+\contentsline {figure}{\numberline {1.4}{\ignorespaces Example Suffix Tree (edges shown as text and as positions/offsets)\relax }}{5}{figure.caption.4}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Map of Seismic Stations\relax }}{11}{figure.caption.5}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Raw Observation Data\relax }}{11}{figure.caption.6}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Frequency Filtered Observation Data (5-10Hz)\relax }}{12}{figure.caption.7}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Comparison of normalisation with and without background\relax }}{13}{figure.caption.8}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Distribution of Observation Data as a whole\relax }}{14}{figure.caption.9}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Distribution of Observation Data During an Event\relax }}{15}{figure.caption.10}
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Interpolated Freqencies\relax }}{19}{figure.caption.11}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Using SAX distribution for approximate event finding\relax }}{23}{figure.caption.13}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces A Selection of Detected Events by the Combined Algorithm\relax }}{24}{figure.caption.14}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces A Selection of False positives by the Combined Algorithm\relax }}{24}{figure.caption.15}
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Application Architecture\relax }}{30}{figure.caption.18}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Swagger interface for Data Processing API\relax }}{31}{figure.caption.19}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces SAX API\relax }}{32}{figure.caption.20}
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Importing Observations\relax }}{42}{figure.caption.21}
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Searching Observations (1)\relax }}{42}{figure.caption.22}
+\contentsline {figure}{\numberline {A.3}{\ignorespaces Searching Observations (2)\relax }}{42}{figure.caption.23}
+\contentsline {figure}{\numberline {A.4}{\ignorespaces Viewing an Observation\relax }}{43}{figure.caption.24}
+\contentsline {figure}{\numberline {A.5}{\ignorespaces Detecting Events\relax }}{43}{figure.caption.25}
+\contentsline {figure}{\numberline {A.6}{\ignorespaces Viewing PAA \& SAX\relax }}{44}{figure.caption.26}

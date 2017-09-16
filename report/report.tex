@@ -1,5 +1,6 @@
 %!TeX program = xelatex
 \documentclass[11pt, a4paper]{scrartcl}
+\pagenumbering{gobble}
 \usepackage{url}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -20,11 +21,17 @@
 \usepackage{booktabs}
 \usepackage{fontspec}
 \usepackage{amsmath}
-\newfontfamily{\lstfira}[Scale=.85,Contextuals={Alternate}]{Fira Mono}
+\usepackage{chngcntr}
+\usepackage{fancyhdr}
+\lhead{}
+\chead{An Infrastructure to Detect and Analyse Seismic Events as Strings}
+\rhead{}
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+\newfontfamily{\lstfira}[Scale=.75,Contextuals={Alternate}]{Fira Mono}
 \lstset{basicstyle=\lstfira,breaklines=true}
 \bibliographystyle{humannat}
 \graphicspath{ {./img/} }
-\newcommand{\sectionbreak}{\clearpage}
 \setmonofont[Contextuals={Alternate}]{Fira Mono}
 
 \begin{document}
@@ -50,12 +57,17 @@
 
 \end{titlepage}
 
-\tableofcontents
-\listoffigures
-\newpage
-
-\section{Introduction}
+\pagestyle{fancy}
+\section*{Introduction}
 \subfile{sub/introduction.tex}
+
+\newpage
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+\listoffigures
+\listoftables
+\newcommand{\sectionbreak}{\clearpage}
 
 \section{Background}
 \subfile{sub/bkg-seismic.tex}
@@ -86,16 +98,21 @@
 \section{Conclusions}
 \subfile{sub/conclusions.tex}
 
-\section{Critical Evaluation}
+\section{Reflection}
 \subfile{sub/critical_eval.tex}
 
+\newpage
+\bibliography{bibliography}
+
 \appendix
-\subfile{buildrun.tex}
+\subfile{sub/apdx-buildrun.tex}
+\newpage
+\subfile{sub/apdx-docker.tex}
 \newpage
 \subfile{sub/apdx-detectors.tex}
 \newpage
 \subfile{sub/apdx-unittests.tex}
-
 \newpage
-\bibliography{bibliography}
+\subfile{sub/apdx-opensource.tex}
+
 \end{document}

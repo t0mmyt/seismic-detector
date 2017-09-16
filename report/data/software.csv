@@ -1,0 +1,4 @@
+Name,Version used,Description,URL,License
+PostgreSQL,9.6,Relational Database Engine,https://www.postgresql.org/,PostgreSQL (BSD like)
+Minio,2017.07.24,S3 like object store,https://minio.io,Apache-2.0
+Docker,1.12.6,Container engine,https://docker.io,Apache-2.0

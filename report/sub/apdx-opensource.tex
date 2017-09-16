@@ -1,0 +1,53 @@
+\documentclass[../report.tex]{subfiles}
+\begin{document}
+\section{Open Source software used}
+
+\begin{table}[H]
+	\caption{Python Libraries}
+	\resizebox{\linewidth}{!}{%
+		\pgfplotstabletypeset[%
+		col sep=comma,
+		string type,
+		ignore chars={"},
+		every head row/.style={
+			before row=\toprule,
+			after row=\midrule,
+		},
+		every last row/.style={after row=\bottomrule},
+		]{data/python.csv}
+	}
+\end{table}
+
+\begin{table}[H]
+	\caption{Javascript \& CSS Libraries}
+	\resizebox{\linewidth}{!}{%
+		\pgfplotstabletypeset[%
+		col sep=comma,
+		string type,
+		ignore chars={"},
+		every head row/.style={
+			before row=\toprule,
+			after row=\midrule,
+		},
+		every last row/.style={after row=\bottomrule},
+		]{data/javascript.csv}
+	}
+\end{table}
+
+\begin{table}[H]
+	\caption{Other Software}
+	\resizebox{\linewidth}{!}{%
+		\pgfplotstabletypeset[%
+		col sep=comma,
+		string type,
+		ignore chars={"},
+		every head row/.style={
+			before row=\toprule,
+			after row=\midrule,
+		},
+		every last row/.style={after row=\bottomrule},
+		]{data/software.csv}
+	}
+\end{table}
+
+\end{document}

@@ -1,0 +1,6 @@
+Name,Version used,Description,URL,License
+AngularJS,1.6.4,DOM databinding and user interface library,https://angularjs.org/,MIT
+C3.js,0.4.11,Abstraction library for D3.js,http://c3js.org,MIT
+D3.js,4.8.0,Visusalisations in Javascript,http://d3js.org,BSD
+Charts.js,2.5.0,Charting library,http://www.chartjs.org,MIT
+Bootstrap,3.3.7,HTML/CSS Toolkit,http://getbootstrap.com/,MIT

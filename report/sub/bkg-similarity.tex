@@ -7,7 +7,7 @@
 
 \subsubsection{Jaccard Similarity} \label{sec:bkg-jaccard}
 
-	The Jaccard Similarity Coefficient is a measure of similarity between two sets of features.  In the case of text processing, these features often words.  It is defined as the intersection of features divided by their union.  As a pre-processing step, the words would be converted to sets therefore removing the frequency of a word as a feature.  Then common words (often called stop words) such as "the", "at", "and" are stripped out.
+	The Jaccard Similarity Coefficient or Jaccard Index is a measure of similarity between two sets of features.  In the case of text processing, these features often words.  It is defined as the intersection of features divided by their union.  As a pre-processing step, the words would be converted to sets therefore removing the frequency of a word as a feature.  Then common words (often called stop words) such as "the", "at", "and" are stripped out.  This produces a similarity score between 0 and 1 with 1 being an exact match.
 	
 	$$
 	J = \frac{|A \cap B|}{|A \cup B|}
@@ -21,15 +21,17 @@
 
 \subsubsection{TF-IDF and the Vector Space Model}
 	
-	In a similar way to that of Jaccard Similarity, TF-IDF when combined with a cosine similarity can be used to give a measure of the similarity of two documents.  Firstly the text is pre-processed in the same way as was done with Jaccard.  That is to normalise the case, remove stop words and split on white space to produce bags of words per document.  The resulting split is a \textit{bag of words} for a given document.
+	In a similar way to that of Jaccard Similarity, TF-IDF when combined with a cosine similarity can be used to give a measure of the similarity of two documents.  Firstly the text is pre-processed in the same way as was done with Jaccard.  That is to normalise the case, remove stop words and split on white space to produce a bag of words per document.
 	
 	The \textit{TF-IDF} can then be calculated for a given term \textit{t} by counting its occurrence in a document \textit{tf} and multiplying by the inverse document frequency \textit{idf} which is calculated as the number of documents \textit{N} over the number of documents in the corpus containing the term \textit{$N_{t}$} logarithmically scaled to dampen the effect.
 	
 	$$ \text{idf}_{(t,d)} = \log{\frac{N}{N_{t}}}$$
 	$$ \text{tfidf}_{(t, d)} = \text{tf}_{(t,d)} \cdot \text{idf}_{(t,d)} $$
 	
-	To produce a similarity measure, all of the \textit{bags of words} are combined to produce a \textit{corpus} of all of the documents in a collection and a \textit{term frequency matrix} is calculated.
+	To produce a similarity measure, all of the \textit{bags of words} are combined to produce a \textit{corpus} of all of the documents in a collection and a \textit{term frequency matrix} is calculated.  When comparing two documents \textit{A} \& \textit{B}, two vectors $\overrightarrow{A}$ and $\overrightarrow{B}$ are produced based on all of the terms in both documents and their relevant TF-IDF scores.  The cosine similarity is then given as the dot product of the components of the two vectors.
 	
-	\verb|TODO|
+	$$ \text{Cosine Similarity} = \frac{A \cdot B}{\norm{A} \cdot \norm{B}} $$
+	
+	This produces a number between -1 (being no match) and 1 (an exact match).  It has the advantage over the \textit{Jaccard Index} as it penalises terms that are more frequent across the corpus and should therefore prioritise significant terms.
 
 \end{document}

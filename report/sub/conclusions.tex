@@ -1,5 +1,9 @@
 \documentclass[../report.tex]{subfiles}
 \begin{document}
+		
+\subsection{Divergence from Original Objectives regarding Suffix Trees} \label{sec:alteration-objectives}
+	
+	The original objectives had focussed on building SAX strings suitable for storage and interpretation using Suffix Trees.  The difficulty in finding patterns between different observations of the same event (as explained in the latter part of \cref{sec:seismicwaves}) was not picked up during the early research stages.  Suffix Trees are very efficient at searching for specific or very similar strings.  Once the lack of distinct similarities had been established, it was felt that Suffix Trees would not allow enough flexibility in detecting them and the text similarity models were considered instead.
 
 \subsection{Event Detection}
 
@@ -7,13 +11,17 @@
 	
 	There are not sufficient patterns in the produced SAX string beyond the step change and the change in character distribution that can be used to reliably determine when an event is happening.
 	
-	While the analysis of the strings is fast, the pre-computation during the PAA phase (the normalisation and aggregation) must still be factored in with the consideration that the string is only to be used once and then discarded as the PAA needs to be recalculated once the event has been isolated.
+	While the analysis of the strings is fast, the pre-computation during the PAA phase (the normalisation and aggregation) must still be factored in with the consideration that the string is only to be used once and then discarded.  This is because the PAA would need to be recalculated once the event has been isolated for an effective SAX distribution.
 	
 	In conclusion, it is only performing a step change algorithm with the steps being predefined by the Gaussian break points as determined by the SAX algorithm.  It is not felt that it has anything to add over existing step change based algorithms such as \textit{Short Term Average Long Term Average} (STALTA) already in use in the field.
 
 
 \subsection{Event Similarity}
 
-	Ultimately SAX was found not to be suitable for detecting similarities between known similar seismic events.  This is presumably down to the factors listed in \cref{sec:seismicwaves}, specifically the path effect.  That is the reflection and refraction of the waves as they pass through different substrates and geological boundaries causes a significant amount of noise that distorts the waveform beyond it being easily recognisable.  While the string similarity measures (Jaccard and TF-IDF) showed on average a slightly higher score for known matched events, the highly scoring false positives rendered the positive results statistically insignificant.
+	Ultimately SAX was found not to be suitable for detecting similarities between known similar seismic events.  This is presumably down to the factors listed in \cref{sec:seismicwaves}, specifically the path effect.  That is the reflection and refraction of the waves as they pass through different substrates and geological boundaries causes a significant amount of noise that distorts the waveform beyond it being easily recognisable.  While the string similarity measures (Jaccard and TF-IDF) showed on average a slightly higher score for known matched events than for random events, the highly scoring false positives rendered the positive results statistically insignificant.  An area that was not looked at during the project would have been extracting the signal envelop using a Hilbert Transform although it is felt for it to be truly effective, an algorithm would need to be written to identify important features in an event which would require a lot more domain specific knowledge relating to Geophysics.  The output of such an algorithm would probably also need to contain more dimensions than SAX can represent.
+	
+\subsection{Application}
+
+	The design of the application had been intended to allow for searching for similar events as well as the event detection.  This was on the premise that the similarity models would be more effective than they were.  As this had been proven not to be the case, the similarity models were not implemented as features of the application.  As demonstrated in \cref{sec:using-application}, it serves its purpose for filtering and visualising events and could easily be extended as a repository of observation and event data.
 	
 \end{document}

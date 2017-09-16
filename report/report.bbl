@@ -17,7 +17,8 @@ Butterworth, S.\leavevmode\nopagebreak\newline 1930.
 \bibitem[\protect\astroncite{Garnero}{2017}]{faultangle}
 Garnero, E.~J.\leavevmode\nopagebreak\newline 2017.
 \newblock "seismology 101" images.
-\newblock [Online; accessed August, 2017].
+\newblock [Online; accessed August, 2017],
+  \url{http://garnero.asu.edu/research_images/images_seis101.html}.
 
 \bibitem[\protect\astroncite{Goitom et~al.}{2015}]{eritrea1}
 Goitom, B., C.~Oppenheimer, J.~O.~S. Hammond, R.~Grandin, T.~Barnie,
@@ -36,6 +37,8 @@ Harris, M., M.~Levene, D.~Zhang, and D.~Levene\leavevmode\nopagebreak\newline
 Haustant, A.\leavevmode\nopagebreak\newline 2016.
 \newblock {Flask-RESTPlus} fully featured framework for fast, easy and
   documented api development with flask.
+\newblock [Online, accessed August 2017],
+  \url{https://flask-restplus.readthedocs.io/en/stable/}.
 
 \bibitem[\protect\astroncite{Keogh et~al.}{2007}]{sax-hot}
 Keogh, E., J.~Lin, and A.~Fu\leavevmode\nopagebreak\newline 2007.
@@ -48,6 +51,12 @@ Lin, J., E.~Keogh, S.~Lonardi, and B.~Chiu\leavevmode\nopagebreak\newline 2003.
 \newblock A symbolic representation of time series, with implications for
   streaming algorithms.
 \newblock {\em Data Mining and Knowledge Discovery}.
+
+\bibitem[\protect\astroncite{P\'erez and Granger}{2007}]{ipython}
+P\'erez, F. and B.~E. Granger\leavevmode\nopagebreak\newline 2007.
+\newblock {IP}ython: a system for interactive scientific computing.
+\newblock {\em Computing in Science and Engineering}, 9(3):21--29.
+\newblock \url{http://ipython.org}.
 
 \bibitem[\protect\astroncite{{\v R}eh{\r u}{\v r}ek and
   Sojka}{2010}]{rehurek_lrec}

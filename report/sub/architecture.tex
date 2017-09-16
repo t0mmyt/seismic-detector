@@ -3,7 +3,7 @@
 
 \subsection{Discrete Services}
 
-	The application was decided to be split into discrete components with an all of the data processing  bundled together behind a single API exposed via HTTP with mostly JSON payloads (the observation data is transferred and stored in its original binary format).  The interface is a separate service that is mostly an HTML and JavaScript powered application that speaks to the API on the HTTP/JSON interface.  A third instance of the application runs to carry out long running or deferred tasks and is communicated with via Redis as a message queue.  Additionally data persistence services (see \cref{sec:data-persistence}) run separately.
+	The application was decided to be split into discrete components with an all of the data processing bundled together behind the worker process and a single API exposed via HTTP with mostly JSON payloads (the exception being the observation data that is transferred and stored in its original binary format).  The separation servces two purposes.  Firstly it is intended so that the application logic is contained within the API service and the worker, decoupling it from the interface so that it could be presented by different applications.  Secondly it gets around Pythons single threaded architecture by separating the workload in to multiple processes.  The interface is a separate service that is mostly an HTML and JavaScript application powered by Flask that speaks to the API on the HTTP/JSON interface.  A third instance of the application runs to carry out long running or deferred tasks and is communicated with via Redis as a message queue.  Additionally data persistence services (see \cref{sec:data-persistence}) run separately.
 	
 \begin{figure}[h]
 	\centering
@@ -29,49 +29,52 @@
 	\label{fig:api}
 \end{figure}
 
-\subsubsection{Observations API Namespace}
+\subsubsection*{Observations API Namespace}
 
-	\verb|TODO|
+	The Observations API exists to add and remove raw observation data to the datastore.  It also facilitates searching via the metadata and the listing of detected events.  Adding and retrieving Observation files uses the binary format that they are natively stored in.  All other actions are as form parameters and respond in JSON.  The source is at \texttt{/seismic/apis/observations.py}.
 
-\subsubsection{SAX API Namespace}
+\subsubsection*{SAX API Namespace}
 
-	\verb|TODO|
+	The SAX API exists to return PAA and SAX data for either an event or whole observation.  The Swagger display for retrieving SAX for an event is shown below in \cref{fig:sax-api}.  The source is at \texttt{/seismic/apis/sax.py}.  It returns a JSON object containing the calculated PAA values and the SAX string.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{img/sax-api}
+	\caption{SAX API}
+	\label{fig:sax-api}
+\end{figure}
 
 \subsection{Data Persistence} \label{sec:data-persistence}
-	For the persistence of Metadata about observations, detected events and Suffix Trees, PostgreSQL was selected.  PostgreSQL is a performant and mature open-source Relational Database Management System (RDBMS).  Being a fully featured RDBMS means it brings ACID guarantees for data resilience and transaction management.
+	
+	For the persistence of Metadata about observations, detected events and Suffix Trees, PostgreSQL was selected.  PostgreSQL is a performant and mature open-source Relational Database Management System (RDBMS).  Being a fully featured RDBMS means it brings ACID guarantees for data resilience and transaction management.  Interfacing with the database was done with SQLAlchemy and the associated library can be found under \texttt{/seismic/metadb}.
 	
 	For the persistence of Binary objects (such as Raw Observation Files and Suffix Trees), Minio was selected.  Minio is an open-source object storage application written in Golang designed to emulate the abilities of Amazons Simple Storage Service (S3).  It allows for arbitrary binary objects to be stored and retrieved remotely from \textit{buckets} of grouped resources.  In each bucket, an object has a unique name that can also emulate a filesystem path (e.g. \texttt{\{bucket\}/somedir/somefile}).
 	
-	A wrapper class was written around Minio that provides Get, Put and Delete operations.  This interface was intentionally left simple so that it could be substituted easily by another object or file store.
+	A wrapper class was written around Minio that provides Get, Put and Delete operations.  This interface was intentionally left simple so that it could be substituted easily by another object or file store.  The library is under \texttt{/seismic/datastore}.
 	
 \subsection{User Interface}
+	
 	The user entry point to the application is served by the \textit{interface} service.  This provides a web based interface to the various backend components and rendering of graphs as well as acting as a reverse proxy to the various APIs behind the application.
 	
 	As previously mentioned, the interface to the application is web-based.  This serves two purposes; firstly it provides a unified experience across operating systems and secondly some of the processing can be memory and CPU intensive so is better suited for running on server hardware.  It also facilitates the potential sharing of data between users.
 	
-	The interface is served using Flask for Python.  Flask allows for dynamic request handling by converting URL paths directly in to function calls in Python.  It also supports HTML templating via Jinja2.  An module was written to act as a reverse proxy to expose various sections of the backend APIs to the browser.
+	The interface is served using Flask for Python.  Flask allows for dynamic request handling by converting URL paths directly in to function calls in Python.  It also supports HTML templating via Jinja2.  An module was written to act as a reverse proxy to expose various sections of the back-end APIs to the browser.
 	
-	The view and control components of the interface were written in HTML (using Twitter's Bootstrap) and JavaScript (using AngularJS, Charts.js and c3.js).  AngularJS allows for two way data binding between the browser's DOM and elements such as form inputs and renders with minimal additional code.  It also provides a mechanism for sending requests to the APIs exposed by the aforementioned Proxy module.  Chart.js and c3.js are two open source JavaScript charting libraries that utilise features included in HTML5 used in this case for rendering observation data.
-
+	The view and control components of the interface were written in HTML (using Twitter's Bootstrap) and JavaScript (using AngularJS, Charts.js and c3.js).  AngularJS allows for two way data binding between the browser's DOM and elements such as form inputs and renders with minimal additional code.  It also provides a mechanism for sending requests to the APIs exposed by the aforementioned Proxy module.  Chart.js and c3.js are two open source JavaScript charting libraries that utilise features included in HTML5 used in this case for rendering observation data.  The source for the interface is under \texttt{/seismic/interface}.
 
 \subsection{Deferred \& Batch Jobs} \label{sec:worker}
-	For the running of deferred and batch jobs, Celery (another Python based project) was selected.  It uses a message queue for receiving and dispatching jobs.  Celery allows for the definition of jobs as functions which can then be imported by other processes (in this case, mostly the user interface).  The application uses Redis as the message queue. It also allows for the chaining together of tasks to ensure order (e.g. event detection before SAX analysis) and the passing of results on to the next function in a functional programming style.
 	
-\subsection{Suffix API}
-	The Suffix API runs as a separate service as the majority of the code base is taken from previous work on suffix trees at Birkbeck \citep{bbk-suffix}.  This was done mainly to separate it from the original work on this project.  The only additions were an HTTP API written in the same style as the Data Processing API so that it could be interacted with.  The API operations are summarised in \cref{fig:suffix-api}.
+	For the running of deferred and batch jobs, Celery (an open source Python based project) was selected.  It uses a message queue for receiving and dispatching jobs.  Celery allows for the definition of jobs as functions which can then be imported by other processes (primarily called by the user interface).  The application uses Redis as the message queue. It also allows for the chaining together of tasks to ensure order (e.g. event detection before SAX analysis) and the passing of results on to the next function in a functional programming style.  The worker is in the source tree under \texttt{/seismic/worker}.
+	
+\subsection{Similarity Measures}
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=1\linewidth]{img/suffix-api}
-	\caption{Swagger interface for Suffix Tree API}
-	\label{fig:suffix-api}
-\end{figure}
+	The similarity measures were not implemented in the web application because they were not deemed effective enough.  They were written as libraries and tested via iPython notebooks \citep{ipython} and these are included in the source under \texttt{/notebooks}.  The Jaccard function, Similarity Matrix, associated functions and unit tests are under \texttt{/seismic/similarity}.
+	
+\subsection{Docker}
 
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics[width=1\linewidth]{img/swagger}
-%	\caption{Swagger interface for Suffix Tree API}
-%	\label{fig:swagger}
-%\end{figure}
+	Docker is a container engine originally written for Linux that allows an application and all of its dependencies to be bundled together and isolated from the rest of the host system.  It also allows for pre-built applications to be distributed in a pre-configured manor.  Given the complexities of the application dependencies and the requirement for a database and object store it was decided to use Docker to package the application.  Docker Compose is an additional tool that facilitates the declaration of container inter-dependencies and networking in YAML.
+	
+	The \texttt{Dockerfile} and \texttt{docker-compose.yaml} are listed in \cref{sec:apdx-docker}.
+
 	
 \end{document}
