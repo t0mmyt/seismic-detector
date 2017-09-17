@@ -13,14 +13,14 @@
 	
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{img/distribution_obs}
+	\includegraphics[width=0.8\linewidth]{img/distribution_obs}
 	\caption{Distribution of Observation Data as a whole}
 	\label{fig:dist_obs}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{img/distribution_evt}
+	\includegraphics[width=0.8\linewidth]{img/distribution_evt}
 	\caption{Distribution of Observation Data During an Event}
 	\label{fig:dist_evt}
 \end{figure}
@@ -28,7 +28,7 @@
 	The disparity between the distributions can be attributed to the full observation traces including many data points during quiet periods that would naturally tend towards zero.  As the fit is significantly closer when only looking at data points during an event only, it suggests that a measure of the fit of a normal distribution may be a predictor to an event occurring.
 
 \subsubsection{Performing PAA}
-	A Python class was written to be callable to convert a Data-frame into an array of the aggregated values.  To reduce the number of steps involved in using the class, it performs the normalisation step (unless told not to by passing \verb|normalise=False| as a parameter).
+	A Python class was written to be callable to convert a Data-frame into an array of the aggregated values.  To reduce the number of steps involved in using the class, it performs the normalisation step (unless told not to by passing \texttt{normalise=False} as a parameter).
 	
 	\lstinputlisting[language=Python]{../seismic/sax/paa.py}
 	
@@ -46,7 +46,7 @@
 
 	\lstinputlisting[language=Python]{../seismic/sax/sax.py}
 	
-	On instantiation, copy of the original series is stored in the object with no additional pre-processing.  The object is then called with the desired alphabet passed as the only parameter.  The length of the alphabet is then used to determine the number of breakpoints to calculate against a normal distribution and these are stored as the \textit{thresholds}.  A Python generator is then returned that uses the numpy \textit{searchsorted} method to establish between which thresholds a value falls between and then return the corresponding character.  The generator can then be used to iterate over the values one at a time by the calling function.  A simple call to print the characters is demonstrated below:
+	On instantiation, a copy of the original series is stored in the object with no additional pre-processing.  The object is then called with the desired alphabet passed as the only parameter.  The length of the alphabet is then used to determine the number of breakpoints to calculate against a normal distribution and these are stored as the \textit{thresholds}.  A Python \textit{generator} is then returned that uses the numpy \textit{searchsorted} method to establish between which thresholds a value falls between and then return the corresponding character.  The generator can then be used to iterate over the values one at a time by the calling function.  A simple call to print the characters is demonstrated below:
 	
 \begin{lstlisting}[language=Python]
 	s = Sax(paa_out)          # instantiate a callable Sax object

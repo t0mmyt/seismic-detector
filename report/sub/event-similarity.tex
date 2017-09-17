@@ -18,12 +18,14 @@
 
 
 \subsection{Jaccard Similarity} \label{sec:jaccard}
+\begin{minipage}{\linewidth}
 \subsubsection{Implementation}
 	The Jaccard Similarity Coefficient was implemented in Python as follows (with the case two sets with a cardinality of 0 having a similarity of 1).
 
 \lstinputlisting[language=Python]{../seismic/similarity/jaccard.py}
 
 	Test cases are included in \cref{sec:jaccard-test}.  The inputs to the function are the bag-of-words produced from two observations.
+\end{minipage}
 	
 \subsubsection{Results}
 
@@ -124,6 +126,6 @@ word_len = 7
 	]{data/tfidf.csv}}\\
 \end{table}
 
-	Interestingly, the performance of the Vector Space Model was even worse than the Jaccard Index in terms of accuracy.  Computationally it also took approximately 6 times more CPU time.  The mean ranking for a match was 57.0 ($\sigma = 22.0$) and a non match was 69.1 ($\sigma = 19.4$).  Again, on average, the rank of a known match was higher but even more marginal than the Jaccard Index so would not be suitable as a predictor.
+	Interestingly, the performance of the Vector Space Model was even worse than the Jaccard Index in terms of accuracy.  Computationally it also took approximately 6 times more CPU time.  The mean ranking for a match was 57.0 ($\sigma = 22.0$) and a non match was 69.1 ($\sigma = 19.4$).  On average, the rank of a known match was higher than a non-match, but it was even more marginal than the Jaccard Index so would not be suitable as a predictor.
 	
 \end{document}

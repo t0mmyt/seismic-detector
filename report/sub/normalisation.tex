@@ -12,7 +12,7 @@
 	
 	A further problem introduced by unsupervised normalisation is the tailing off of events.  In the same way that introducing otherwise quiet periods amplifies the peaks of the event, so does including too much of the tail.
 	
-\begin{figure}[h]
+\begin{figure}[H]
 	\begin{subfigure}{\textwidth}
 		\centering
 		\includegraphics[width=0.7\linewidth]{toSoon}
@@ -27,6 +27,6 @@
 	\label{fig:tosoon}
 \end{figure}
 
-	In view of these issues, and because \textit{z-normalisation} is an important part of \textit{SAX processing}, it is essential that only significant data be presented to be normalised for analysis.  To meet this requirement, it is important that the start of the event be relatively accurately estimated and only the first few seconds are treated.  This is demonstrated in \cref{fig:tosoon} where if earlier background noise is included in the sample (a) the peaks are normalised a little over 4 where if only the event is included, the peaks are nearer to 5.  This is also important because we are only interested in profiling \textit{P-waves}. The \textit{S-waves} following a few seconds later interfere with the Z-axis recordings.  After SAX processing, it is quite likely that these peaks would be represented by different characters.  When looking at longer time ranges, this effect is amplified significantly rendering the event data meaningless.
+	In view of these issues, and because \textit{z-normalisation} is an important part of \textit{SAX processing}, it is essential that only significant data be presented to be normalised for analysis.  To meet this requirement, it is important that the start of the event be relatively accurately estimated and only the first few seconds are treated.  This is demonstrated in \cref{fig:tosoon} where if earlier background noise is included in the sample (a) the peaks are normalised a little over 4 where if only the event is included, the peaks are nearer to 5.  This is also important because we are only interested in profiling \textit{P-waves}. The \textit{S-waves} following a few seconds later interfere with the P-wave profile on the Z-axis recordings.  After SAX processing, it is quite likely that these peaks would be represented by different characters.  When looking at longer time ranges, this effect is amplified significantly rendering the event data meaningless.
 
 \end{document}

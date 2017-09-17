@@ -5,10 +5,6 @@ Beyreuther, M., R.~Barsch, L.~Krischer, T.~Megies, Y.~Behr, and
   J.~Wassermann\leavevmode\nopagebreak\newline 2010.
 \newblock Obspy: A python toolbox for seismology.
 
-\bibitem[\protect\astroncite{Bormann}{2012}]{man-seis-obs}
-Bormann, P.\leavevmode\nopagebreak\newline 2012.
-\newblock New manual of seismological observatory practice.
-
 \bibitem[\protect\astroncite{Butterworth}{1930}]{bandpass}
 Butterworth, S.\leavevmode\nopagebreak\newline 1930.
 \newblock On the theory of filter amplifiers.

@@ -3,49 +3,49 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: report.aux
 The style file: humannat.bst
 Database file #1: bibliography.bib
+Warning--I didn't find a database entry for "man-seis-obs"
 Warning--empty journal in obspy
-Warning--empty journal in man-seis-obs
 Warning--empty journal in bbk-suffix
 Warning--empty journal in restplus
-You've used 13 entries,
+You've used 12 entries,
             2155 wiz_defined-function locations,
-            574 strings with 6217 characters,
-and the built_in function-call counts, 4868 in all, are:
-= -- 447
-> -- 250
-< -- 9
-+ -- 96
-- -- 92
-* -- 420
-:= -- 902
-add.period$ -- 39
-call.type$ -- 13
-change.case$ -- 111
-chr.to.int$ -- 13
-cite$ -- 17
-duplicate$ -- 179
-empty$ -- 283
-format.name$ -- 109
-if$ -- 901
+            570 strings with 6101 characters,
+and the built_in function-call counts, 4602 in all, are:
+= -- 423
+> -- 244
+< -- 8
++ -- 94
+- -- 90
+* -- 400
+:= -- 852
+add.period$ -- 37
+call.type$ -- 12
+change.case$ -- 105
+chr.to.int$ -- 12
+cite$ -- 15
+duplicate$ -- 166
+empty$ -- 263
+format.name$ -- 106
+if$ -- 852
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 12
-newline$ -- 67
-num.names$ -- 39
-pop$ -- 104
+missing$ -- 11
+newline$ -- 63
+num.names$ -- 36
+pop$ -- 97
 preamble$ -- 1
-purify$ -- 111
+purify$ -- 105
 quote$ -- 0
-skip$ -- 146
+skip$ -- 135
 stack$ -- 0
-substring$ -- 203
-swap$ -- 28
+substring$ -- 191
+swap$ -- 27
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 78
-warning$ -- 4
-while$ -- 31
+type$ -- 72
+warning$ -- 3
+while$ -- 29
 width$ -- 0
-write$ -- 161
+write$ -- 151
 (There were 4 warnings)

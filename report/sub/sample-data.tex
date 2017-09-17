@@ -23,14 +23,14 @@
 	The second dataset is from the Nabro volcano in Eritrea \citep{eritrea1}.  It consists of one years worth of observations from stations situated around the volcano.  Volcanoes sometimes produce similar waves when the event source is the same.  Within this dataset, known similarities have been provided between some events.  These events (totalling 138) will be used to evaluate the similarity measures.
 
 \subsection{Frequency filtering (Butterworth Bandpass)}
-	As seen in \cref{sec:sampledata} and \cref{fig:calraw}, raw seismic traces contain a lot of background noise.  This consists of both high frequency and low frequency interference which can be caused by many unrelated events such as wind, temperature variations and human events such as traffic and construction work.  A commonly used technique \citep{man-seis-obs} is to perform a Butterworth Filter \citep{bandpass} on the data, eliminating frequencies that are outside of a given range.  The most significant frequencies from a seismic event tend to be between 1 and 20Hz so these values are used going forwards to clean the data.  The bandpass filter is provided by the Obspy library and implemented as a method in the \verb|ObservationDAO| class.
+	As seen in \cref{sec:sampledata} and \cref{fig:calraw}, raw seismic traces contain a lot of background noise.  This consists of both high frequency and low frequency interference which can be caused by many unrelated events such as wind, temperature variations and human events such as traffic and construction work.  A commonly used technique is to perform a Butterworth Filter \citep{bandpass} on the data, eliminating frequencies that are outside of a given range.  The most significant frequencies from a seismic event tend to be between 1 and 20Hz so these values are used going forwards to clean the data.  The bandpass filter is provided by the Obspy library and implemented as a method in the \texttt{ObservationDAO} class.
 	
 	The effects of applying the bandpass filter can be seen in \cref{fig:calbandpass}.  This results a much cleaner event profile.  However, there is unfortunately still little obvious visual correlation between the observations beyond the timing of the event onsets.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{img/cal_bandpass}
-	\caption{Frequency Filtered Observation Data (5-10Hz)}
+	\caption{Frequency Filtered Observation Data (1-20Hz)}
 	\label{fig:calbandpass}
 \end{figure}
 

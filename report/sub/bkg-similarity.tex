@@ -12,12 +12,16 @@
 	$$
 	J = \frac{|A \cap B|}{|A \cup B|}
 	$$
-	
+
+\begin{minipage}{\linewidth}
 	As an example (using integers in place of words):
 	$$ A = \{0, 2, 3, 5, 7, 9\},\quad B = \{0, 1, 2, 5, 6\} $$
 	$$ A\cap B = \{0, 2, 5\},\quad |A\cap B| = 3 $$
 	$$ A\cup B = \{0, 1, 2, 3, 5, 6, 7, 9\},\quad |A\cup B| = 8	$$
 	$$ J_{AB} = \frac{3}{8} = 0.375 $$
+\end{minipage}
+
+	The Jaccard Index of $A$ and $B$ is $0.375$ or $37.5\%$.
 
 \subsubsection{TF-IDF and the Vector Space Model}
 	
@@ -32,6 +36,6 @@
 	
 	$$ \text{Cosine Similarity} = \frac{A \cdot B}{\norm{A} \cdot \norm{B}} $$
 	
-	This produces a number between -1 (being no match) and 1 (an exact match).  It has the advantage over the \textit{Jaccard Index} as it penalises terms that are more frequent across the corpus and should therefore prioritise significant terms.
+	This produces a number between -1 (being no match) and 1 (an exact match).  It has the advantage over the \textit{Jaccard Index} in that it penalises terms that are more frequent across the corpus and should therefore prioritise significant terms.
 
 \end{document}
