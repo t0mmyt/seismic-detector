@@ -35,5 +35,6 @@ setup(
         'redis',
         'flask-api',
         'gensim',
+        'rfc6266',
     )
 )

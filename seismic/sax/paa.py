@@ -9,9 +9,10 @@ class PaaError(Exception):
 class Paa(object):
     def __init__(self, series=pd.Series, normalise=True):
         """
-        Prepare a PAA (Piecewise Aggregate Approximation) object to calculate
-        PAA of a given dataset.  Will perform z-normalisation by default on
-        data before interpolating linearly to an interval of 1ms.
+        Prepare a PAA (Piecewise Aggregate Approximation) object to
+        calculate PAA of a given dataset.  Will perform z-normalisation
+        by default on data before interpolating linearly to an interval
+        of 1ms.
 
         Args:
             series (DataFrame): pandas DataFrame with time as index

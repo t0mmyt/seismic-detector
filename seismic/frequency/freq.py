@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import numpy as np
-# import pandas as pd
 
 
 class FrequencyError(Exception):
@@ -36,11 +35,11 @@ class Frequency(object):
         while cur_pos < len(self.data):
             dd = self.data[cur_pos:]
             if phase_positive:
-                i = np.argmin(dd<0)  # Find the next occurrence below 0
+                i = np.argmin(dd < 0)  # Find the next occurrence below 0
                 phase_positive = False
                 yield i + cur_pos
             else:
-                i = np.argmax(dd>0)  # Find the next occurrence above 0
+                i = np.argmax(dd > 0)  # Find the next occurrence above 0
                 phase_positive = True
                 yield i + cur_pos
             cur_pos += (i + 1)

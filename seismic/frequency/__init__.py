@@ -1,1 +1,1 @@
-from .freq import *
+from .interpolator import *

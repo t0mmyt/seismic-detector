@@ -5,11 +5,11 @@ import numpy as np
 
 from seismic.sax import Paa, PaaError, Sax, SaxError
 from .utils import make_series
-from .detector import Detector
+from .detectorbase import DetectorBase
 from .exceptions import DetectorError
 
 
-class SaxDetectWindow(Detector):
+class SaxDetectWindow(DetectorBase):
     def detect(self, alphabet, paa_int, buffer_len, threshold, window_size_ms):
         if not len(alphabet) % 2 == 1:
             raise DetectorError(

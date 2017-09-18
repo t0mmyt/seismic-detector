@@ -24,8 +24,8 @@ nav = SimpleNavigator((
     ("Import", "/import"),
     ("Observations", "/observations"),
     ("Explore/SAX", "/sax"),
-    ("Suffix Trees", "/suffix"),
-    ("Tasks", "/tasks"),
+    # ("Suffix Trees", "/suffix"),
+    # ("Tasks", "/tasks"),
 ))
 
 

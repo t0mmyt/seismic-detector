@@ -1,12 +1,36 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
+{% block heading %}Seismic Detection with SAX{% endblock %}
+{% block explain %}Instructions as listed in Appendix A.2.2 in the report{% endblock %}
 {% block contents %}
-<p>Skateboard yuccie meditation, drinking vinegar lumbersexual banh mi williamsburg. Dreamcatcher coloring book tofu banjo whatever edison bulb, YOLO gluten-free before they sold out bushwick. Swag salvia authentic, gluten-free chambray kitsch street art twee. Cronut pabst poutine iPhone man braid, deep v schlitz subway tile yr. Farm-to-table sriracha schlitz everyday carry, artisan keffiyeh glossier tacos cred. Freegan taxidermy pug squid everyday carry kale chips. Everyday carry single-origin coffee ennui, lomo kitsch master cleanse live-edge etsy vegan tacos.</p>
-<p>Chicharrones trust fund readymade, everyday carry glossier artisan single-origin coffee art party knausgaard slow-carb plaid gastropub. Post-ironic XOXO VHS typewriter actually. Food truck humblebrag vexillologist intelligentsia, fam pop-up asymmetrical fanny pack la croix poutine twee chartreuse. Church-key brunch godard crucifix, VHS polaroid literally shabby chic. Slow-carb quinoa before they sold out, authentic taxidermy trust fund wayfarers letterpress fap kitsch pickled succulents gochujang coloring book. Banjo hashtag godard art party, tattooed keytar artisan authentic pop-up sriracha XOXO direct trade. Cardigan sartorial yuccie, distillery leggings banjo chartreuse actually slow-carb selvage.</p>
-<p>Blue bottle af vape everyday carry. Salvia celiac subway tile, DIY next level truffaut succulents chia occupy 90's mlkshk normcore unicorn. Prism seitan twee tacos swag. Hella kale chips cardigan ethical, shoreditch banjo quinoa beard pabst schlitz master cleanse post-ironic. Chambray jianbing irony, gluten-free pop-up coloring book raclette retro knausgaard forage disrupt seitan chicharrones hot chicken sustainable. Tbh blue bottle poke, la croix crucifix succulents fixie gastropub YOLO. Banjo kinfolk etsy, beard vaporware truffaut selfies tumblr offal chartreuse.</p>
-<p>Kitsch try-hard green juice swag brunch etsy. Lo-fi subway tile small batch, tattooed twee gochujang polaroid chicharrones PBR&B cray bitters. Hoodie affogato tattooed succulents, jean shorts pickled small batch artisan fingerstache vape cold-pressed craft beer health goth tacos. Pitchfork shabby chic street art swag pabst. Letterpress yr seitan readymade farm-to-table keytar tumeric. Polaroid squid pitchfork ugh, truffaut paleo food truck irony lyft fam meggings forage mumblecore. Waistcoat hella yr, man braid air plant godard roof party succulents biodiesel.</p>
-<p>Selvage twee unicorn, cliche ugh polaroid chicharrones tbh austin DIY schlitz forage pok pok pabst. Green juice hexagon kitsch, activated charcoal flexitarian single-origin coffee keytar chicharrones quinoa succulents post-ironic unicorn blue bottle tilde. Sriracha hexagon pop-up blog. Poutine locavore forage, next level you probably haven't heard of them slow-carb ennui fashion axe. Sriracha vape 3 wolf moon, edison bulb godard disrupt kickstarter freegan DIY af tumblr kitsch banh mi master cleanse. Literally ennui pop-up truffaut blue bottle, squid YOLO bushwick chillwave woke brooklyn. Master cleanse bushwick subway tile franzen, fap vaporware hashtag YOLO biodiesel snackwave sartorial.</p>
-<p>Godard hammock narwhal, hoodie quinoa roof party shoreditch raw denim typewriter tumeric beard messenger bag mixtape literally freegan. Irony kogi squid marfa. Lomo hella street art, fap trust fund enamel pin paleo. Portland meh banh mi, asymmetrical migas fashion axe mustache cronut raw denim. Cornhole vice cliche master cleanse offal, schlitz seitan kombucha actually. Synth lyft mustache craft beer fap. Marfa shabby chic tacos, tofu 8-bit lo-fi enamel pin put a bird on it +1 kickstarter actually leggings chia.</p>
-<p>Beard fam heirloom, deep v edison bulb fixie venmo four loko keytar banh mi. Kale chips wayfarers pickled, squid taxidermy mumblecore copper mug chartreuse. Sartorial etsy cray, asymmetrical woke shabby chic synth air plant you probably haven't heard of them man braid everyday carry iceland cold-pressed. Succulents poke pinterest, health goth biodiesel prism 3 wolf moon umami. Leggings wayfarers pok pok before they sold out heirloom poke trust fund. Heirloom keffiyeh typewriter poutine mumblecore fixie. Post-ironic poutine meditation, hot chicken YOLO try-hard kitsch swag williamsburg salvia lo-fi biodiesel.</p>
-<p>Disrupt venmo tumblr, single-origin coffee retro vice edison bulb fingerstache helvetica tilde franzen schlitz poutine meh mustache. Pop-up lyft unicorn hashtag. Tbh glossier hammock kale chips, disrupt before they sold out typewriter scenester narwhal pabst post-ironic man braid mustache next level. Cronut intelligentsia hoodie brooklyn ugh, coloring book blog deep v chambray polaroid photo booth normcore. Synth photo booth poutine, affogato jianbing raw denim umami cronut hashtag austin ugh. Lyft yuccie organic, literally pork belly whatever master cleanse williamsburg blue bottle umami bitters craft beer polaroid. Celiac health goth hot chicken viral vice.</p>
+<ol>
+    <li>
+        Select <b>Import</b> from the menu. Then click on Choose Files and select some observations (there are some under
+        /sample/_all in the included source or at <a href="https://github.com/t0mmyt/seismic-detector/tree/master/sample/_all">
+        https://github.com/t0mmyt/seismic-detector/tree/master/sample/_all</a>). Then hit Upload, if all was successful,
+        you will see a list of the files uploaded in green.
+    </li>
+    <li>
+        Once the files have been uploaded, click on Observations.
+    </li>
+    <li>
+        Then select a Network, Station and Channel to see observations that match your criteria.<br>
+        <img src="https://rawgit.com/t0mmyt/seismic-detector/master/report/img/run-select.png" alt="Selecting Observation" style="width: 100%;">
+    </li>
+    <li>
+        By ticking the checkbox next to an event, you are presented with a rendering of the whole observation and some controls<br>
+        <img src="https://rawgit.com/t0mmyt/seismic-detector/master/report/img/run-render.png" alt="Viewing Observation" style="width: 100%;">
+    </li>
+    <li>
+        To detect an event either by STA/LTA or SAX, hit the relevant control and then hit the
+        light blue Refresh button next to them to see if there were any potential events found.
+        If there were, you can tick the box next the the number of events to see them displayed
+        on the graph.
+        <img src="https://rawgit.com/t0mmyt/seismic-detector/master/report/img/run-detected.png" alt="Detecting Event" style="width: 100%;">
+    </li>
+    <li>
+        To see the event in more detail and to view the PAA/SAX process, you can click on the event ID for that event.
+        <img src="https://rawgit.com/t0mmyt/seismic-detector/master/report/img/run-event.png" alt="Detecting Event" style="width: 100%;">
+    </li>
+</ol>
 {% endblock %}

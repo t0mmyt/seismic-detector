@@ -26,7 +26,7 @@ services:
     redis:
         image: redis:3.0
         ports:
-            - 6379:6379
+            - 127.0.0.1:6379:6379
 
     interface:
         image: seismic/app:1.0

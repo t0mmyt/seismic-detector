@@ -6,7 +6,7 @@ from obspy.signal.filter import bandpass
 from .exceptions import DetectorError
 
 
-class Detector(ABC):
+class DetectorBase(ABC):
     """
     Base class for a stalta_detector
     """

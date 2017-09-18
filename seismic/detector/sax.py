@@ -4,11 +4,11 @@ import numpy as np
 import pandas as pd
 
 from seismic.sax import Paa, PaaError, Sax, SaxError
-from .detector import Detector
+from .detectorbase import DetectorBase
 from .exceptions import DetectorError
 
 
-class SaxDetect(Detector):
+class SaxDetect(DetectorBase):
     def __init__(self, trace, sampling_rate):
         """
 

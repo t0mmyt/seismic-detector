@@ -2,7 +2,7 @@
 import unittest
 import numpy as np
 
-from seismic.frequency.interpolator import *
+from seismic.frequency.interpolator import zero_intersect, phase_inversions, frequency
 
 
 class ZeroIntersect(unittest.TestCase):

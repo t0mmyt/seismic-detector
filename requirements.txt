@@ -19,3 +19,6 @@ celery
 redis
 flask-api
 gensim
+seaborn
+nose
+rfc6266

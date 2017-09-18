@@ -15,7 +15,8 @@ class Sax(object):
             paa (pd.Series): result from calling Paa
         """
         if not isinstance(paa, Series):
-            raise SaxError("paa should be a pandas.Series, got {}".format(type(paa)))
+            raise SaxError(
+                "paa should be a pandas.Series, got {}".format(type(paa)))
         self.paa = paa
 
     def __call__(self, alphabet=str):
@@ -29,11 +30,16 @@ class Sax(object):
             str
         """
         if not isinstance(alphabet, str):
-            raise SaxError("alphabet should be a str, got {}".format(type(alphabet)))
+            raise SaxError(
+                "alphabet should be a str, got {}".format(type(alphabet)))
         # Generate gaussian breakpoints
         thresholds = norm.ppf(
-            np.linspace(1 / len(alphabet), 1 - 1 / len(alphabet), len(alphabet) - 1)
-        )
+            np.linspace(
+                1 / len(alphabet),
+                1 - 1 / len(alphabet),
+                len(alphabet) - 1
+            ))
+
         for i in self.paa:
             yield alphabet[np.searchsorted(thresholds, i)]
 

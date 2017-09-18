@@ -1,3 +1,6 @@
+import pandas as pd
+
+
 def is_positive(n=float):
     """
     Checks if n is positive (incl zero)
@@ -55,13 +58,25 @@ def frequency(data, interval):
         data (list:float): data to run against
         interval (float): time delta between endpoints in ms
 
-    Returns:
-
     """
     last_d = None
     for d in phase_inversions(data, interval):
         if last_d is None:
             last_d = d
             continue
-        yield ((d - last_d) / 2 + d), 500 / (d - last_d)  # 500 because we a looking for half cycles over milliseconds
+        # 500 because we a looking for half cycles over milliseconds
+        yield ((d - last_d) / 2 + d), 500 / (d - last_d)
         last_d = d
+
+
+def to_series(data):
+    """
+    Return a Pandas series of the frequency observations
+    Args:
+        data: frequency()
+
+    Returns:
+        pandas.Series
+    """
+    t, f = zip(*data)
+    return pd.Series(data=f, index=pd.to_datetime(t, unit="ms"))

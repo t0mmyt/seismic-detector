@@ -2,6 +2,9 @@ SEISMIC_VER ?= 1.0
 
 all: sdist docker
 
+test:
+	./test.sh
+
 clean:
 	rm -f dist/seismic-${SEISMIC_VER}.tar.gz
 	rm -rf build/lib/seismic/
@@ -10,12 +13,6 @@ sdist: dist/seismic-${SEISMIC_VER}.tar.gz
 
 dist/seismic-${SEISMIC_VER}.tar.gz:
 	python3 setup.py sdist
-	#docker run \
-	#	-v ${PWD}/seismic:/seismic \
-	#	-v ${PWD}/setup.py:/setup.py \
-	#	-v ${PWD}/dist:/dist \
-	#	python:3.5-alpine \
-	#		python setup.py sdist
 
 docker:
 	docker build -t seismic/app:${SEISMIC_VER} -t seismic/app:latest .
