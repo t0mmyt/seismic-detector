@@ -9,7 +9,7 @@ log = logging.getLogger("interface.import")
 
 class Importer(object):
     def __init__(self, url=None):
-        self.url = getenv('OBSERVATIONS', "http://localhost:8000") if not url else url
+        self.url = getenv('API', "http://localhost:8000") if not url else url
         self.status = {}
 
     def add(self, data, filename):
